@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:login_flow/screens/loginpage.dart';
 import 'package:login_flow/screens/profilepage.dart';
+import 'package:provider/provider.dart';
+
+import '../classes/verify_cred.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.username}) : super(key: key);
@@ -70,15 +73,18 @@ class _HomePageState extends State<HomePage> {
           ],)
         ),
         body: Center(
-          child: Column(
+          child: Consumer<VerifyCredentials>(
+          builder: (context, credentials, child) {
+            return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children:[
               Text('Welcome back ${widget.username}!',
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
+              credentials.isAuthenticated(widget.username)? SizedBox() : Text('You\'re not auth')
             ],
-          ),
+          );}
         ),
-    );
+    ));
   }
 }
 
