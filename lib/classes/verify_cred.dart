@@ -39,4 +39,25 @@ class VerifyCredentials extends ChangeNotifier{
     map['image'] = user.image;
     return map;
   }
+
+  void AssociateAuthorization(String username, String? userId){
+    Profile user = credentials[username];
+    if (userId != null){
+      user.userID = userId;
+      notifyListeners();
+    }else{
+      user.userID = '';
+      notifyListeners();
+    }
+  }
+  bool isAuthenticated(String username){
+    Profile user = credentials[username];
+    if(user.userID == ''){
+      return false;
+    }else{
+      return true;
+    }
+  
+
+  }
 }
