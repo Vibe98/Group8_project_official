@@ -58,6 +58,7 @@ class _LoginPageState extends State<LoginPage> {
                         }
                         return null;
                       },
+                      textInputAction: TextInputAction.next,
                       controller: nameController,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
