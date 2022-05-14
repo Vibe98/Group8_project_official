@@ -123,7 +123,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Center(
                     child: credentials.isAuthenticated(widget.username)
-                        ? Text('Month Data')
+                        ? monthPage(context)
                         : Text('You\'re not auth'),
                   ),
                 ],
@@ -131,6 +131,10 @@ class _HomePageState extends State<HomePage> {
             }),
           )),
     );
+  }
+
+  Widget monthPage(BuildContext context) {
+
   }
 
   Widget _buildForm(BuildContext context) {
