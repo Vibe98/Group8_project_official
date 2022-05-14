@@ -7,8 +7,6 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../classes/verify_cred.dart';
 
-import '../classes/credentials.dart';
-
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.username}) : super(key: key);
 
