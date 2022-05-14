@@ -138,6 +138,7 @@ class _SignInState extends State<SignIn> {
                         return null;
                       }
                     },
+                    textInputAction: TextInputAction.next,
                     controller: nameController,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -157,6 +158,7 @@ class _SignInState extends State<SignIn> {
                         return null;
                       }
                     },
+                    textInputAction: TextInputAction.next,
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(), labelText: 'Surname *'),
                   ),
@@ -166,6 +168,7 @@ class _SignInState extends State<SignIn> {
                       const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                   child: TextFormField(
                     controller: usernameController,
+                    textInputAction: TextInputAction.next,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Username *',
@@ -180,9 +183,10 @@ class _SignInState extends State<SignIn> {
                 ),
                 Container(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                      const EdgeInsets.symmetric(horizontal: 15),
                   child: TextFormField(
                     controller: emailController,
+                    textInputAction: TextInputAction.next,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'E-mail *',
@@ -199,7 +203,7 @@ class _SignInState extends State<SignIn> {
                 ),
                 //const SizedBox(height: 20),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                   child: TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -213,6 +217,7 @@ class _SignInState extends State<SignIn> {
                         return null;
                       }
                     },
+                    textInputAction: TextInputAction.next,
                     controller: passwordController,
                     obscureText: true,
                     decoration: const InputDecoration(
@@ -221,7 +226,7 @@ class _SignInState extends State<SignIn> {
                 ),
                 Container(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                      const EdgeInsets.fromLTRB(15, 0, 15, 15),
                   child: TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -230,6 +235,7 @@ class _SignInState extends State<SignIn> {
                         return null;
                       }
                     },
+                    textInputAction: TextInputAction.next,
                     controller: confirmpasswordController,
                     obscureText: true,
                     decoration: const InputDecoration(
