@@ -121,6 +121,7 @@ packages:
     source: hosted
     version: "1.2.0"
 <<<<<<< HEAD
+<<<<<<< HEAD
   file:
     dependency: transitive
     description:
@@ -129,6 +130,8 @@ packages:
     source: hosted
     version: "6.1.2"
 =======
+=======
+>>>>>>> a7a7eb06d462bfea8620136491bb5a99337a22cf
   fitbitter:
     dependency: "direct main"
     description:
@@ -136,7 +139,10 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.1"
+<<<<<<< HEAD
 >>>>>>> Vibe
+=======
+>>>>>>> a7a7eb06d462bfea8620136491bb5a99337a22cf
   flutter:
     dependency: "direct main"
     description: flutter
@@ -293,6 +299,7 @@ packages:
     source: hosted
     version: "2.4.4"
 <<<<<<< HEAD
+<<<<<<< HEAD
   io:
     dependency: transitive
     description:
@@ -301,6 +308,8 @@ packages:
     source: hosted
     version: "1.0.3"
 =======
+=======
+>>>>>>> a7a7eb06d462bfea8620136491bb5a99337a22cf
   intl:
     dependency: transitive
     description:
@@ -308,7 +317,10 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.17.0"
+<<<<<<< HEAD
 >>>>>>> Vibe
+=======
+>>>>>>> a7a7eb06d462bfea8620136491bb5a99337a22cf
   js:
     dependency: transitive
     description:
@@ -324,6 +336,7 @@ packages:
     source: hosted
     version: "1.0.1"
 <<<<<<< HEAD
+<<<<<<< HEAD
   logging:
     dependency: transitive
     description:
@@ -332,6 +345,8 @@ packages:
     source: hosted
     version: "1.0.2"
 =======
+=======
+>>>>>>> a7a7eb06d462bfea8620136491bb5a99337a22cf
   logger:
     dependency: transitive
     description:
@@ -339,7 +354,10 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+<<<<<<< HEAD
 >>>>>>> Vibe
+=======
+>>>>>>> a7a7eb06d462bfea8620136491bb5a99337a22cf
   matcher:
     dependency: transitive
     description:
@@ -499,6 +517,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+  syncfusion_flutter_core:
+    dependency: transitive
+    description:
+      name: syncfusion_flutter_core
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "20.1.55"
+  syncfusion_flutter_datepicker:
+    dependency: "direct main"
+    description:
+      name: syncfusion_flutter_datepicker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "20.1.55"
   term_glyph:
     dependency: transitive
     description:

@@ -30,6 +30,7 @@ dependencies:
   flutter:
     sdk: flutter
   provider: ^6.0.2
+  fitbitter: ^1.1.1
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -37,7 +38,13 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_email_sender: ^5.1.0
   image_picker: ^0.8.5
+<<<<<<< HEAD
   fitbitter: ^1.1.1
+=======
+  syncfusion_flutter_datepicker: ^20.1.55
+  
+  
+>>>>>>> a7a7eb06d462bfea8620136491bb5a99337a22cf
 
 dev_dependencies:
   test: ^1.5.1

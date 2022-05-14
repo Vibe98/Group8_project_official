@@ -2,6 +2,10 @@ import 'package:fitbitter/fitbitter.dart';
 import 'package:flutter/material.dart';
 import 'package:login_flow/screens/loginpage.dart';
 import 'package:login_flow/screens/profilepage.dart';
+import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+
+import '../classes/verify_cred.dart';
 
 import '../classes/credentials.dart';
 
@@ -17,8 +21,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   // This widget is the root of your application.
-
-  bool valid = false;
 
   Future<void> _showChoiceDialog(BuildContext context) {
     return showDialog(
@@ -46,48 +48,154 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
+  int calendar = -1;
+  DateTime selected_date = DateTime.now();
+  int difference = 0;
+  
+                                  
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Home Page')),
-      drawer: Drawer(
-          child: ListView(
+    return DefaultTabController(
+      initialIndex: 0,
+      length: 3,
+      child: Scaffold(
+          appBar: AppBar(
+            title: const Text('My Data'),
+            bottom: const TabBar(
+              tabs: <Widget>[
+                Tab(
+                  text: 'Day',
+                ),
+                Tab(
+                  text: 'week',
+                ),
+                Tab(
+                  text: 'month',
+                ),
+              ],
+            ),
+          ),
+          drawer: Drawer(
+              child: ListView(
+            children: [
+              Container(
+                  child: const Text('Application\'s Options',
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.blue)),
+                  padding: EdgeInsets.fromLTRB(8, 20, 8, 20)),
+              CustomListTile(
+                  Icons.person,
+                  'Your Profile',
+                  () => {
+                        Navigator.pushNamed(context, ProfilePage.route,
+                            arguments: {
+                              'username': widget.username,
+                              'keypassed': -1
+                            })
+                      }),
+              CustomListTile(
+                  Icons.settings,
+                  'Settings',
+                  () => {
+                        // TODO go to settings page
+                      }),
+              CustomListTile(
+                  Icons.lock, 'Log Out', () => {_showChoiceDialog(context)}),
+            ],
+          )),
+          body: Center(
+            child: Consumer<VerifyCredentials>(
+                builder: (context, credentials, child) {
+              return TabBarView(
+                children: <Widget>[
+                  Center(
+                    child: credentials.isAuthenticated(widget.username)
+                        ? _buildForm(context)
+                        : Text('You\'re not auth'),
+                  ),
+                  Center(
+                    child: credentials.isAuthenticated(widget.username)
+                        ? Text('Week data')
+                        : Text('You\'re not auth'),
+                  ),
+                  Center(
+                    child: credentials.isAuthenticated(widget.username)
+                        ? Text('Month Data')
+                        : Text('You\'re not auth'),
+                  ),
+                ],
+              );
+            }),
+          )),
+    );
+  }
+
+  Widget _buildForm(BuildContext context) {
+    return Center(
+      child: Column(
         children: [
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            ElevatedButton(
+                onPressed: () {
+                  if (calendar == -1) {
+                    setState(() {
+                      calendar = 0;
+                    });
+                  } else {
+                    setState(() {
+                      calendar = -1;
+                    });
+                  }
+                },
+                child: Icon(Icons.calendar_month)),
+            SizedBox(width: 50),
+            calendar == -1
+                ? Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 65),
+                    height: 150,
+                    width: 150,
+                    child: Text(
+                        ' ${selected_date.day.toString()} - ${selected_date.month.toString()} - ${selected_date.year.toString()}',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15)))
+                : Container(
+                    height: 150,
+                    width: 150,
+                    child: SfDateRangePicker(
+                      view: DateRangePickerView.month,
+                      minDate: DateTime(2022, 04, 01),
+                      maxDate: DateTime.now(),
+                      onSelectionChanged:
+                          (DateRangePickerSelectionChangedArgs args) {
+                        final dynamic value = args.value;
+                        setState(() {
+                          selected_date = value;
+                          difference = DateTime.now().difference(value).inDays;
+                        });
+                        
+                        
+                      },
+                    )),
+          ]),
           Container(
-              child: const Text('Application\'s Options',
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.blue)),
-              padding: EdgeInsets.fromLTRB(8, 20, 8, 20)),
-          CustomListTile(
-              Icons.person,
-              'Your Profile',
-              () => {
-                    Navigator.pushNamed(context, ProfilePage.route, arguments: {
-                      'username': widget.username,
-                      'keypassed': -1
-                    })
-                  }),
-          CustomListTile(
-              Icons.settings,
-              'Settings',
-              () => {
-                    // TODO go to settings page
-                  }),
-          CustomListTile(
-              Icons.lock, 'Log Out', () => {_showChoiceDialog(context)}),
+            height: 70,
+            width: 500,
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),        
+            margin: const EdgeInsets.all(15.0),            
+            decoration:
+                BoxDecoration(border: Border.all(color: Colors.blueAccent)),
+            child: Text('Da aggiungere')
+              
+
+
+
+            
+          )
         ],
-      )),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Welcome back ${widget.username}!',
-                          style: const TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w600)),
-          ],
-        ),
       ),
     );
   }
