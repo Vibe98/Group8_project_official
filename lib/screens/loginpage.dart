@@ -105,6 +105,8 @@ class _LoginPageState extends State<LoginPage> {
                           child: const Text('Login'),
                           onPressed: () {
                             if (_formKey.currentState!.validate()){  
+                              print(nameController.text);
+                              print(verifyCred.credentials);
                               if (!verifyCred.credentials.containsKey(nameController.text)){
                               // se non c'è un account con username corrente, allora bisogna crearlo
                               ScaffoldMessenger.of(context)

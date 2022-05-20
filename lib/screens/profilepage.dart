@@ -6,7 +6,7 @@ import 'package:login_flow/screens/loginpage.dart';
 import 'package:provider/provider.dart';
 
 
-import '../classes/athuorization.dart';
+
 import '../classes/verify_cred.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -66,7 +66,18 @@ class _ProfilePageState extends State<ProfilePage> {
       body: Form(
         child: SingleChildScrollView(
           child: Column(
-            children: [
+            children: [ 
+              
+              TextField(
+                readOnly: true,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                decoration: InputDecoration(
+                      border: InputBorder.none
+                ),
+                controller: usernameController,
+                
+              ),
               Container(
                 width: 250.0,
                 height: 190.0,
@@ -79,16 +90,6 @@ class _ProfilePageState extends State<ProfilePage> {
                           : FileImage(imageFile) as ImageProvider),
                 ),
               ),
-              TextFormField(
-                  controller: usernameController,
-                  enabled: false,
-                  decoration: InputDecoration(
-                      border: InputBorder.none,
-                      icon: Icon(
-                        Icons.person,
-                        color: Colors.blue,
-                      ),
-                      labelText: 'Username')),
               SizedBox(height: 10),
               TextFormField(
                   controller: nameController,
@@ -160,7 +161,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ;
                   },
                   child: actual == -1
-                      ? Text('Click to Modify')
+                      ? Text('Edit Your Infos')
                       : Icon(Icons.check),
                   style: actual == -1
                       ? ElevatedButton.styleFrom(
@@ -171,7 +172,13 @@ class _ProfilePageState extends State<ProfilePage> {
                       : ElevatedButton.styleFrom(shape: CircleBorder())),
             Consumer<VerifyCredentials>(
               builder: (context, value, child) => Card(
-                child: value.isAuthenticated(widget.username) ? ElevatedButton(child: Text('You\'re authorized. Click if you want to unauthorized'), onPressed: ()async{
+                child: value.isAuthenticated(widget.username) ? ElevatedButton(
+                  child: Text('You\'re connected. \n Click if you want to disconnect', textAlign: TextAlign.center,), 
+                  style: ElevatedButton.styleFrom(
+                  primary: Colors.green,
+                  textStyle: TextStyle(
+                  fontWeight: FontWeight.bold)), 
+                  onPressed: ()async{
                 await FitbitConnector.unauthorize(
                 clientID: '238C5P',
                 clientSecret: '8b6a58492553191918d2cce62a2052c6'
@@ -180,7 +187,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 Provider.of<VerifyCredentials>(context, listen: false).AssociateAuthorization(widget.username, userId);
                 }) :
               ElevatedButton(
-                child: Text('authorize'),
+                child: Text('Connect your fitbit account'),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.redAccent,
+                  
+                  textStyle: TextStyle(
+                  fontWeight: FontWeight.bold)), 
                 onPressed: ()async{
                   String? userId = await FitbitConnector.authorize(
                   context: context,
@@ -196,48 +208,6 @@ class _ProfilePageState extends State<ProfilePage> {
             )],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class CustomListTile extends StatelessWidget {
-  final IconData icon;
-  final String text;
-  final VoidCallback tapped;
-
-  CustomListTile(this.icon, this.text, this.tapped);
-  @override
-  Widget build(BuildContext context) {
-    //ToDO
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
-      child: Container(
-        decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: Colors.grey.shade400))),
-        child: InkWell(
-            splashColor: Colors.blue,
-            onTap: tapped,
-            child: Container(
-                height: 40,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Icon(icon),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                        ),
-                        Text(
-                          text,
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                    Icon(Icons.arrow_right)
-                  ],
-                ))),
       ),
     );
   }

@@ -1,8 +1,15 @@
 import 'package:fitbitter/fitbitter.dart';
 import 'package:flutter/material.dart';
+import 'package:login_flow/classes/weekchart.dart';
+import 'package:login_flow/classes/weekdata.dart';
 import 'package:login_flow/screens/loginpage.dart';
 import 'package:login_flow/screens/profilepage.dart';
+import 'package:login_flow/widgets/weekwidget.dart';
 import 'package:provider/provider.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
+
+
+
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../classes/verify_cred.dart';
@@ -49,15 +56,16 @@ class _HomePageState extends State<HomePage> {
   int calendar = -1;
   DateTime selected_date = DateTime.now();
   int difference = 0;
-  
-                                  
-
+  final DateRangePickerController _controller = DateRangePickerController();
+  DateTime dat1 = DateTime.now();
+  DateTime dat2 = DateTime.now();
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       initialIndex: 0,
       length: 3,
       child: Scaffold(
+          resizeToAvoidBottomInset: false,
           appBar: AppBar(
             title: const Text('My Data'),
             bottom: const TabBar(
@@ -116,7 +124,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Center(
                     child: credentials.isAuthenticated(widget.username)
-                        ? Text('Week data')
+                        ? weekwidget(context)
                         : Text('You\'re not auth'),
                   ),
                   Center(
@@ -174,28 +182,25 @@ class _HomePageState extends State<HomePage> {
                           selected_date = value;
                           difference = DateTime.now().difference(value).inDays;
                         });
-                        
-                        
                       },
                     )),
           ]),
           Container(
-            height: 70,
-            width: 500,
-            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),        
-            margin: const EdgeInsets.all(15.0),            
-            decoration:
-                BoxDecoration(border: Border.all(color: Colors.blueAccent)),
-            child: Text('Da aggiungere')
-              
-
-
-
-            
-          )
+              height: 70,
+              width: 500,
+              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              margin: const EdgeInsets.all(15.0),
+              decoration:
+                  BoxDecoration(border: Border.all(color: Colors.blueAccent)),
+              child: Text('Da aggiungere'))
         ],
       ),
     );
+  }
+
+  Widget weekwidget(BuildContext context) {
+    return SingleChildScrollView(
+      child: WeekWidget(username: widget.username,)) ;
   }
 }
 
@@ -240,3 +245,7 @@ class CustomListTile extends StatelessWidget {
     );
   }
 }
+
+
+  
+
