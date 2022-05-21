@@ -37,7 +37,10 @@ class VerifyCredentials extends ChangeNotifier{
     map['email'] = user.email;
     map['password'] = user.password;
     map['image'] = user.image;
+    map['userID'] = user.userID;
+    //notifyListeners();
     return map;
+    
   }
 
   void AssociateAuthorization(String username, String? userId){

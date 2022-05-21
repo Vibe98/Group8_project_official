@@ -39,6 +39,7 @@ dependencies:
   flutter_email_sender: ^5.1.0
   image_picker: ^0.8.5
   syncfusion_flutter_datepicker: ^20.1.55
+  material_design_icons_flutter: ^5.0.6595
   
   
 
