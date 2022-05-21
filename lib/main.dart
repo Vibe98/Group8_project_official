@@ -6,6 +6,7 @@ import 'package:login_flow/screens/loginpage.dart';
 import 'package:login_flow/screens/profilepage.dart';
 import 'package:login_flow/screens/signin.dart';
 import 'package:provider/provider.dart';
+import 'package:login_flow/classes/DayDate.dart';
 
 // commento di prova
 
@@ -19,8 +20,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => VerifyCredentials(),
+    return MultiProvider(
+
+      providers:[
+        ChangeNotifierProvider(
+          create: (context) => VerifyCredentials(),),
+        ChangeNotifierProvider(
+          create: (context) => DayData())
+      ],
       child: MaterialApp(
         initialRoute: LoginPage.route,
         onGenerateRoute: (settings) {

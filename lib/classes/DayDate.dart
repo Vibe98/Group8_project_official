@@ -5,6 +5,7 @@ class DayData extends ChangeNotifier{
 
   DateTime date = DateTime.now(); 
   bool calendar = false;
+  int difference = DateTime.now().difference(DateTime.now()).inDays;
 
   void changeDay(DateTime newdate){
     this.date = newdate;
@@ -20,11 +21,10 @@ class DayData extends ChangeNotifier{
     notifyListeners();
   }
 
-  int computeDifference(){
-    int difference = DateTime.now().difference(date).inDays;
+  void computeDifference(){
+    this.difference = DateTime.now().difference(date).inDays;
     notifyListeners();
-    return difference;
-    
+        
   }
   
 }

@@ -9,8 +9,10 @@ import '../classes/DayDate.dart';
 
 class DayWidget extends StatelessWidget {
   final String username;
-
+  
   DayWidget({required this.username});
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +59,7 @@ class DayWidget extends StatelessWidget {
                         (DateRangePickerSelectionChangedArgs args) {
                       final dynamic value = args.value;
                       daydate.changeDay(value);
-                      //int difference = daydate.computeDifference();
+                      daydate.computeDifference();
                     },
                   )),
         ]), // ROW
@@ -103,13 +105,13 @@ class DayWidget extends StatelessWidget {
                                       fontSize: 15)),
                             ],
                           ),
-                          //SizedBox(width: 30),
+                         SizedBox(width: 75),
                           Column(
                             children: [
                               FutureBuilder(
                                   future: computeDayData(
                                       "steps",
-                                      daydate.computeDifference(),
+                                      daydate.difference,                                      
                                       value.credentials[username].userID),
                                   builder: (context, snapshot) {
                                     if (snapshot.hasData) {
@@ -121,7 +123,7 @@ class DayWidget extends StatelessWidget {
                                               //color: Colors.blue,
                                               fontWeight: FontWeight.w500,
                                               fontStyle: FontStyle.normal,
-                                              fontSize: 20));
+                                              fontSize: 15));
                                     } else {
                                       return Text('');
                                     }
@@ -129,7 +131,7 @@ class DayWidget extends StatelessWidget {
                               FutureBuilder(
                                   future: computeDayData(
                                       "distance",
-                                      daydate.computeDifference(),
+                                      daydate.difference,
                                       value.credentials[username].userID),
                                   builder: (context, snapshot) {
                                     if (snapshot.hasData) {
@@ -142,7 +144,7 @@ class DayWidget extends StatelessWidget {
                                               //color: Colors.blue,
                                               fontWeight: FontWeight.w500,
                                               fontStyle: FontStyle.normal,
-                                              fontSize: 20));
+                                              fontSize: 15));
                                     } else {
                                       return Text('');
                                     }
@@ -184,11 +186,11 @@ class DayWidget extends StatelessWidget {
                                   fontWeight: FontWeight.w500,
                                   fontStyle: FontStyle.normal,
                                   fontSize: 20)),
-                          SizedBox(width: 50),
+                          SizedBox(width: 70),
                           FutureBuilder(
                               future: computeDayData(
                                   "activityCalories",
-                                  daydate.computeDifference(),
+                                  daydate.difference,
                                   value.credentials[username].userID),
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
@@ -231,16 +233,16 @@ class DayWidget extends StatelessWidget {
                               child: Icon(MdiIcons.moonWaxingCrescent,
                                   size: 30,
                                   color: Color.fromARGB(255, 6, 12, 70))),
-                          SizedBox(width: 30),
+                          SizedBox(width: 50),
                           Text('SLEEP:',
                               style: TextStyle(
                                   //color: Colors.blue,
                                   fontWeight: FontWeight.w500,
                                   fontStyle: FontStyle.normal,
                                   fontSize: 20)),
-                          SizedBox(width: 50),
+                          SizedBox(width: 75),
                           FutureBuilder(
-                              future: computeSleepData(daydate.computeDifference(),
+                              future: computeSleepData(daydate.difference,
                                   value.credentials[username].userID),
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
@@ -278,7 +280,7 @@ class DayWidget extends StatelessWidget {
                       height: 60,
                       width: 350,
                       padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 11),
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                       margin: const EdgeInsets.all(15.0),
                       decoration: BoxDecoration(
                           border: Border.all(color: Colors.blueAccent),
@@ -295,7 +297,7 @@ class DayWidget extends StatelessWidget {
                                 )),
                             child: Icon(MdiIcons.human,
                                 size: 30, color: Color.fromARGB(255, 113, 13, 100))),
-                        SizedBox(width: 30),
+                        SizedBox(width: 20),
                         Column(
                           children: [
                             Text('MINUTES VERY ACTIVE:',
@@ -312,13 +314,13 @@ class DayWidget extends StatelessWidget {
                                     fontSize: 15)),
                           ],
                         ),
-                        SizedBox(width: 30),
+                        SizedBox(width: 25),
                         Column(
                           children: [
                             FutureBuilder(
                                 future: computeDayData(
                                     "minutesVeryActive",
-                                    daydate.computeDifference(),
+                                    daydate.difference,
                                     value.credentials[username].userID),
                                 builder: (context, snapshot) {
                                   if (snapshot.hasData) {
@@ -326,12 +328,12 @@ class DayWidget extends StatelessWidget {
                                         snapshot.data as List;
                                     print(VeryActiveData);
                                     return Text(
-                                        VeryActiveData[0].value.toString(),
+                                        VeryActiveData[0].value.round().toString(),
                                         style: TextStyle(
                                             //color: Colors.blue,
                                             fontWeight: FontWeight.w500,
                                             fontStyle: FontStyle.normal,
-                                            fontSize: 20));
+                                            fontSize: 15));
                                   } else {
                                     return Text('');
                                   }
@@ -339,7 +341,7 @@ class DayWidget extends StatelessWidget {
                             FutureBuilder(
                                 future: computeDayData(
                                     "minutesFairlyActive",
-                                    daydate.computeDifference(),
+                                    daydate.difference,
                                     value.credentials[username].userID),
                                 builder: (context, snapshot) {
                                   if (snapshot.hasData) {
@@ -347,12 +349,12 @@ class DayWidget extends StatelessWidget {
                                         snapshot.data as List;
                                     print(FairlyActiveData);
                                     return Text(
-                                        FairlyActiveData[0].value.toString(),
+                                        FairlyActiveData[0].value.round().toString(),
                                         style: TextStyle(
                                             //color: Colors.blue,
                                             fontWeight: FontWeight.w500,
                                             fontStyle: FontStyle.normal,
-                                            fontSize: 20));
+                                            fontSize: 15));
                                   } else {
                                     return Text('');
                                   }
