@@ -1,11 +1,20 @@
+import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:fitbitter/fitbitter.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:login_flow/classes/credentialsFitbitter.dart';
 import 'package:login_flow/screens/loginpage.dart';
 import 'package:login_flow/screens/profilepage.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'dart:ui';
 
+import '../classes/changeMonth.dart';
+import '../classes/monthChartGraph.dart';
+import '../classes/myMonthData.dart';
 import '../classes/verify_cred.dart';
+import '../classes/fetchedData.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.username}) : super(key: key);
@@ -19,6 +28,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   // This widget is the root of your application.
+  TextEditingController monthController = TextEditingController();
 
   Future<void> _showChoiceDialog(BuildContext context) {
     return showDialog(
@@ -31,8 +41,15 @@ class _HomePageState extends State<HomePage> {
               children: <Widget>[
                 GestureDetector(
                     child: Text('Yes'),
-                    onTap: () {
-                      Navigator.pushNamed(context, LoginPage.route);
+                    onTap: () async {
+                      final sp = await SharedPreferences.getInstance();
+                      
+                      //rimuovo le credenziali salvate
+                      sp.remove('username');
+                      setState(() {
+                        
+                      });
+                      Navigator.pushReplacementNamed(context, LoginPage.route);
                     }),
                 Padding(padding: EdgeInsets.all(8)),
                 GestureDetector(
@@ -49,8 +66,6 @@ class _HomePageState extends State<HomePage> {
   int calendar = -1;
   DateTime selected_date = DateTime.now();
   int difference = 0;
-  
-                                  
 
   @override
   Widget build(BuildContext context) {
@@ -66,10 +81,10 @@ class _HomePageState extends State<HomePage> {
                   text: 'Day',
                 ),
                 Tab(
-                  text: 'week',
+                  text: 'Week',
                 ),
                 Tab(
-                  text: 'month',
+                  text: 'Month',
                 ),
               ],
             ),
@@ -112,17 +127,20 @@ class _HomePageState extends State<HomePage> {
                   Center(
                     child: credentials.isAuthenticated(widget.username)
                         ? _buildForm(context)
-                        : Text('You\'re not auth'),
+                        : Text(
+                            'You\'re not auth, go to your profile and authorize'),
                   ),
                   Center(
                     child: credentials.isAuthenticated(widget.username)
                         ? Text('Week data')
-                        : Text('You\'re not auth'),
+                        : Text(
+                            'You\'re not auth, go to your profile and authorize'),
                   ),
                   Center(
                     child: credentials.isAuthenticated(widget.username)
                         ? monthPage(context)
-                        : Text('You\'re not auth'),
+                        : Text(
+                            'You\'re not auth, go to your profile and authorize'),
                   ),
                 ],
               );
@@ -131,8 +149,81 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  
   Widget monthPage(BuildContext context) {
-
+    return Consumer<PickMonth>(
+      builder: (context, pickmonth, child) => Center(
+        child: ListView(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 15),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          // one month back
+                          if(DateTime.now().month-pickmonth.month<3){
+                            pickmonth.decreaseMonth();
+                          }else{
+                            null;
+                          }
+                        },
+                        icon: Icon(Icons.arrow_back_ios, color: Colors.blue)),
+                    Container(
+                        child: Center(
+                          child: Text(
+                              '${DateFormat('MMMM').format(DateTime(0, pickmonth.getMonth()))} ${pickmonth.getYear()}',
+                              style: TextStyle(fontSize: 18),
+                              textAlign: TextAlign.center),
+                        ),
+                        width: 200,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.blue),
+                        )),
+                    IconButton(
+                        onPressed: () {
+                          pickmonth.increaseMonth();
+                        },
+                        icon:
+                            Icon(Icons.arrow_forward_ios, color: Colors.blue)),
+                  ],
+                ),
+                /*
+              Consumer<VerifyCredentials>(
+                builder: (context, credentials, child) =>
+                FutureBuilder(
+                  future: FetchedData.fetchedData[0]!,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData){
+                      final stepsData = snapshot.data as Map<int, List<myMonthData>>;
+                      return 
+              */
+                Column(
+                  children: [
+                   
+                    MonthChartGraph(data: FetchedData.stepsData[DateTime.now().month-pickmonth.month]!, month: pickmonth.month, category: 'Steps',),
+                    MonthChartGraph(data: FetchedData.caloriesData[DateTime.now().month-pickmonth.month]!, month: pickmonth.month, category: 'Calories',),
+                    MonthMinChartGraph(data1: FetchedData.minutesVeryActiveData[DateTime.now().month-pickmonth.month]!, data2: FetchedData.minutesFairlyActiveData[DateTime.now().month-pickmonth.month]!, category1: 'Minutes Very Active', category2: 'Minutes Fairly Active'),
+                  ],
+                ),
+                /*
+                    }else{
+                      return CircularProgressIndicator();
+                    }
+                  }
+                ),
+              ),
+              */
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _buildForm(BuildContext context) {
@@ -178,25 +269,17 @@ class _HomePageState extends State<HomePage> {
                           selected_date = value;
                           difference = DateTime.now().difference(value).inDays;
                         });
-                        
-                        
                       },
                     )),
           ]),
           Container(
-            height: 70,
-            width: 500,
-            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),        
-            margin: const EdgeInsets.all(15.0),            
-            decoration:
-                BoxDecoration(border: Border.all(color: Colors.blueAccent)),
-            child: Text('Da aggiungere')
-              
-
-
-
-            
-          )
+              height: 70,
+              width: 500,
+              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              margin: const EdgeInsets.all(15.0),
+              decoration:
+                  BoxDecoration(border: Border.all(color: Colors.blueAccent)),
+              child: Text('Da aggiungere'))
         ],
       ),
     );
@@ -244,3 +327,4 @@ class CustomListTile extends StatelessWidget {
     );
   }
 }
+

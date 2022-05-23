@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:login_flow/classes/verify_cred.dart';
 import 'package:login_flow/screens/homepage.dart';
+import 'package:login_flow/screens/loginpage.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -248,7 +250,7 @@ class _SignInState extends State<SignIn> {
                   builder: (context, verifyCred, child) => 
                   FloatingActionButton(
                       child: const Icon(Icons.done),
-                      onPressed: () {
+                      onPressed: () async {
                         if(_formKey.currentState!.validate()){
                         if (!emailController.text.contains('@')) {
                           ScaffoldMessenger.of(context)
@@ -276,7 +278,14 @@ class _SignInState extends State<SignIn> {
                           print(passwordController.text);
                           
                           verifyCred.addAccount(usernameController.text, nameController.text, surnameController.text, passwordController.text, emailController.text, imageFile);
-                          Navigator.pushNamed(context, HomePage.route, arguments: {'username': usernameController.text});
+                          final sp = await SharedPreferences.getInstance();
+                          sp.setString('username', usernameController.text);
+                          setState(() {
+                            
+                          });
+                          Navigator.pushNamed(context, HomePage.route, arguments: {
+                            'username': usernameController.text
+                          });
                         }
                       }}),
                 )

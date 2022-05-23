@@ -4,6 +4,7 @@ import 'package:login_flow/screens/forgotpassword.dart';
 import 'package:login_flow/screens/homepage.dart';
 import 'package:login_flow/screens/signin.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -20,6 +21,23 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  @override 
+  void initState() {
+    // se lo user è già loggato vado diretto alla HomePage
+  super.initState();
+
+  //_checkLogin();
+  }
+
+  void _checkLogin() async{
+    final sp = await SharedPreferences.getInstance();
+    if(sp.getString('username')!=null){
+      // significa che lo user è già loggato
+      final username = sp.getString('username');
+      Navigator.pushNamed(context, HomePage.route, arguments: {'username': username});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +122,7 @@ class _LoginPageState extends State<LoginPage> {
                       // padding: EdgeInsets.fromLTRB(10,0,10,0),
                       child: ElevatedButton(
                           child: const Text('Login'),
-                          onPressed: () {
+                          onPressed: () async {
                             if (_formKey.currentState!.validate()){  
                               if (!verifyCred.credentials.containsKey(nameController.text)){
                               // se non c'è un account con username corrente, allora bisogna crearlo
@@ -122,9 +140,11 @@ class _LoginPageState extends State<LoginPage> {
                                 backgroundColor: Colors.red,
                               ));
                             } else {
+                              
                               Navigator.pushNamed(context, HomePage.route, arguments: {
                                 'username': nameController.text
                               });
+
                             }
                           }}),
                     ),
@@ -143,6 +163,17 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ],
                   ),
+                  
+                  ElevatedButton(onPressed: () async {
+                    final sp = await SharedPreferences.getInstance();
+                    if(sp.getString('username')!=null){
+                      //print(Provider.of<VerifyCredentials>(context, listen: false).Restituteuser(sp.getString('username')!)['email']);
+                      sp.remove('username');
+                      print(sp.getString('username'));
+                    }else{
+                      print('ok');
+                    }
+                  }, child: Text('prova')) 
                 ],
               ),
             ),
