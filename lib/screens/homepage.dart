@@ -192,22 +192,13 @@ class _HomePageState extends State<HomePage> {
                             Icon(Icons.arrow_forward_ios, color: Colors.blue)),
                   ],
                 ),
-                /*
-              Consumer<VerifyCredentials>(
-                builder: (context, credentials, child) =>
-                FutureBuilder(
-                  future: FetchedData.fetchedData[0]!,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData){
-                      final stepsData = snapshot.data as Map<int, List<myMonthData>>;
-                      return 
-              */
+                
                 Column(
                   children: [
                    
-                    MonthChartGraph(data: FetchedData.stepsData[DateTime.now().month-pickmonth.month]!, month: pickmonth.month, category: 'Steps',),
-                    MonthChartGraph(data: FetchedData.caloriesData[DateTime.now().month-pickmonth.month]!, month: pickmonth.month, category: 'Calories',),
-                    MonthMinChartGraph(data1: FetchedData.minutesVeryActiveData[DateTime.now().month-pickmonth.month]!, data2: FetchedData.minutesFairlyActiveData[DateTime.now().month-pickmonth.month]!, category1: 'Minutes Very Active', category2: 'Minutes Fairly Active'),
+                    MonthChartGraph(data: FetchedData.stepsData[DateFormat('MMMM').format(DateTime(0,pickmonth.month))]!, month: pickmonth.month, category: 'Steps',),
+                    MonthChartGraph(data: FetchedData.caloriesData[DateFormat('MMMM').format(DateTime(0,pickmonth.month))]!, month: pickmonth.month, category: 'Calories',),
+                    MonthMinChartGraph(data1: FetchedData.minutesVeryActiveData[DateFormat('MMMM').format(DateTime(0,pickmonth.month))]!, data2: FetchedData.minutesFairlyActiveData[pickmonth.month]!, category1: 'Minutes Very Active', category2: 'Minutes Fairly Active'),
                   ],
                 ),
                 /*
