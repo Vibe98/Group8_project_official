@@ -9,7 +9,4 @@ class myMonthData{
 
   myMonthData({required this.day, required this.month, required this.value, required this.barColor});
 
-  
-
-
 }

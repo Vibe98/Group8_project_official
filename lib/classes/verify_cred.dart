@@ -11,9 +11,9 @@ class VerifyCredentials extends ChangeNotifier{
   Map credentials = {};
 
   // aggiungo un account
-  void addAccount(String username, String name, String surname, String password, String email, File? image){
+  void addAccount(String username, String name, String surname, String password, String email){
     
-    Profile user = Profile(name, surname, username, password, email, image);
+    Profile user = Profile(name, surname, username, password, email);
     credentials[username] = user;
     print(user.email);
     notifyListeners();
@@ -38,9 +38,7 @@ class VerifyCredentials extends ChangeNotifier{
     map['username'] = user.username;
     map['email'] = user.email;
     map['password'] = user.password;
-    map['image'] = user.image;
-    map['userID'] = user.userID;
-    //notifyListeners();
+    map['userID'] = '7ML2XV';
     return map;
     
   }

@@ -3,11 +3,14 @@ import 'dart:io';
 import 'package:fitbitter/fitbitter.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:login_flow/screens/homepage.dart';
 import 'package:login_flow/screens/loginpage.dart';
 import 'package:provider/provider.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
-
-import '../classes/athuorization.dart';
+import '../classes/credentialsFitbitter.dart';
+import '../classes/fetchedData.dart';
+import '../classes/myMonthData.dart';
 import '../classes/verify_cred.dart';
 import '../classes/credentialsFitbitter.dart';
 import '../classes/myMonthData.dart';
@@ -41,8 +44,8 @@ class _ProfilePageState extends State<ProfilePage> {
   bool ena = false;
 
   Future<void> computeMonthData(String userID) async {
+    FetchedData.complete=false;
 
-      
     //steps
     FitbitActivityTimeseriesDataManager
         fitbitStepsDataManager =
@@ -68,7 +71,7 @@ class _ProfilePageState extends State<ProfilePage> {
         myMonthData addStepsData = myMonthData(day: '${data[k].dateOfMonitoring!.day}', month: '${data[k].dateOfMonitoring!.month}', value: data[k].value, barColor: charts.Color(r:0,g:100,b:0));
         stepsValue.add(addStepsData);
       }
-      FetchedData.stepsData[DateFormat('MMMM').format(DateTime(0,DateTime.now().month-i))] = stepsValue;
+      FetchedData.stepsData[DateFormat('MMMM').format(DateTime(0, DateTime.now().month-i))] = stepsValue;
     }
 
     //calories
@@ -96,7 +99,7 @@ class _ProfilePageState extends State<ProfilePage> {
         myMonthData addCaloriesData = myMonthData(day: '${data[k].dateOfMonitoring!.day}', month: '${data[k].dateOfMonitoring!.month}', value: data[k].value, barColor: charts.Color(r:0,g:0,b:100));
         caloriesValue.add(addCaloriesData);
       }
-      FetchedData.caloriesData[DateFormat('MMMM').format(DateTime(0,DateTime.now().month-i))] = caloriesValue;
+      FetchedData.caloriesData[DateFormat('MMMM').format(DateTime(0, DateTime.now().month-i))] = caloriesValue;
     }
 
     //minutes fairly active
@@ -124,7 +127,7 @@ class _ProfilePageState extends State<ProfilePage> {
         myMonthData addFActiveData = myMonthData(day: '${data[k].dateOfMonitoring!.day}', month: '${data[k].dateOfMonitoring!.month}', value: data[k].value, barColor: charts.Color(r:100,g:0,b:0));
         FActiveValue.add(addFActiveData);
       }
-      FetchedData.minutesFairlyActiveData[DateFormat('MMMM').format(DateTime(0,DateTime.now().month-i))] = FActiveValue;
+      FetchedData.minutesFairlyActiveData[DateFormat('MMMM').format(DateTime(0, DateTime.now().month-i))] = FActiveValue;
     }
 
     //minutes very active
@@ -152,11 +155,15 @@ class _ProfilePageState extends State<ProfilePage> {
         myMonthData addVActiveData = myMonthData(day: '${data[k].dateOfMonitoring!.day}', month: '${data[k].dateOfMonitoring!.month}', value: data[k].value, barColor: charts.Color(r:255,g:127,b:80));
         VActiveValue.add(addVActiveData);
       }
-      FetchedData.minutesVeryActiveData[DateFormat('MMMM').format(DateTime(0,DateTime.now().month-i))] = VActiveValue;
+      FetchedData.minutesVeryActiveData[DateFormat('MMMM').format(DateTime(0, DateTime.now().month-i))] = VActiveValue;
     }
 
-    
-   
+    FetchedData.complete = true;
+    if(mounted){
+      setState(() {
+      
+    });
+    }
   } 
 
   @override
@@ -181,8 +188,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    File? imageFile = Provider.of<VerifyCredentials>(context, listen: false)
-        .Restituteuser(widget.username)['image'];
+    //File? imageFile = Provider.of<VerifyCredentials>(context, listen: false).Restituteuser(widget.username)['image'];
+    File? imageFile = null;
     print(imageFile);
 
     ena = actual == -1 ? false : true;
@@ -296,30 +303,54 @@ class _ProfilePageState extends State<ProfilePage> {
                         )
                       : ElevatedButton.styleFrom(shape: CircleBorder())),
             Consumer<VerifyCredentials>(
-              builder: (context, credentials, child) => Card(
-                child: credentials.isAuthenticated(widget.username) ? ElevatedButton(child: Text('You\'re authorized. Click if you want to unauthorized'), onPressed: ()async{
+              builder: (context, value, child) => Card(
+                child: value.isAuthenticated(widget.username) && FetchedData.complete == true 
+                ? ElevatedButton(child: Text('You\'re authorized. Click if you want to unauthorized'), onPressed: ()async{
                 await FitbitConnector.unauthorize(
-                clientID: '238C5P',
-                clientSecret: '8b6a58492553191918d2cce62a2052c6'
+                clientID: CredentialsFitbitter.clientID,
+                clientSecret: CredentialsFitbitter.clientSecret
                 );
                 String userId = '';
                 Provider.of<VerifyCredentials>(context, listen: false).AssociateAuthorization(widget.username, userId);
                 }) :
-              ElevatedButton(
-                child: Text('authorize'),
-                onPressed: ()async{
-                  String? userId = await FitbitConnector.authorize(
-                  context: context,
-                  clientID: '238C5P',
-                  clientSecret: '8b6a58492553191918d2cce62a2052c6',
-                  redirectUri: 'example://fitbit/auth',
-                  callbackUrlScheme: 'example');
-                  Provider.of<VerifyCredentials>(context, listen: false).AssociateAuthorization(widget.username, userId);
-                  await computeMonthData(credentials.Restituteuser(widget.username)['userID']);
-                  
-                 
-                },
-                ),)
+              Consumer<VerifyCredentials>(
+                builder: (context, credentials, child) =>
+                Column(
+                  children: [
+                    ElevatedButton(
+                      child: Text('Authorize'),
+                      onPressed: ()async{
+                        String? userId = await FitbitConnector.authorize(
+                        context: context,
+                        clientID: CredentialsFitbitter.clientID,
+                        clientSecret: CredentialsFitbitter.clientSecret,
+                        redirectUri: CredentialsFitbitter.redirectUri,
+                        callbackUrlScheme: 'example');
+                        Provider.of<VerifyCredentials>(context, listen: false).AssociateAuthorization(widget.username, userId);
+                        FutureBuilder(
+                          future:  computeMonthData(credentials.Restituteuser(widget.username)['userID']),
+                          builder:(context, snapshot){
+                            if(snapshot.hasData){
+                              FetchedData.complete = true;
+                              if(mounted){
+                                setState(() {
+                                
+                              });
+                              }
+                              Navigator.pushNamed(context, HomePage.route, arguments: {
+                                'username': widget.username
+                    
+                              });
+                              return Text('');
+                            }else{
+                              return CircularProgressIndicator();
+                            }
+                          });
+                      },
+                      ),
+                  ],
+                ),
+              ),)
 
             )],
           ),
