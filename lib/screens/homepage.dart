@@ -132,17 +132,17 @@ class _HomePageState extends State<HomePage> {
               return TabBarView(
                 children: <Widget>[
                   Center(
-                    child: (credentials.isAuthenticated(widget.username))
+                    child: (credentials.isAuthenticated(widget.username) && credentials.iscompleted(widget.username)) 
                         ? daywidget(context)
                         : Text('You\'re not auth'),
                   ),
                   Center(
-                    child: credentials.isAuthenticated(widget.username)
+                    child: (credentials.isAuthenticated(widget.username) && credentials.iscompleted(widget.username))
                         ? weekwidget(context)
                         : Text('You\'re not auth'),
                   ),
                   Center(
-                    child: credentials.isAuthenticated(widget.username)
+                    child: (credentials.isAuthenticated(widget.username)&& credentials.iscompleted(widget.username))
                         ? monthwidget(context)
                         : Text(
                             'You\'re not auth, go to your profile and authorize'),

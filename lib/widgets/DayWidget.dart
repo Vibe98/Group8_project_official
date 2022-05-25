@@ -114,7 +114,7 @@ class DayWidget extends StatelessWidget {
                           Column( mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                                
-                              Text(daydate.steps!.toString()),
+                              Text(daydate.steps.toString()),
                               //Text('ciao'),
                               /*FutureBuilder(
                                   future: computeDayData(
