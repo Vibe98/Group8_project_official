@@ -277,9 +277,9 @@ class _SignInState extends State<SignIn> {
                           print(emailController.text);
                           print(passwordController.text);
                           
-                          verifyCred.addAccount(usernameController.text, nameController.text, surnameController.text, passwordController.text, emailController.text, imageFile);
+                          verifyCred.addAccount(usernameController.text, nameController.text, surnameController.text, passwordController.text, emailController.text);
                           final sp = await SharedPreferences.getInstance();
-                          sp.setString('username', usernameController.text);
+                          sp.setStringList('username', [usernameController.text, nameController.text, surnameController.text, passwordController.text, emailController.text]);
                           setState(() {
                             
                           });

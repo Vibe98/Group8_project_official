@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:login_flow/classes/credentialsFitbitter.dart';
 import 'package:login_flow/screens/loginpage.dart';
 import 'package:login_flow/screens/profilepage.dart';
+import 'package:login_flow/utils/monthWidget.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -126,19 +127,19 @@ class _HomePageState extends State<HomePage> {
                 children: <Widget>[
                   Center(
                     child: credentials.isAuthenticated(widget.username)
-                        ? _buildForm(context)
+                        ?_buildForm(context)
                         : Text(
                             'You\'re not auth, go to your profile and authorize'),
                   ),
                   Center(
                     child: credentials.isAuthenticated(widget.username)
-                        ? Text('Week data')
+                        ?  Text('Week data')
                         : Text(
                             'You\'re not auth, go to your profile and authorize'),
                   ),
                   Center(
                     child: credentials.isAuthenticated(widget.username)
-                        ? monthPage(context)
+                        ? monthwidget(context)
                         : Text(
                             'You\'re not auth, go to your profile and authorize'),
                   ),
@@ -150,71 +151,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   
-  Widget monthPage(BuildContext context) {
-    return Consumer<PickMonth>(
-      builder: (context, pickmonth, child) => Center(
-        child: ListView(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(height: 15),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    IconButton(
-                        onPressed: () {
-                          // one month back
-                          if(DateTime.now().month-pickmonth.month<3){
-                            pickmonth.decreaseMonth();
-                          }else{
-                            null;
-                          }
-                        },
-                        icon: Icon(Icons.arrow_back_ios, color: Colors.blue)),
-                    Container(
-                        child: Center(
-                          child: Text(
-                              '${DateFormat('MMMM').format(DateTime(0, pickmonth.getMonth()))} ${pickmonth.getYear()}',
-                              style: TextStyle(fontSize: 18),
-                              textAlign: TextAlign.center),
-                        ),
-                        width: 200,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.blue),
-                        )),
-                    IconButton(
-                        onPressed: () {
-                          pickmonth.increaseMonth();
-                        },
-                        icon:
-                            Icon(Icons.arrow_forward_ios, color: Colors.blue)),
-                  ],
-                ),
-                
-                Column(
-                  children: [
-                   
-                    MonthChartGraph(data: FetchedData.stepsData[DateFormat('MMMM').format(DateTime(0,pickmonth.month))]!, month: pickmonth.month, category: 'Steps',),
-                    MonthChartGraph(data: FetchedData.caloriesData[DateFormat('MMMM').format(DateTime(0,pickmonth.month))]!, month: pickmonth.month, category: 'Calories',),
-                    MonthMinChartGraph(data1: FetchedData.minutesVeryActiveData[DateFormat('MMMM').format(DateTime(0,pickmonth.month))]!, data2: FetchedData.minutesFairlyActiveData[pickmonth.month]!, category1: 'Minutes Very Active', category2: 'Minutes Fairly Active'),
-                  ],
-                ),
-                /*
-                    }else{
-                      return CircularProgressIndicator();
-                    }
-                  }
-                ),
-              ),
-              */
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
+  Widget monthwidget(BuildContext context) {
+    return MonthWidget(username: widget.username) ;
   }
 
   Widget _buildForm(BuildContext context) {
@@ -270,7 +208,7 @@ class _HomePageState extends State<HomePage> {
               margin: const EdgeInsets.all(15.0),
               decoration:
                   BoxDecoration(border: Border.all(color: Colors.blueAccent)),
-              child: Text('Da aggiungere'))
+              child: Text('Da aggiungere')),
         ],
       ),
     );

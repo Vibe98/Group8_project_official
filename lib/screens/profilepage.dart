@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:fitbitter/fitbitter.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:login_flow/screens/homepage.dart';
 import 'package:login_flow/screens/loginpage.dart';
 import 'package:provider/provider.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
@@ -152,6 +153,11 @@ class _ProfilePageState extends State<ProfilePage> {
     }
 
     FetchedData.complete = true;
+    if(mounted){
+      setState(() {
+      
+    });
+    }
   } 
 
   @override
@@ -176,8 +182,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    File? imageFile = Provider.of<VerifyCredentials>(context, listen: false)
-        .Restituteuser(widget.username)['image'];
+    //File? imageFile = Provider.of<VerifyCredentials>(context, listen: false).Restituteuser(widget.username)['image'];
+    File? imageFile = null;
     print(imageFile);
 
     ena = actual == -1 ? false : true;
@@ -292,10 +298,11 @@ class _ProfilePageState extends State<ProfilePage> {
                       : ElevatedButton.styleFrom(shape: CircleBorder())),
             Consumer<VerifyCredentials>(
               builder: (context, value, child) => Card(
-                child: value.isAuthenticated(widget.username) && FetchedData.complete == true ? ElevatedButton(child: Text('You\'re authorized. Click if you want to unauthorized'), onPressed: ()async{
+                child: value.isAuthenticated(widget.username) && FetchedData.complete == true 
+                ? ElevatedButton(child: Text('You\'re authorized. Click if you want to unauthorized'), onPressed: ()async{
                 await FitbitConnector.unauthorize(
-                clientID: '238C5P',
-                clientSecret: '8b6a58492553191918d2cce62a2052c6'
+                clientID: CredentialsFitbitter.clientID,
+                clientSecret: CredentialsFitbitter.clientSecret
                 );
                 String userId = '';
                 Provider.of<VerifyCredentials>(context, listen: false).AssociateAuthorization(widget.username, userId);
@@ -309,12 +316,30 @@ class _ProfilePageState extends State<ProfilePage> {
                       onPressed: ()async{
                         String? userId = await FitbitConnector.authorize(
                         context: context,
-                        clientID: '238C5P',
-                        clientSecret: '8b6a58492553191918d2cce62a2052c6',
-                        redirectUri: 'example://fitbit/auth',
+                        clientID: CredentialsFitbitter.clientID,
+                        clientSecret: CredentialsFitbitter.clientSecret,
+                        redirectUri: CredentialsFitbitter.redirectUri,
                         callbackUrlScheme: 'example');
                         Provider.of<VerifyCredentials>(context, listen: false).AssociateAuthorization(widget.username, userId);
-                        await computeMonthData(credentials.Restituteuser(widget.username)['userID']);
+                        FutureBuilder(
+                          future:  computeMonthData(credentials.Restituteuser(widget.username)['userID']),
+                          builder:(context, snapshot){
+                            if(snapshot.hasData){
+                              FetchedData.complete = true;
+                              if(mounted){
+                                setState(() {
+                                
+                              });
+                              }
+                              Navigator.pushNamed(context, HomePage.route, arguments: {
+                                'username': widget.username
+                    
+                              });
+                              return Text('');
+                            }else{
+                              return CircularProgressIndicator();
+                            }
+                          });
                       },
                       ),
                   ],

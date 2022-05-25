@@ -27,14 +27,22 @@ class _LoginPageState extends State<LoginPage> {
     // se lo user è già loggato vado diretto alla HomePage
   super.initState();
 
-  //_checkLogin();
+  _checkLogin();
   }
 
   void _checkLogin() async{
     final sp = await SharedPreferences.getInstance();
-    if(sp.getString('username')!=null){
+    if(sp.getStringList('username')!=null){
       // significa che lo user è già loggato
-      final username = sp.getString('username');
+      final credentials = sp.getStringList('username');
+      final username = credentials![0];
+      final name = credentials[1];
+      final surname = credentials[2];
+      final password = credentials[3];
+      final email = credentials[4];
+      
+      // a questo punto devo aggiungere l'account
+      Provider.of<VerifyCredentials>(context, listen: false).addAccount(username, name, surname, password, email);
       Navigator.pushNamed(context, HomePage.route, arguments: {'username': username});
     }
   }
