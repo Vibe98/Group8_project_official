@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:login_flow/classes/profile.dart';
 
+import 'fetchedData.dart';
+
 class VerifyCredentials extends ChangeNotifier{
 
   // creo una mappa in cui associo ad ogni username la relativa password
@@ -60,7 +62,9 @@ class VerifyCredentials extends ChangeNotifier{
     }else{
       return true;
     }
-  
-
+   
   }
+
+    
+   
 }

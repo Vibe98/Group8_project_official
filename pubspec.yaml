@@ -31,6 +31,8 @@ dependencies:
     sdk: flutter
   provider: ^6.0.2
   fitbitter: ^1.1.1
+  charts_flutter: ^0.12.0
+  intl: 
 
 
   # The following adds the Cupertino Icons font to your application.

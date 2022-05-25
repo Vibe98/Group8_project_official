@@ -1,5 +1,6 @@
 import 'package:fitbitter/fitbitter.dart';
 import 'package:flutter/material.dart';
+import 'package:login_flow/classes/fetchedData.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -16,7 +17,8 @@ class DayWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<DayData>(builder: (context, daydate, child) {
+     return Consumer<DayData>(builder: (context, daydate, child) {
+      //daydate.changeDay(DateTime.now());
       return Center(
           child: Column(children: [
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -58,6 +60,7 @@ class DayWidget extends StatelessWidget {
                     onSelectionChanged:
                         (DateRangePickerSelectionChangedArgs args) {
                       final dynamic value = args.value;
+                      
                       daydate.changeDay(value);
                       daydate.computeDifference();
                     },
@@ -70,7 +73,7 @@ class DayWidget extends StatelessWidget {
                       height: 60,
                       width: 350,
                       padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 11),
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                       margin: const EdgeInsets.all(15.0),
                       decoration: BoxDecoration(
                           border: Border.all(color: Colors.blueAccent),
@@ -78,8 +81,8 @@ class DayWidget extends StatelessWidget {
                       child: Row(
                         children: [
                           Container(
-                              height: 50,
-                              width: 50,
+                              height: 40,
+                              width: 40,
                               decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border: Border.all(
@@ -88,27 +91,32 @@ class DayWidget extends StatelessWidget {
                                   )),
                               child: Icon(MdiIcons.run,
                                   size: 30, color: Colors.green)),
-                          SizedBox(width: 30),
-                          Column(
+                          SizedBox(width: 60),
+                        
+                            Column(mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('STEPS:',
+                                    style: TextStyle(
+                                        //color: Colors.blue,
+                                        fontWeight: FontWeight.w500,
+                                        fontStyle: FontStyle.normal,
+                                        fontSize: 15)),
+                                Text('DISTANCE:',
+                                    style: TextStyle(
+                                        //color: Colors.blue,
+                                        fontWeight: FontWeight.w500,
+                                        fontStyle: FontStyle.normal,
+                                        fontSize: 15)),
+                              ],
+                            ),
+                        
+                         SizedBox(width: 65),
+                          Column( mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text('STEPS:',
-                                  style: TextStyle(
-                                      //color: Colors.blue,
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 15)),
-                              Text('DISTANCE:',
-                                  style: TextStyle(
-                                      //color: Colors.blue,
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 15)),
-                            ],
-                          ),
-                         SizedBox(width: 75),
-                          Column(
-                            children: [
-                              FutureBuilder(
+                               
+                              Text(daydate.steps!.toString()),
+                              //Text('ciao'),
+                              /*FutureBuilder(
                                   future: computeDayData(
                                       "steps",
                                       daydate.difference,                                      
@@ -148,14 +156,15 @@ class DayWidget extends StatelessWidget {
                                     } else {
                                       return Text('');
                                     }
-                                  }),
+                                  }), */
+                                  
+                              
                             ],
-                          ),
+                          ), 
                         ],
                       ),
                     ),
 
-                    //SizedBox(height: 1),
                     Container(
                       height: 60,
                       width: 350,
@@ -179,15 +188,15 @@ class DayWidget extends StatelessWidget {
                               child: Icon(MdiIcons.fire,
                                   size: 30,
                                   color: Color.fromARGB(255, 223, 124, 25))),
-                          SizedBox(width: 30),
+                          SizedBox(width: 50),
                           Text('CALORIES:',
                               style: TextStyle(
                                   //color: Colors.blue,
                                   fontWeight: FontWeight.w500,
                                   fontStyle: FontStyle.normal,
                                   fontSize: 20)),
-                          SizedBox(width: 70),
-                          FutureBuilder(
+                          SizedBox(width: 55),
+                          /*FutureBuilder(
                               future: computeDayData(
                                   "activityCalories",
                                   daydate.difference,
@@ -206,7 +215,7 @@ class DayWidget extends StatelessWidget {
                                 } else {
                                   return Text('');
                                 }
-                              }),
+                              }), */
                         ],
                       ),
                     ),
@@ -222,8 +231,8 @@ class DayWidget extends StatelessWidget {
                       child: Row(
                         children: [
                           Container(
-                              height: 50,
-                              width: 50,
+                              height: 40,
+                              width: 40,
                               decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border: Border.all(
@@ -233,15 +242,15 @@ class DayWidget extends StatelessWidget {
                               child: Icon(MdiIcons.moonWaxingCrescent,
                                   size: 30,
                                   color: Color.fromARGB(255, 6, 12, 70))),
-                          SizedBox(width: 50),
+                          SizedBox(width: 65),
                           Text('SLEEP:',
                               style: TextStyle(
                                   //color: Colors.blue,
                                   fontWeight: FontWeight.w500,
                                   fontStyle: FontStyle.normal,
                                   fontSize: 20)),
-                          SizedBox(width: 75),
-                          FutureBuilder(
+                          SizedBox(width: 65),
+                          /*FutureBuilder(
                               future: computeSleepData(daydate.difference,
                                   value.credentials[username].userID),
                               builder: (context, snapshot) {
@@ -249,7 +258,7 @@ class DayWidget extends StatelessWidget {
                                   final SleepData = snapshot.data as List;
                                   print(SleepData);
                                   if (SleepData.isEmpty) {
-                                    return Text('- - -');
+                                    return Text('--:--');
                                   } else {
                                     DateTime? dt1 = SleepData[0].entryDateTime;
                                     DateTime? dt2 =
@@ -271,7 +280,7 @@ class DayWidget extends StatelessWidget {
                                 } else {
                                   return Text('');
                                 }
-                              }),
+                              }), */
                         ],
                       ),
                     ),
@@ -287,18 +296,18 @@ class DayWidget extends StatelessWidget {
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                       child: Row(children: [
                         Container(
-                            height: 50,
-                            width: 50,
+                            height: 40,
+                            width: 40,
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                   color: Color.fromARGB(255, 216, 130, 178),
                                   width: 2,
                                 )),
-                            child: Icon(MdiIcons.human,
+                            child: Icon(MdiIcons.armFlex ,
                                 size: 30, color: Color.fromARGB(255, 113, 13, 100))),
                         SizedBox(width: 20),
-                        Column(
+                        Column(mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text('MINUTES VERY ACTIVE:',
                                 style: TextStyle(
@@ -315,7 +324,7 @@ class DayWidget extends StatelessWidget {
                           ],
                         ),
                         SizedBox(width: 25),
-                        Column(
+                        /*Column( mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             FutureBuilder(
                                 future: computeDayData(
@@ -360,7 +369,7 @@ class DayWidget extends StatelessWidget {
                                   }
                                 }),
                           ],
-                        ), // column
+                        ),  */
                       ]), // row
                     ), // container
                   ])

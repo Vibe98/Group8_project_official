@@ -2,10 +2,12 @@ import 'package:fitbitter/fitbitter.dart';
 import 'package:flutter/material.dart';
 import 'package:login_flow/screens/loginpage.dart';
 import 'package:login_flow/screens/profilepage.dart';
+
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:login_flow/classes/DayDate.dart';
+import 'package:login_flow/classes/fetchedData.dart';
 import 'package:login_flow/widgets/DayWidget.dart';
 
 import '../classes/verify_cred.dart';
@@ -109,7 +111,7 @@ class _HomePageState extends State<HomePage> {
               return TabBarView(
                 children: <Widget>[
                   Center(
-                    child: credentials.isAuthenticated(widget.username)
+                    child: (credentials.isAuthenticated(widget.username))
                         ? daywidget(context)
                         : Text('You\'re not auth'),
                   ),

@@ -2,12 +2,19 @@ import 'dart:io';
 
 import 'package:fitbitter/fitbitter.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:login_flow/screens/loginpage.dart';
 import 'package:provider/provider.dart';
 
 
 import '../classes/athuorization.dart';
 import '../classes/verify_cred.dart';
+import '../classes/credentialsFitbitter.dart';
+import '../classes/myMonthData.dart';
+import '../classes/fetchedData.dart';
+
+import 'package:charts_flutter/flutter.dart' as charts;
+
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key, required this.username, required this.keypassed})
@@ -32,6 +39,125 @@ class _ProfilePageState extends State<ProfilePage> {
   TextEditingController passwordController = TextEditingController();
 
   bool ena = false;
+
+  Future<void> computeMonthData(String userID) async {
+
+      
+    //steps
+    FitbitActivityTimeseriesDataManager
+        fitbitStepsDataManager =
+        FitbitActivityTimeseriesDataManager(
+      clientID: CredentialsFitbitter.clientID,
+      clientSecret: CredentialsFitbitter.clientSecret,
+      type: "steps",
+    );
+
+    // prendo i dati dell'ultimo anno
+    for(var i=0; i<4; i++) {
+      FitbitActivityTimeseriesAPIURL fitbitStepsApiUrl =
+          FitbitActivityTimeseriesAPIURL.monthWithResource(
+        baseDate: DateTime(DateTime.now().year, DateTime.now().month+1-i, 0),
+        userID: userID,
+        resource: "steps"
+      );
+      final data =
+          await fitbitStepsDataManager.fetch(fitbitStepsApiUrl)
+              as List<FitbitActivityTimeseriesData>;
+      List<myMonthData> stepsValue = [];
+      for(var k=0;k<data.length; k++){
+        myMonthData addStepsData = myMonthData(day: '${data[k].dateOfMonitoring!.day}', month: '${data[k].dateOfMonitoring!.month}', value: data[k].value, barColor: charts.Color(r:0,g:100,b:0));
+        stepsValue.add(addStepsData);
+      }
+      FetchedData.stepsData[DateFormat('MMMM').format(DateTime(0,DateTime.now().month-i))] = stepsValue;
+    }
+
+    //calories
+    FitbitActivityTimeseriesDataManager
+        fitbitCaloriesDataManager =
+        FitbitActivityTimeseriesDataManager(
+      clientID: CredentialsFitbitter.clientID,
+      clientSecret: CredentialsFitbitter.clientSecret,
+      type: "calories",
+    );
+
+    // prendo i dati dell'ultimo anno
+    for(var i=0; i<4; i++) {
+      FitbitActivityTimeseriesAPIURL fitbitCaloriesApiUrl =
+          FitbitActivityTimeseriesAPIURL.monthWithResource(
+        baseDate: DateTime(DateTime.now().year, DateTime.now().month+1-i, 0),
+        userID: userID,
+        resource: "calories"
+      );
+      final data =
+          await fitbitCaloriesDataManager.fetch(fitbitCaloriesApiUrl)
+              as List<FitbitActivityTimeseriesData>;
+      List<myMonthData> caloriesValue = [];
+      for(var k=0;k<data.length; k++){
+        myMonthData addCaloriesData = myMonthData(day: '${data[k].dateOfMonitoring!.day}', month: '${data[k].dateOfMonitoring!.month}', value: data[k].value, barColor: charts.Color(r:0,g:0,b:100));
+        caloriesValue.add(addCaloriesData);
+      }
+      FetchedData.caloriesData[DateFormat('MMMM').format(DateTime(0,DateTime.now().month-i))] = caloriesValue;
+    }
+
+    //minutes fairly active
+    FitbitActivityTimeseriesDataManager
+        fitbitFActiveDataManager =
+        FitbitActivityTimeseriesDataManager(
+      clientID: CredentialsFitbitter.clientID,
+      clientSecret: CredentialsFitbitter.clientSecret,
+      type: "minutesFairlyActive",
+    );
+
+    // prendo i dati dell'ultimo anno
+    for(var i=0; i<4; i++) {
+      FitbitActivityTimeseriesAPIURL fitbitFActiveApiUrl =
+          FitbitActivityTimeseriesAPIURL.monthWithResource(
+        baseDate: DateTime(DateTime.now().year, DateTime.now().month+1-i, 0),
+        userID: userID,
+        resource: "minutesFairlyActive"
+      );
+      final data =
+          await fitbitFActiveDataManager.fetch(fitbitFActiveApiUrl)
+              as List<FitbitActivityTimeseriesData>;
+      List<myMonthData> FActiveValue = [];
+      for(var k=0;k<data.length; k++){
+        myMonthData addFActiveData = myMonthData(day: '${data[k].dateOfMonitoring!.day}', month: '${data[k].dateOfMonitoring!.month}', value: data[k].value, barColor: charts.Color(r:100,g:0,b:0));
+        FActiveValue.add(addFActiveData);
+      }
+      FetchedData.minutesFairlyActiveData[DateFormat('MMMM').format(DateTime(0,DateTime.now().month-i))] = FActiveValue;
+    }
+
+    //minutes very active
+    FitbitActivityTimeseriesDataManager
+        fitbitVActiveDataManager =
+        FitbitActivityTimeseriesDataManager(
+      clientID: CredentialsFitbitter.clientID,
+      clientSecret: CredentialsFitbitter.clientSecret,
+      type: "minutesVeryActive",
+    );
+
+    // prendo i dati dell'ultimo anno
+    for(var i=0; i<4; i++) {
+      FitbitActivityTimeseriesAPIURL fitbitVActiveApiUrl =
+          FitbitActivityTimeseriesAPIURL.monthWithResource(
+        baseDate: DateTime(DateTime.now().year, DateTime.now().month+1-i, 0),
+        userID: userID,
+        resource: "minutesVeryActive"
+      );
+      final data =
+          await fitbitVActiveDataManager.fetch(fitbitVActiveApiUrl)
+              as List<FitbitActivityTimeseriesData>;
+      List<myMonthData> VActiveValue = [];
+      for(var k=0;k<data.length; k++){
+        myMonthData addVActiveData = myMonthData(day: '${data[k].dateOfMonitoring!.day}', month: '${data[k].dateOfMonitoring!.month}', value: data[k].value, barColor: charts.Color(r:255,g:127,b:80));
+        VActiveValue.add(addVActiveData);
+      }
+      FetchedData.minutesVeryActiveData[DateFormat('MMMM').format(DateTime(0,DateTime.now().month-i))] = VActiveValue;
+    }
+
+    
+   
+  } 
 
   @override
   void initState() {
@@ -170,8 +296,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         )
                       : ElevatedButton.styleFrom(shape: CircleBorder())),
             Consumer<VerifyCredentials>(
-              builder: (context, value, child) => Card(
-                child: value.isAuthenticated(widget.username) ? ElevatedButton(child: Text('You\'re authorized. Click if you want to unauthorized'), onPressed: ()async{
+              builder: (context, credentials, child) => Card(
+                child: credentials.isAuthenticated(widget.username) ? ElevatedButton(child: Text('You\'re authorized. Click if you want to unauthorized'), onPressed: ()async{
                 await FitbitConnector.unauthorize(
                 clientID: '238C5P',
                 clientSecret: '8b6a58492553191918d2cce62a2052c6'
@@ -189,6 +315,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   redirectUri: 'example://fitbit/auth',
                   callbackUrlScheme: 'example');
                   Provider.of<VerifyCredentials>(context, listen: false).AssociateAuthorization(widget.username, userId);
+                  await computeMonthData(credentials.Restituteuser(widget.username)['userID']);
+                  
                  
                 },
                 ),)
