@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:fitbitter/fitbitter.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:login_flow/classes/DayDate.dart';
 import 'package:login_flow/screens/homepage.dart';
 import 'package:login_flow/screens/loginpage.dart';
 import 'package:provider/provider.dart';
@@ -159,11 +160,12 @@ class _ProfilePageState extends State<ProfilePage> {
     }
 
     FetchedData.complete = true;
-    if(mounted){
+    Provider.of<VerifyCredentials>(context, listen: false).hascompleted(widget.username);
+    
       setState(() {
       
     });
-    }
+    
   } 
 
   @override
@@ -343,11 +345,12 @@ class _ProfilePageState extends State<ProfilePage> {
                           builder:(context, snapshot){
                             if(snapshot.hasData){
                               FetchedData.complete = true;
-                              if(mounted){
+                              
+                              
                                 setState(() {
                                 
                               });
-                              }
+                              
                               Navigator.pushNamed(context, HomePage.route, arguments: {
                                 'username': widget.username
                     
