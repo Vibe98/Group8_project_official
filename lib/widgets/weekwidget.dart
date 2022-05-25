@@ -44,6 +44,7 @@ class WeekWidget extends StatelessWidget {
                   child: SfDateRangePicker(
                     controller: _controller,
                     view: DateRangePickerView.month,
+                    
                     selectionMode: DateRangePickerSelectionMode.range,
                     onSelectionChanged:
                         (DateRangePickerSelectionChangedArgs args) {
@@ -75,100 +76,19 @@ class WeekWidget extends StatelessWidget {
                         enableSwipeSelection: false),
                   ),
                 ),
+                
+                
         ]),
-        // se difference è diverso da 0 allora visualizzare i dati relativi alla settimana scelta.
-
-        Consumer<VerifyCredentials>(builder: ((context, value, child) => 
-          FutureBuilder(
-                  future: _fetchweekdata(
-                      weekdate.dateend,
-                      value.credentials[username].userID),
-                  builder: (context, snapshot) {
-                    switch (snapshot.connectionState){
-
-                      case ConnectionState.none:
-                        return CircularProgressIndicator();
-                      case ConnectionState.waiting:
-                        if(weekdate.calendar) {
-                           if (snapshot.hasData) {
-                          final fitbitmap = snapshot.data as Map<String, dynamic>;
-                          final fitbitstep = fitbitmap['steps'] as List<FitbitActivityTimeseriesData>;
-                          // steps
-                          List<WeekStepChart> liststepcharts = [];
-                          for (int i=0; i<fitbitstep.length; i++){
-                            liststepcharts.add( WeekStepChart((fitbitstep[i].dateOfMonitoring), i+1, fitbitstep[i].value, ColorUtil.fromDartColor(Colors.green)));
-                          }
-
-                          // calories
-                          final fitbitcalo = fitbitmap['calories'] as List<FitbitActivityTimeseriesData>;
-                          print(fitbitcalo);
-                          List<WeekStepChart> listcaloriescharts = [];
-                          for (int i=0; i<fitbitcalo.length; i++){
-                            listcaloriescharts.add( WeekStepChart((fitbitcalo[i].dateOfMonitoring), i+1, fitbitcalo[i].value, ColorUtil.fromDartColor(Colors.green)));
-                          }
-                          return Column(children: [
+        Consumer<WeekData>(builder:((context, value, child) =>
+                 Column(children: [
                             WeekStepChartGraph(
-                            data: liststepcharts,
-                            category: 'steps'),
-                            WeekStepChartGraph(
-                              data: listcaloriescharts,
-                              category: 'calories',)]); 
-                        } else {
-                          List<WeekStepChart> listcharts = [];
-                          return CircularProgressIndicator();
-                        }} else {
-                             return CircularProgressIndicator();};
-                      case ConnectionState.active:
-                      case ConnectionState.done :
-                        if (snapshot.hasData) {
-                          final fitbitmap = snapshot.data as Map<String, dynamic>;
-                          final fitbitstep = fitbitmap['steps'] as List<FitbitActivityTimeseriesData>;
-                          
-                          // steps
-                          List<WeekStepChart> liststepcharts = [];
-                          for (int i=0; i<fitbitstep.length; i++){
-                            liststepcharts.add( WeekStepChart((fitbitstep[i].dateOfMonitoring), i+1, fitbitstep[i].value, ColorUtil.fromDartColor(Colors.green)));
-                          }
-
-                          // calories
-                          final fitbitcalo = fitbitmap['calories'] as List<FitbitActivityTimeseriesData>;
-                          
-                          List<WeekStepChart> listcaloriescharts = [];
-                          for (int i=0; i<fitbitcalo.length; i++){
-                            listcaloriescharts.add( WeekStepChart((fitbitcalo[i].dateOfMonitoring), i+1, fitbitcalo[i].value, ColorUtil.fromDartColor(Colors.green)));
-                          }
-
-                          // minutes fairly active
-                          final fitbitminfai = fitbitmap['minfai'] as List<FitbitActivityTimeseriesData>;
-                          List<WeekStepChart> listminfai = [];
-                          for (int i=0; i<fitbitcalo.length; i++){
-                            listminfai.add( WeekStepChart((fitbitminfai[i].dateOfMonitoring), i+1, fitbitminfai[i].value, ColorUtil.fromDartColor(Colors.orange)));
-                          }
-
-                          // // minutes very active
-                          final fitbitminver = fitbitmap['minver'] as List<FitbitActivityTimeseriesData>;
-                          List<WeekStepChart> listminve = [];
-                          for (int i=0; i<fitbitcalo.length; i++){
-                            listminve.add( WeekStepChart((fitbitminver[i].dateOfMonitoring), i+1, fitbitminver[i].value, ColorUtil.fromDartColor(Colors.deepOrange)));
-                          }
-                          
-                          return Column(children: [
-                            WeekStepChartGraph(
-                            data: liststepcharts,
+                            data: value.liststepcharts,
                             category: 'STEPS'),
                             WeekStepChartGraph(
-                            data: listcaloriescharts,
-                            category: 'CALORIES',),
-                            WeekMinChartGraph(data1: listminve, category1: 'Minutes very active', data2: listminfai, category2: 'Minutes fairly active')
-                            ]);
-                          
-                           
-                        } else {
-                          List<WeekStepChart> listcharts = [];
-                          return CircularProgressIndicator();
-                        }}
-                  }
-                  )))
+                            data: value.listcaloriescharts,
+                            category: 'CALORIES'),])))
+        
+
                
            
       ]),
@@ -177,7 +97,8 @@ class WeekWidget extends StatelessWidget {
   }
 }
 
-Future<Map<String, dynamic>>  _fetchweekdata(weekdata, userID)async{
+/*
+Future<Map<String, dynamic>>  _fetchweekdata(startdate, enddate, userID)async{
   // steps
   FitbitActivityTimeseriesDataManager fitbitActivityTimeseriesDataManagersteps = FitbitActivityTimeseriesDataManager(
     clientID: '238C5P',
@@ -185,7 +106,7 @@ Future<Map<String, dynamic>>  _fetchweekdata(weekdata, userID)async{
     type: 'steps',
   );
   FitbitActivityTimeseriesAPIURL fitbitActivityApiUrlsteps = FitbitActivityTimeseriesAPIURL.weekWithResource(
-    baseDate: weekdata,
+    baseDate: enddate,
     userID: userID,
     resource: 'steps',
   );
@@ -200,7 +121,7 @@ Future<Map<String, dynamic>>  _fetchweekdata(weekdata, userID)async{
     type: 'activityCalories',
   );
   FitbitActivityTimeseriesAPIURL fitbitActivityApiUrlcalories = FitbitActivityTimeseriesAPIURL.weekWithResource(
-    baseDate: weekdata,
+    baseDate: enddate,
     userID: userID,
     resource: 'activityCalories',
   );
@@ -216,7 +137,7 @@ Future<Map<String, dynamic>>  _fetchweekdata(weekdata, userID)async{
     type: 'minutesFairlyActive',
   );
   FitbitActivityTimeseriesAPIURL fitbitActivityApiUrlmin1 = FitbitActivityTimeseriesAPIURL.weekWithResource(
-    baseDate: weekdata,
+    baseDate: enddate,
     userID: userID,
     resource: 'minutesFairlyActive',
   );
@@ -231,17 +152,33 @@ Future<Map<String, dynamic>>  _fetchweekdata(weekdata, userID)async{
     type: 'minutesVeryActive',
   );
   FitbitActivityTimeseriesAPIURL fitbitActivityApiUrlmin2 = FitbitActivityTimeseriesAPIURL.weekWithResource(
-    baseDate: weekdata,
+    baseDate: enddate,
     userID: userID,
     resource: 'minutesVeryActive',
   );
   final fitbitmin2 = await fitbitActivityTimeseriesDataManagermin2
       .fetch(fitbitActivityApiUrlmin2) as List<FitbitActivityTimeseriesData>;
   
+  // sleep
+   FitbitSleepDataManager fitbitSleepDataManager = FitbitSleepDataManager(
+        clientID: '238C5P',
+        clientSecret: '8b6a58492553191918d2cce62a2052c6',
+    );
+  
+  FitbitSleepAPIURL fitbitSleepAPIURL = FitbitSleepAPIURL.withUserIDAndDateRange(
+                                    startDate: startdate,
+                                    endDate: enddate,
+                                    userID: userID,
+                                  );
+
+  final fitbitsleep = await fitbitSleepDataManager.fetch(fitbitSleepAPIURL) as Map<String, FitbitSleepData>;
+
+  print(fitbitsleep);
   Map<String, dynamic> fitmapdata = {};
   fitmapdata['steps'] = fitbitsteps;
   fitmapdata['calories'] = fitbitcalories;
   fitmapdata['minfai'] = fitbitmin1;
   fitmapdata['minver'] = fitbitmin2;
+  fitmapdata['sleep'] = fitbitsleep;
   return fitmapdata;
-}
+}*/

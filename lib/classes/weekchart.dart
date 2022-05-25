@@ -4,12 +4,13 @@ import 'dart:math';
 import 'package:charts_flutter/flutter.dart';
 import 'package:charts_flutter/src/text_style.dart' as style;
 import 'package:charts_flutter/src/text_element.dart' as element;
+import 'package:flutter/cupertino.dart';
 
 class WeekStepChart {
   WeekStepChart(this.x, this.indexe, this.y, this.barColor);
   final DateTime? x;
   final int indexe;
-  final double? y;
+  final num? y;
   final Color barColor;
 }
 
@@ -41,36 +42,125 @@ class WeekStepChartGraph extends StatelessWidget {
           padding: const EdgeInsets.all(2.0),
           child: Column(
             children: <Widget>[
-              Text(
-                category,
-                style: Theme.of(context).textTheme.bodyText2,
-              ),
+              Container(
+                  alignment: Alignment.center,
+                  child: Row(
+                    children: [
+                      Text(
+                        category,
+                        style: Theme.of(context).textTheme.bodyText2,
+                        textAlign: TextAlign.center,
+                      ),
+                      Icon(Icons.directions_walk)
+                    ],
+                  ),
+                  color: Colors.green),
               Expanded(
-                child: BarChart(series, 
-                animate: true,
-                behaviors: [
-                  SelectNearest(eventTrigger: SelectionTrigger.tapAndDrag),
-                  LinePointHighlighter(
-                    symbolRenderer: CustomCircleSymbolRenderer2(),
-                  )
-                ],
-                selectionModels: [
-                  SelectionModelConfig(changedListener: (SelectionModel model) {
-                    if (model.hasDatumSelection) {
-                      selectedDatum = [];
-                      model.selectedDatum.forEach((SeriesDatum datumPair) {
-                        selectedDatum.add({
-                          'color': datumPair.series.colorFn!(0),
-                          'text': '${datumPair.datum.y}'
+                child: BarChart(
+                  series,
+                  animate: true,
+                  behaviors: [
+                    SelectNearest(eventTrigger: SelectionTrigger.tapAndDrag),
+                    LinePointHighlighter(
+                      symbolRenderer: CustomCircleSymbolRenderer2(),
+                    )
+                  ],
+                  selectionModels: [
+                    SelectionModelConfig(
+                        changedListener: (SelectionModel model) {
+                      if (model.hasDatumSelection) {
+                        selectedDatum = [];
+                        model.selectedDatum.forEach((SeriesDatum datumPair) {
+                          selectedDatum.add({
+                            'color': datumPair.series.colorFn!(0),
+                            'text': '${datumPair.datum.y}'
+                          });
                         });
-                      });
-                      print(selectedDatum);
-                    } else {
-                      selectedDatum = [];
-                    }
-                  })
-                ],),
-                
+                        print(selectedDatum);
+                      } else {
+                        selectedDatum = [];
+                      }
+                    })
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class WeekCaloriesChartGraph extends StatelessWidget {
+  final List<WeekStepChart> data;
+  final String category;
+
+  WeekCaloriesChartGraph({required this.data, required this.category});
+
+  @override
+  static List selectedDatum = [];
+  Widget build(BuildContext context) {
+    List<Series<WeekStepChart, String>> series = [
+      Series(
+        id: category,
+        data: data,
+        domainFn: (WeekStepChart series, _) =>
+            '${series.x!.day.toString()}/${series.x!.month.toString()}',
+        measureFn: (WeekStepChart series, _) => series.y,
+        colorFn: (WeekStepChart series, _) => series.barColor,
+      )
+    ];
+
+    return Container(
+      height: 200,
+      padding: EdgeInsets.all(10),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(2.0),
+          child: Column(
+            children: <Widget>[
+              Container(
+                  alignment: Alignment.center,
+                  child: Row(
+                    children: [
+                      Text(
+                        category,
+                        style: Theme.of(context).textTheme.bodyText2,
+                        textAlign: TextAlign.center,
+                      ),
+                      Icon(CupertinoIcons.flame)
+                    ],
+                  ),
+                  color: Colors.lightGreen),
+              Expanded(
+                child: BarChart(
+                  series,
+                  animate: true,
+                  behaviors: [
+                    SelectNearest(eventTrigger: SelectionTrigger.tapAndDrag),
+                    LinePointHighlighter(
+                      symbolRenderer: CustomCircleSymbolRenderer3(),
+                    )
+                  ],
+                  selectionModels: [
+                    SelectionModelConfig(
+                        changedListener: (SelectionModel model) {
+                      if (model.hasDatumSelection) {
+                        selectedDatum = [];
+                        model.selectedDatum.forEach((SeriesDatum datumPair) {
+                          selectedDatum.add({
+                            'color': datumPair.series.colorFn!(0),
+                            'text': '${datumPair.datum.y}'
+                          });
+                        });
+                        print(selectedDatum);
+                      } else {
+                        selectedDatum = [];
+                      }
+                    })
+                  ],
+                ),
               )
             ],
           ),
@@ -121,10 +211,19 @@ class WeekMinChartGraph extends StatelessWidget {
           padding: const EdgeInsets.all(2.0),
           child: Column(
             children: <Widget>[
-              Text(
-                'Minutes of activity',
-                style: Theme.of(context).textTheme.bodyText2,
-              ),
+              Container(
+                  alignment: Alignment.center,
+                  child: Row(
+                    children: [
+                      Text(
+                        'MINUTES OF ACTIVITY',
+                        style: Theme.of(context).textTheme.bodyText2,
+                        textAlign: TextAlign.center,
+                      ),
+                      Icon(CupertinoIcons.time)
+                    ],
+                  ),
+                  color: Colors.orange),
               Expanded(
                   child: BarChart(
                 series,
@@ -299,3 +398,58 @@ class CustomCircleSymbolRenderer2 extends CircleSymbolRenderer {
   }
 }
 
+class CustomCircleSymbolRenderer3 extends CircleSymbolRenderer {
+  CustomCircleSymbolRenderer3(
+      {this.marginBottom = 8, this.padding = const EdgeInsets.all(8)});
+
+  final double marginBottom;
+  final EdgeInsets padding;
+
+  @override
+  void paint(ChartCanvas canvas, Rectangle<num> bounds,
+      {List<int>? dashPattern,
+      Color? fillColor,
+      FillPatternType? fillPattern,
+      Color? strokeColor,
+      double? strokeWidthPx}) {
+    super.paint(canvas, bounds,
+        dashPattern: dashPattern,
+        fillColor: fillColor,
+        fillPattern: fillPattern,
+        strokeColor: strokeColor,
+        strokeWidthPx: strokeWidthPx);
+
+    style.TextStyle textStyle = style.TextStyle();
+    textStyle.color = Color.black;
+    textStyle.fontSize = 15;
+
+    List tooltips = WeekCaloriesChartGraph.selectedDatum;
+    // String unit = _DashboardState.unit;
+    if (tooltips != null && tooltips.length > 0) {
+      num tipTextLen = (tooltips[0]['text']).length;
+      num rectWidth = bounds.width + tipTextLen * 12;
+      num rectHeight = bounds.height + 20 + (tooltips.length - 1) * 18;
+      num left = bounds.left - rectWidth;
+
+      canvas.drawRect(
+        Rectangle(left, 0, rectWidth, rectHeight),
+        fill: Color.fromHex(code: '#666666'),
+      );
+
+      for (int i = 0; i < tooltips.length; i++) {
+        canvas.drawPoint(
+          point: Point(left.round() + 8, (i + 1) * 15),
+          radius: 3,
+          fill: tooltips[i]['color'],
+          stroke: Color.white,
+          strokeWidthPx: 1,
+        );
+        style.TextStyle textStyle = style.TextStyle();
+        textStyle.color = Color.white;
+        textStyle.fontSize = 13;
+        canvas.drawText(element.TextElement(tooltips[i]['text']),
+            left.round() + 15, i * 15 + 8);
+      }
+    }
+  }
+}
