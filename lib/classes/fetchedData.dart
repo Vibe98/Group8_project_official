@@ -1,8 +1,8 @@
-import 'package:login_flow/classes/mymonthdata.dart';
-
+import 'myMonthData.dart';
 
 class FetchedData{
 
+  static bool complete=false;
   static Map<String, List<myMonthData>> stepsData = {}; 
   static Map<String, List<myMonthData>> caloriesData = {};
   static Map<String, List<myMonthData>> minutesFairlyActiveData = {};

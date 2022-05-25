@@ -4,6 +4,7 @@ import 'package:login_flow/screens/forgotpassword.dart';
 import 'package:login_flow/screens/homepage.dart';
 import 'package:login_flow/screens/signin.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -20,6 +21,31 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  @override 
+  void initState() {
+    // se lo user è già loggato vado diretto alla HomePage
+  super.initState();
+
+  _checkLogin();
+  }
+
+  void _checkLogin() async{
+    final sp = await SharedPreferences.getInstance();
+    if(sp.getStringList('username')!=null){
+      // significa che lo user è già loggato
+      final credentials = sp.getStringList('username');
+      final username = credentials![0];
+      final name = credentials[1];
+      final surname = credentials[2];
+      final password = credentials[3];
+      final email = credentials[4];
+      
+      // a questo punto devo aggiungere l'account
+      Provider.of<VerifyCredentials>(context, listen: false).addAccount(username, name, surname, password, email);
+      Navigator.pushNamed(context, HomePage.route, arguments: {'username': username});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                         }
                         return null;
                       },
+                      textInputAction: TextInputAction.next,
                       controller: nameController,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
@@ -103,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                       // padding: EdgeInsets.fromLTRB(10,0,10,0),
                       child: ElevatedButton(
                           child: const Text('Login'),
-                          onPressed: () {
+                          onPressed: () async {
                             if (_formKey.currentState!.validate()){  
                               print(nameController.text);
                               print(verifyCred.credentials);
@@ -123,9 +150,11 @@ class _LoginPageState extends State<LoginPage> {
                                 backgroundColor: Colors.red,
                               ));
                             } else {
+                              
                               Navigator.pushNamed(context, HomePage.route, arguments: {
                                 'username': nameController.text
                               });
+
                             }
                           }}),
                     ),
@@ -144,6 +173,17 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ],
                   ),
+                  
+                  ElevatedButton(onPressed: () async {
+                    final sp = await SharedPreferences.getInstance();
+                    if(sp.getString('username')!=null){
+                      //print(Provider.of<VerifyCredentials>(context, listen: false).Restituteuser(sp.getString('username')!)['email']);
+                      sp.remove('username');
+                      print(sp.getString('username'));
+                    }else{
+                      print('ok');
+                    }
+                  }, child: Text('prova')),
                 ],
               ),
             ),

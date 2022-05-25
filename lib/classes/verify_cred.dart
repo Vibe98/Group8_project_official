@@ -3,15 +3,17 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:login_flow/classes/profile.dart';
 
+import 'fetchedData.dart';
+
 class VerifyCredentials extends ChangeNotifier{
 
   // creo una mappa in cui associo ad ogni username la relativa password
   Map credentials = {};
 
   // aggiungo un account
-  void addAccount(String username, String name, String surname, String password, String email, File? image){
+  void addAccount(String username, String name, String surname, String password, String email){
     
-    Profile user = Profile(name, surname, username, password, email, image);
+    Profile user = Profile(name, surname, username, password, email);
     credentials[username] = user;
     print(user.email);
     notifyListeners();
@@ -36,8 +38,9 @@ class VerifyCredentials extends ChangeNotifier{
     map['username'] = user.username;
     map['email'] = user.email;
     map['password'] = user.password;
-    map['image'] = user.image;
+    map['userID'] = '7ML2XV';
     return map;
+    
   }
 
   void AssociateAuthorization(String username, String? userId){
@@ -57,7 +60,9 @@ class VerifyCredentials extends ChangeNotifier{
     }else{
       return true;
     }
-  
-
+   
   }
+
+    
+   
 }

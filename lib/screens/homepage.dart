@@ -1,18 +1,26 @@
+import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:fitbitter/fitbitter.dart';
 import 'package:flutter/material.dart';
-import 'package:login_flow/classes/weekchart.dart';
-import 'package:login_flow/classes/weekdata.dart';
+import 'package:intl/intl.dart';
+import 'package:login_flow/widgets/weekwidget.dart';
+import 'package:login_flow/classes/credentialsFitbitter.dart';
 import 'package:login_flow/screens/loginpage.dart';
 import 'package:login_flow/screens/profilepage.dart';
-import 'package:login_flow/widgets/weekwidget.dart';
+import 'package:login_flow/utils/monthWidget.dart';
 import 'package:provider/provider.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
-
-
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:login_flow/classes/DayDate.dart';
+import 'package:login_flow/classes/fetchedData.dart';
+import 'package:login_flow/widgets/DayWidget.dart';
+import 'dart:ui';
 
+import '../classes/changeMonth.dart';
+import '../classes/monthChartGraph.dart';
+import '../classes/myMonthData.dart';
 import '../classes/verify_cred.dart';
+import '../classes/fetchedData.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.username}) : super(key: key);
@@ -26,6 +34,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   // This widget is the root of your application.
+  TextEditingController monthController = TextEditingController();
 
   Future<void> _showChoiceDialog(BuildContext context) {
     return showDialog(
@@ -38,8 +47,15 @@ class _HomePageState extends State<HomePage> {
               children: <Widget>[
                 GestureDetector(
                     child: Text('Yes'),
-                    onTap: () {
-                      Navigator.pushNamed(context, LoginPage.route);
+                    onTap: () async {
+                      final sp = await SharedPreferences.getInstance();
+                      
+                      //rimuovo le credenziali salvate
+                      sp.remove('username');
+                      setState(() {
+                        
+                      });
+                      Navigator.pushReplacementNamed(context, LoginPage.route);
                     }),
                 Padding(padding: EdgeInsets.all(8)),
                 GestureDetector(
@@ -53,9 +69,7 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
-  int calendar = -1;
-  DateTime selected_date = DateTime.now();
-  int difference = 0;
+
   final DateRangePickerController _controller = DateRangePickerController();
   DateTime dat1 = DateTime.now();
   DateTime dat2 = DateTime.now();
@@ -74,10 +88,10 @@ class _HomePageState extends State<HomePage> {
                   text: 'Day',
                 ),
                 Tab(
-                  text: 'week',
+                  text: 'Week',
                 ),
                 Tab(
-                  text: 'month',
+                  text: 'Month',
                 ),
               ],
             ),
@@ -118,8 +132,8 @@ class _HomePageState extends State<HomePage> {
               return TabBarView(
                 children: <Widget>[
                   Center(
-                    child: credentials.isAuthenticated(widget.username)
-                        ? _buildForm(context)
+                    child: (credentials.isAuthenticated(widget.username))
+                        ? daywidget(context)
                         : Text('You\'re not auth'),
                   ),
                   Center(
@@ -129,8 +143,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Center(
                     child: credentials.isAuthenticated(widget.username)
-                        ? Text('Month Data')
-                        : Text('You\'re not auth'),
+                        ? monthwidget(context)
+                        : Text(
+                            'You\'re not auth, go to your profile and authorize'),
                   ),
                 ],
               );
@@ -139,70 +154,24 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildForm(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            ElevatedButton(
-                onPressed: () {
-                  if (calendar == -1) {
-                    setState(() {
-                      calendar = 0;
-                    });
-                  } else {
-                    setState(() {
-                      calendar = -1;
-                    });
-                  }
-                },
-                child: Icon(Icons.calendar_month)),
-            SizedBox(width: 50),
-            calendar == -1
-                ? Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 15, vertical: 65),
-                    height: 150,
-                    width: 150,
-                    child: Text(
-                        ' ${selected_date.day.toString()} - ${selected_date.month.toString()} - ${selected_date.year.toString()}',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15)))
-                : Container(
-                    height: 150,
-                    width: 150,
-                    child: SfDateRangePicker(
-                      view: DateRangePickerView.month,
-                      minDate: DateTime(2022, 04, 01),
-                      maxDate: DateTime.now(),
-                      onSelectionChanged:
-                          (DateRangePickerSelectionChangedArgs args) {
-                        final dynamic value = args.value;
-                        setState(() {
-                          selected_date = value;
-                          difference = DateTime.now().difference(value).inDays;
-                        });
-                      },
-                    )),
-          ]),
-          Container(
-              height: 70,
-              width: 500,
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-              margin: const EdgeInsets.all(15.0),
-              decoration:
-                  BoxDecoration(border: Border.all(color: Colors.blueAccent)),
-              child: Text('Da aggiungere'))
-        ],
-      ),
-    );
-  }
-
-  Widget weekwidget(BuildContext context) {
+Widget daywidget(BuildContext context) {
     return SingleChildScrollView(
-      child: WeekWidget(username: widget.username,)) ;
+      child: DayWidget(username: widget.username,)) ;
+  }  
+  
+  Widget monthwidget(BuildContext context) {
+    return MonthWidget(username: widget.username) ;
   }
+Widget weekwidget(BuildContext context){
+  return SingleChildScrollView(
+    child: WeekWidget(username: widget.username)
+  );
 }
+
+  
+}
+
+
 
 class CustomListTile extends StatelessWidget {
   final IconData icon;

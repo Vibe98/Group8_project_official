@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:login_flow/classes/verify_cred.dart';
 import 'package:login_flow/screens/homepage.dart';
+import 'package:login_flow/screens/loginpage.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -138,6 +140,7 @@ class _SignInState extends State<SignIn> {
                         return null;
                       }
                     },
+                    textInputAction: TextInputAction.next,
                     controller: nameController,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -157,6 +160,7 @@ class _SignInState extends State<SignIn> {
                         return null;
                       }
                     },
+                    textInputAction: TextInputAction.next,
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(), labelText: 'Surname *'),
                   ),
@@ -166,6 +170,7 @@ class _SignInState extends State<SignIn> {
                       const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                   child: TextFormField(
                     controller: usernameController,
+                    textInputAction: TextInputAction.next,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Username *',
@@ -180,9 +185,10 @@ class _SignInState extends State<SignIn> {
                 ),
                 Container(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                      const EdgeInsets.symmetric(horizontal: 15),
                   child: TextFormField(
                     controller: emailController,
+                    textInputAction: TextInputAction.next,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'E-mail *',
@@ -199,7 +205,7 @@ class _SignInState extends State<SignIn> {
                 ),
                 //const SizedBox(height: 20),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                   child: TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -213,6 +219,7 @@ class _SignInState extends State<SignIn> {
                         return null;
                       }
                     },
+                    textInputAction: TextInputAction.next,
                     controller: passwordController,
                     obscureText: true,
                     decoration: const InputDecoration(
@@ -221,7 +228,7 @@ class _SignInState extends State<SignIn> {
                 ),
                 Container(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                      const EdgeInsets.fromLTRB(15, 0, 15, 15),
                   child: TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -230,6 +237,7 @@ class _SignInState extends State<SignIn> {
                         return null;
                       }
                     },
+                    textInputAction: TextInputAction.next,
                     controller: confirmpasswordController,
                     obscureText: true,
                     decoration: const InputDecoration(
@@ -242,7 +250,7 @@ class _SignInState extends State<SignIn> {
                   builder: (context, verifyCred, child) => 
                   FloatingActionButton(
                       child: const Icon(Icons.done),
-                      onPressed: () {
+                      onPressed: () async {
                         if(_formKey.currentState!.validate()){
                         if (!emailController.text.contains('@')) {
                           ScaffoldMessenger.of(context)
@@ -269,8 +277,15 @@ class _SignInState extends State<SignIn> {
                           print(emailController.text);
                           print(passwordController.text);
                           
-                          verifyCred.addAccount(usernameController.text, nameController.text, surnameController.text, passwordController.text, emailController.text, imageFile);
-                          Navigator.pushNamed(context, HomePage.route, arguments: {'username': usernameController.text});
+                          verifyCred.addAccount(usernameController.text, nameController.text, surnameController.text, passwordController.text, emailController.text);
+                          final sp = await SharedPreferences.getInstance();
+                          sp.setStringList('username', [usernameController.text, nameController.text, surnameController.text, passwordController.text, emailController.text]);
+                          setState(() {
+                            
+                          });
+                          Navigator.pushNamed(context, HomePage.route, arguments: {
+                            'username': usernameController.text
+                          });
                         }
                       }}),
                 )

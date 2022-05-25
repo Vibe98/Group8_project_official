@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:login_flow/classes/changeMonth.dart';
 import 'package:login_flow/classes/verify_cred.dart';
 import 'package:login_flow/classes/weekdata.dart';
 import 'package:login_flow/screens/forgotpassword.dart';
@@ -7,10 +8,11 @@ import 'package:login_flow/screens/loginpage.dart';
 import 'package:login_flow/screens/profilepage.dart';
 import 'package:login_flow/screens/signin.dart';
 import 'package:provider/provider.dart';
+import 'package:login_flow/classes/DayDate.dart';
 
 
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 
@@ -20,15 +22,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
 
-      providers:[
+    
+    return MultiProvider(
+      providers: [
+      ChangeNotifierProvider<VerifyCredentials>(
+        create: (BuildContext context) => VerifyCredentials()),
+      ChangeNotifierProvider<PickMonth>(
+        create: (BuildContext context) => PickMonth()),
         ChangeNotifierProvider(
-          create: (context) => VerifyCredentials(),),
+          create: (context) => DayData()),
         ChangeNotifierProvider(
           create: (context) => WeekData())
       ],
-      child: MaterialApp(
+        child: MaterialApp(
           initialRoute: LoginPage.route,
           onGenerateRoute: (settings) {
             if(settings.name == LoginPage.route){
@@ -57,8 +64,7 @@ class MyApp extends StatelessWidget {
             });
           }
           }
-        ));
-      
-    
+        ),
+    );
   }
 }
