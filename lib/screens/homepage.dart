@@ -6,11 +6,9 @@ import 'package:login_flow/widgets/weekwidget.dart';
 import 'package:login_flow/classes/credentialsFitbitter.dart';
 import 'package:login_flow/screens/loginpage.dart';
 import 'package:login_flow/screens/profilepage.dart';
-import 'package:login_flow/utils/monthWidget.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:login_flow/classes/DayDate.dart';
 import 'package:login_flow/classes/fetchedData.dart';
 import 'package:login_flow/widgets/DayWidget.dart';
@@ -21,6 +19,7 @@ import '../classes/monthChartGraph.dart';
 import '../classes/myMonthData.dart';
 import '../classes/verify_cred.dart';
 import '../classes/fetchedData.dart';
+import '../widgets/monthWidget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.username}) : super(key: key);

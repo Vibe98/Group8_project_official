@@ -36,8 +36,19 @@ class MonthChartGraph extends StatelessWidget{
         child: Padding(
           padding: const EdgeInsets.all(2),
           child: Column(children: <Widget>[
-            Text(category,
-            style: Theme.of(context).textTheme.bodyText2),
+            Container(
+                  alignment: Alignment.center,
+                  child: Row(
+                    children: [
+                      Text(
+                        category,
+                        style: Theme.of(context).textTheme.bodyText2,
+                        textAlign: TextAlign.center,
+                      ),
+                      Icon(Icons.directions_walk)
+                    ],
+                  ),
+                  color: Colors.green),
             Expanded(
               child: BarChart(series,
               animate: true,
@@ -121,10 +132,19 @@ class MonthMinChartGraph extends StatelessWidget {
           padding: const EdgeInsets.all(2.0),
           child: Column(
             children: <Widget>[
-              Text(
-                'Minutes of activity',
-                style: Theme.of(context).textTheme.bodyText2,
-              ),
+              Container(
+                  alignment: Alignment.center,
+                  child: Row(
+                    children: [
+                      Text(
+                        'Minutes of activity',
+                        style: Theme.of(context).textTheme.bodyText2,
+                        textAlign: TextAlign.center,
+                      ),
+                      Icon(Icons.directions_walk)
+                    ],
+                  ),
+                  color: Colors.green),
               Expanded(
                   child: BarChart(
                 series,
