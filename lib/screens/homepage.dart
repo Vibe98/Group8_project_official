@@ -2,10 +2,16 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:fitbitter/fitbitter.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:login_flow/database/entities/mydata.dart';
+import 'package:login_flow/repository/databaserepository.dart';
 import 'package:login_flow/widgets/weekwidget.dart';
 import 'package:login_flow/classes/credentialsFitbitter.dart';
 import 'package:login_flow/screens/loginpage.dart';
 import 'package:login_flow/screens/profilepage.dart';
+<<<<<<< HEAD
+=======
+import 'package:login_flow/widgets/monthWidget.dart';
+>>>>>>> 7e9833f179b6f96a0fc75d3986217f4acd423df3
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -76,7 +82,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       initialIndex: 0,
-      length: 3,
+      length: 4,
       child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
@@ -92,6 +98,10 @@ class _HomePageState extends State<HomePage> {
                 Tab(
                   text: 'Month',
                 ),
+                Tab(
+                  text: 'DB',
+                ),
+                
               ],
             ),
           ),
@@ -133,16 +143,38 @@ class _HomePageState extends State<HomePage> {
                   Center(
                     child: (credentials.isAuthenticated(widget.username) && credentials.iscompleted(widget.username)) 
                         ? daywidget(context)
-                        : Text('You\'re not auth'),
+                        : Text('You\'re not auth, go to your profile and authoriz'),
                   ),
                   Center(
                     child: (credentials.isAuthenticated(widget.username) && credentials.iscompleted(widget.username))
                         ? weekwidget(context)
-                        : Text('You\'re not auth'),
+                        : Text('You\'re not auth, go to your profile and authoriz'),
                   ),
                   Center(
                     child: (credentials.isAuthenticated(widget.username)&& credentials.iscompleted(widget.username))
                         ? monthwidget(context)
+                        : Text(
+                            'You\'re not auth, go to your profile and authorize'),
+                  ),
+                  Center(
+                    child: (credentials.isAuthenticated(widget.username)&& credentials.iscompleted(widget.username))
+                        ? FutureBuilder(
+                          initialData: null,
+                          future: Provider.of<DataBaseRepository>(context, listen:false).findAllData(),
+                          builder: (context, snapshot){
+                            if (snapshot.hasData){
+                              final data = snapshot.data as List<MyData>;
+                          return ListView.builder(
+                            itemCount: data.length,
+                            itemBuilder: (context, index){
+                              final mydata = data[index];
+                              return ListTile(
+                                title: Text('${data[index].calories}'),
+                              );
+                            } ,);}else{
+                              return CircularProgressIndicator();
+                            }},
+                        )
                         : Text(
                             'You\'re not auth, go to your profile and authorize'),
                   ),

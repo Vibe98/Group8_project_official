@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:login_flow/classes/changeMonth.dart';
 import 'package:login_flow/classes/verify_cred.dart';
 import 'package:login_flow/classes/weekdata.dart';
+import 'package:login_flow/database/database.dart';
+import 'package:login_flow/repository/databaserepository.dart';
 import 'package:login_flow/screens/forgotpassword.dart';
 import 'package:login_flow/screens/homepage.dart';
 import 'package:login_flow/screens/loginpage.dart';
@@ -12,8 +14,17 @@ import 'package:login_flow/classes/DayDate.dart';
 
 
 
-void main() async {
-  runApp(const MyApp());
+Future<void> main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final AppDatabase database = 
+    await $FloorAppDatabase.databaseBuilder('app_database.db').build();
+
+  final databaseRepository = DataBaseRepository(database: database);
+
+  runApp(ChangeNotifierProvider<DataBaseRepository>(
+    create: (context) => databaseRepository ,
+    child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
