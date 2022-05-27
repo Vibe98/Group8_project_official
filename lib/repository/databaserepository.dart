@@ -8,20 +8,24 @@ class DataBaseRepository extends ChangeNotifier{
 
   DataBaseRepository({required this.database});
 
-  Future<List<double>?> findDatas(int day, int month) async{
+  Future<MyData?> findDatas(int day, int month) async{
     final datas = await database.mydatadao.findDatas(day, month);
     return datas;
   }
 
-  Future<List<int>> insertMyData(List<MyData> mydatas) async{
-    final ids = await database.mydatadao.insertMyDatas(mydatas);
+  Future<void> insertMyData(MyData mydata) async{
+  await database.mydatadao.insertMyData(mydata);
     notifyListeners();
-    return ids;
   }
 
   Future<void> deleteAllDatas() async{
     await database.mydatadao.deleteAllDatas();
     notifyListeners();
+  }
+
+  Future<List<MyData>> findAllData()async{
+    final datas = await database.mydatadao.findAllData();
+    return datas;
   }
 
 }

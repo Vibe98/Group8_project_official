@@ -82,7 +82,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `MyData` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `day` INTEGER NOT NULL, `month` INTEGER NOT NULL, `steps` REAL NOT NULL, `distance` REAL NOT NULL, `calories` REAL NOT NULL, `minutesfa` REAL NOT NULL, `minutesva` REAL NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `MyData` (`day` INTEGER NOT NULL, `month` INTEGER NOT NULL, `steps` REAL, `distance` REAL, `calories` REAL, `minutesfa` REAL, `minutesva` REAL, PRIMARY KEY (`day`, `month`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `ProfileEntity` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT, `surname` TEXT, `username` TEXT, `password` TEXT, `email` TEXT, `complete` INTEGER NOT NULL, `userID` TEXT NOT NULL)');
 
@@ -105,7 +105,6 @@ class _$MyDataDao extends MyDataDao {
             database,
             'MyData',
             (MyData item) => <String, Object?>{
-                  'id': item.id,
                   'day': item.day,
                   'month': item.month,
                   'steps': item.steps,
@@ -124,20 +123,40 @@ class _$MyDataDao extends MyDataDao {
   final InsertionAdapter<MyData> _myDataInsertionAdapter;
 
   @override
-  Future<List<double>?> findDatas(int day, int month) async {
-    await _queryAdapter.queryNoReturn(
-        'SELECT steps,calories,distance,minutesfa,minutesva FROM MyData WHERE day = ?1 AND month = ?2',
+  Future<MyData?> findDatas(int day, int month) async {
+    return _queryAdapter.query(
+        'SELECT * FROM MyData WHERE day = ?1 AND month = ?2',
+        mapper: (Map<String, Object?> row) => MyData(
+            row['day'] as int,
+            row['month'] as int,
+            row['steps'] as double?,
+            row['distance'] as double?,
+            row['calories'] as double?,
+            row['minutesfa'] as double?,
+            row['minutesva'] as double?),
         arguments: [day, month]);
   }
 
   @override
   Future<void> deleteAllDatas() async {
-    await _queryAdapter.queryNoReturn('DELETE * FROM MyData');
+    await _queryAdapter.queryNoReturn('DELETE FROM MyData');
   }
 
   @override
-  Future<List<int>> insertMyDatas(List<MyData> mydatas) {
-    return _myDataInsertionAdapter.insertListAndReturnIds(
-        mydatas, OnConflictStrategy.abort);
+  Future<List<MyData>> findAllData() async {
+    return _queryAdapter.queryList('SELECT * FROM MyData',
+        mapper: (Map<String, Object?> row) => MyData(
+            row['day'] as int,
+            row['month'] as int,
+            row['steps'] as double?,
+            row['distance'] as double?,
+            row['calories'] as double?,
+            row['minutesfa'] as double?,
+            row['minutesva'] as double?));
+  }
+
+  @override
+  Future<void> insertMyData(MyData mydata) async {
+    await _myDataInsertionAdapter.insert(mydata, OnConflictStrategy.abort);
   }
 }
