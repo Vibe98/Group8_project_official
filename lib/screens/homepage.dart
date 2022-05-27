@@ -6,7 +6,7 @@ import 'package:login_flow/widgets/weekwidget.dart';
 import 'package:login_flow/classes/credentialsFitbitter.dart';
 import 'package:login_flow/screens/loginpage.dart';
 import 'package:login_flow/screens/profilepage.dart';
-import 'package:login_flow/utils/monthWidget.dart';
+import 'package:login_flow/widgets/monthWidget.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -134,12 +134,12 @@ class _HomePageState extends State<HomePage> {
                   Center(
                     child: (credentials.isAuthenticated(widget.username) && credentials.iscompleted(widget.username)) 
                         ? daywidget(context)
-                        : Text('You\'re not auth'),
+                        : Text('You\'re not auth, go to your profile and authoriz'),
                   ),
                   Center(
                     child: (credentials.isAuthenticated(widget.username) && credentials.iscompleted(widget.username))
                         ? weekwidget(context)
-                        : Text('You\'re not auth'),
+                        : Text('You\'re not auth, go to your profile and authoriz'),
                   ),
                   Center(
                     child: (credentials.isAuthenticated(widget.username)&& credentials.iscompleted(widget.username))
