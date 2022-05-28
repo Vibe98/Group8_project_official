@@ -71,7 +71,7 @@ class DayWidget extends StatelessWidget {
             builder:((context, db, child) => FutureBuilder(
                     initialData: null,
                     future:
-                        db.findDatas(DateTime.now().day, DateTime.now().month),
+                        db.findDatas(daydate.date.day, daydate.date.month),
                     builder: (context, snapshot) {
                  
                       if (snapshot.hasData) {

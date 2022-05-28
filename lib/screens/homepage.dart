@@ -8,10 +8,7 @@ import 'package:login_flow/widgets/weekwidget.dart';
 import 'package:login_flow/classes/credentialsFitbitter.dart';
 import 'package:login_flow/screens/loginpage.dart';
 import 'package:login_flow/screens/profilepage.dart';
-<<<<<<< HEAD
-=======
 import 'package:login_flow/widgets/monthWidget.dart';
->>>>>>> 7e9833f179b6f96a0fc75d3986217f4acd423df3
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -41,6 +38,17 @@ class _HomePageState extends State<HomePage> {
   // This widget is the root of your application.
   TextEditingController monthController = TextEditingController();
 
+  Future<bool> _checkauthorization() async {
+    final sp = await SharedPreferences.getInstance();
+    bool completed = false;
+    if (sp.getString('userid') != null) {
+      completed = true;
+      Provider.of<VerifyCredentials>(context, listen: false)
+          .hascompleted(widget.username);
+    }
+    return completed;
+  }
+
   Future<void> _showChoiceDialog(BuildContext context) {
     return showDialog(
         context: context,
@@ -54,12 +62,11 @@ class _HomePageState extends State<HomePage> {
                     child: Text('Yes'),
                     onTap: () async {
                       final sp = await SharedPreferences.getInstance();
-                      
+
                       //rimuovo le credenziali salvate
                       sp.remove('username');
-                      setState(() {
-                        
-                      });
+                      
+                      setState(() {});
                       Navigator.pushReplacementNamed(context, LoginPage.route);
                     }),
                 Padding(padding: EdgeInsets.all(8)),
@@ -74,15 +81,15 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
-
   final DateRangePickerController _controller = DateRangePickerController();
   DateTime dat1 = DateTime.now();
   DateTime dat2 = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       initialIndex: 0,
-      length: 4,
+      length: 3,
       child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
@@ -98,10 +105,6 @@ class _HomePageState extends State<HomePage> {
                 Tab(
                   text: 'Month',
                 ),
-                Tab(
-                  text: 'DB',
-                ),
-                
               ],
             ),
           ),
@@ -138,71 +141,60 @@ class _HomePageState extends State<HomePage> {
           body: Center(
             child: Consumer<VerifyCredentials>(
                 builder: (context, credentials, child) {
-              return TabBarView(
-                children: <Widget>[
-                  Center(
-                    child: (credentials.isAuthenticated(widget.username) && credentials.iscompleted(widget.username)) 
-                        ? daywidget(context)
-                        : Text('You\'re not auth, go to your profile and authoriz'),
-                  ),
-                  Center(
-                    child: (credentials.isAuthenticated(widget.username) && credentials.iscompleted(widget.username))
-                        ? weekwidget(context)
-                        : Text('You\'re not auth, go to your profile and authoriz'),
-                  ),
-                  Center(
-                    child: (credentials.isAuthenticated(widget.username)&& credentials.iscompleted(widget.username))
-                        ? monthwidget(context)
-                        : Text(
-                            'You\'re not auth, go to your profile and authorize'),
-                  ),
-                  Center(
-                    child: (credentials.isAuthenticated(widget.username)&& credentials.iscompleted(widget.username))
-                        ? FutureBuilder(
-                          initialData: null,
-                          future: Provider.of<DataBaseRepository>(context, listen:false).findAllData(),
-                          builder: (context, snapshot){
-                            if (snapshot.hasData){
-                              final data = snapshot.data as List<MyData>;
-                          return ListView.builder(
-                            itemCount: data.length,
-                            itemBuilder: (context, index){
-                              final mydata = data[index];
-                              return ListTile(
-                                title: Text('${data[index].calories}'),
-                              );
-                            } ,);}else{
-                              return CircularProgressIndicator();
-                            }},
-                        )
-                        : Text(
-                            'You\'re not auth, go to your profile and authorize'),
-                  ),
-                ],
-              );
+              return FutureBuilder(
+                  future: _checkauthorization(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      final completed = snapshot.data as bool;
+                      return TabBarView(
+                        children: <Widget>[
+                          Center(
+                            child: (credentials.isAuthenticated(widget.username) && completed)
+                                ? daywidget(context)
+                                : Text('You\'re not auth, go to your profile and authoriz'),
+                                     
+                          ),
+                          Center(
+                            child: (credentials.isAuthenticated(widget.username) &&
+                                    completed)
+                                ? weekwidget(context)
+                                : Text(
+                                    'You\'re not auth, go to your profile and authoriz'),
+                          ),
+                          Center(
+                            child: (credentials
+                                        .isAuthenticated(widget.username) &&
+                                    completed)
+                                ? monthwidget(context)
+                                : Text(
+                                    'You\'re not auth, go to your profile and authorize'),
+                          ),
+                        ],
+                      );
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  });
             }),
           )),
     );
   }
 
-Widget daywidget(BuildContext context) {
+  Widget daywidget(BuildContext context) {
     return SingleChildScrollView(
-      child: DayWidget(username: widget.username,)) ;
-  }  
-  
-  Widget monthwidget(BuildContext context) {
-    return MonthWidget(username: widget.username) ;
+        child: DayWidget(
+      username: widget.username,
+    ));
   }
-Widget weekwidget(BuildContext context){
-  return SingleChildScrollView(
-    child: WeekWidget(username: widget.username)
-  );
+
+  Widget monthwidget(BuildContext context) {
+    return MonthWidget(username: widget.username);
+  }
+
+  Widget weekwidget(BuildContext context) {
+    return SingleChildScrollView(child: WeekWidget(username: widget.username));
+  }
 }
-
-  
-}
-
-
 
 class CustomListTile extends StatelessWidget {
   final IconData icon;
@@ -245,7 +237,3 @@ class CustomListTile extends StatelessWidget {
     );
   }
 }
-
-
-  
-

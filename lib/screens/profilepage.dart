@@ -76,6 +76,7 @@ class _ProfilePageState extends State<ProfilePage> {
     bool authorized = false;
     if(sp.getString('userid') != null){
       authorized = true;
+      Provider.of<VerifyCredentials>(context, listen: false).hascompleted(widget.username);
     }
     return authorized;
     
@@ -184,7 +185,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     for(int i=0; i<steps.length; i++) {
       
-      MyData mydata = MyData( steps[1].dateOfMonitoring!.day, steps[i].dateOfMonitoring!.month, steps[i].value, distances[i].value, calories[i].value, minutesFA[i].value, minutesVA[i].value);
+      MyData mydata = MyData( steps[i].dateOfMonitoring!.day, steps[i].dateOfMonitoring!.month, steps[i].value, distances[i].value, calories[i].value, minutesFA[i].value, minutesVA[i].value);
       await Provider.of<DataBaseRepository>(context, listen:false).insertMyData(mydata);
 
 

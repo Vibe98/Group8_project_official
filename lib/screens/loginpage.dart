@@ -19,7 +19,7 @@ class _LoginPageState extends State<LoginPage> {
   //Form globalkey: this is required to validate the form fields.
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  TextEditingController nameController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   @override 
@@ -43,6 +43,13 @@ class _LoginPageState extends State<LoginPage> {
       
       // a questo punto devo aggiungere l'account
       Provider.of<VerifyCredentials>(context, listen: false).addAccount(username, name, surname, password, email);
+
+      // prendiamo anche lo userId
+      final sc = await SharedPreferences.getInstance();
+      if(sc.getString('userid')!=null){
+        final userId=sc.getString('userid');
+        Provider.of<VerifyCredentials>(context, listen: false).AssociateAuthorization(username, userId);
+      }
       Navigator.pushNamed(context, HomePage.route, arguments: {'username': username});
     }
   }
@@ -85,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                         return null;
                       },
                       textInputAction: TextInputAction.next,
-                      controller: nameController,
+                      controller: usernameController,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         icon: Icon(Icons.person),
@@ -128,35 +135,47 @@ class _LoginPageState extends State<LoginPage> {
                       width: 350,
                       height: 50,
                       // padding: EdgeInsets.fromLTRB(10,0,10,0),
-                      child: ElevatedButton(
-                          child: const Text('Login'),
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()){  
-                              print(nameController.text);
-                              print(verifyCred.credentials);
-                              if (!verifyCred.credentials.containsKey(nameController.text)){
-                              // se non c'è un account con username corrente, allora bisogna crearlo
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                content: Text('Wrong username! Sign in if you do not have an account',
-                                    style: TextStyle(fontSize: 15)),
-                                backgroundColor: Colors.red,
-                              ));
-                            }else if (verifyCred.credentials[nameController.text].password != passwordController.text) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                content: Text('Wrong Password: try recover it',
-                                    style: TextStyle(fontSize: 15)),
-                                backgroundColor: Colors.red,
-                              ));
-                            } else {
-                              
-                              Navigator.pushNamed(context, HomePage.route, arguments: {
-                                'username': nameController.text
-                              });
+                      child: Consumer<VerifyCredentials>(
+                        builder: ((context, cred, child) => 
+                        ElevatedButton(
+                            child: const Text('Login'),
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()){  
+                                print(usernameController.text);
+                                print(verifyCred.credentials);
+                                if (!verifyCred.credentials.containsKey(usernameController.text)){
+                                // se non c'è un account con username corrente, allora bisogna crearlo
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  content: Text('Wrong username! Sign in if you do not have an account',
+                                      style: TextStyle(fontSize: 15)),
+                                  backgroundColor: Colors.red,
+                                ));
+                              }else if (verifyCred.credentials[usernameController.text].password != passwordController.text) {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  content: Text('Wrong Password: try recover it',
+                                      style: TextStyle(fontSize: 15)),
+                                  backgroundColor: Colors.red,
+                                ));
+                              } else {
+                                // esiste un profilo quindi mi ricavo le sue info e lo salvo in memoria
+                                final name = cred.Restituteuser(usernameController.text)['name'];
+                                final surname = cred.Restituteuser(usernameController.text)['surname'];
+                                final email = cred.Restituteuser(usernameController.text)['email'];
 
-                            }
-                          }}),
+                                final sp = await SharedPreferences.getInstance();
+                                if(sp.getStringList('username')== null){
+                                  sp.setStringList('username', [usernameController.text, name, surname, passwordController.text, email]);
+                                
+                                }
+                                Navigator.pushNamed(context, HomePage.route, arguments: {
+                                  'username': usernameController.text
+                                });
+                      
+                              }
+                            }})),
+                      ),
                     ),
                   ),
                   Row(
@@ -174,16 +193,6 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                   
-                  ElevatedButton(onPressed: () async {
-                    final sp = await SharedPreferences.getInstance();
-                    if(sp.getString('username')!=null){
-                      //print(Provider.of<VerifyCredentials>(context, listen: false).Restituteuser(sp.getString('username')!)['email']);
-                      sp.remove('username');
-                      print(sp.getString('username'));
-                    }else{
-                      print('ok');
-                    }
-                  }, child: Text('prova')),
                 ],
               ),
             ),
