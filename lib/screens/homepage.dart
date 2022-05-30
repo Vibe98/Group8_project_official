@@ -157,7 +157,7 @@ class _HomePageState extends State<HomePage> {
                           Center(
                             child: (credentials.isAuthenticated(widget.username) &&
                                     completed)
-                                ? weekwidget(context)
+                                ? Text('Inserire')//weekwidget(context)
                                 : Text(
                                     'You\'re not auth, go to your profile and authoriz'),
                           ),

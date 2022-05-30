@@ -13,6 +13,11 @@ class DataBaseRepository extends ChangeNotifier{
     return datas;
   }
 
+  Future<List<MyData?>> findMonthDatas(int month) async{
+    final monthdatas = await database.mydatadao.findMonthDatas(month);
+    return monthdatas;
+  }
+
   Future<void> insertMyData(MyData mydata) async{
   await database.mydatadao.insertMyData(mydata);
     notifyListeners();

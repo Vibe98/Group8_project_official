@@ -138,6 +138,20 @@ class _$MyDataDao extends MyDataDao {
   }
 
   @override
+  Future<List<MyData?>> findMonthDatas(int month) async {
+    return _queryAdapter.queryList('SELECT * FROM MyData WHERE month = ?1',
+        mapper: (Map<String, Object?> row) => MyData(
+            row['day'] as int,
+            row['month'] as int,
+            row['steps'] as double?,
+            row['distance'] as double?,
+            row['calories'] as double?,
+            row['minutesfa'] as double?,
+            row['minutesva'] as double?),
+        arguments: [month]);
+  }
+
+  @override
   Future<void> deleteAllDatas() async {
     await _queryAdapter.queryNoReturn('DELETE FROM MyData');
   }

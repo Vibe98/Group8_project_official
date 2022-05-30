@@ -8,6 +8,7 @@ import 'package:charts_flutter/src/text_style.dart' as style;
 import 'package:charts_flutter/src/text_element.dart' as element;
 
 import 'myMonthData.dart';
+import '../database/entities/mydata.dart';
 
 class MonthChartGraph extends StatelessWidget{
   final List<myMonthData> data;

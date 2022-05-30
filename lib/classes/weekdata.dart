@@ -24,7 +24,7 @@ class WeekData extends ChangeNotifier{
   bool calendar = false;
   static DateTime dateinitial = date1.add(Duration(days: (firstDayOfWeek - day1)));
   static String monthselected = DateFormat('MMMM').format(dateinitial);
-  List<myMonthData>? steplist = FetchedData.stepsData[monthselected];
+  List? steplist = FetchedData.stepsData[monthselected];
   List<WeekStepChart> liststepcharts =  _steps(dateinitial);
   List<WeekStepChart> listcaloriescharts = _calories(dateinitial);
   List<WeekStepChart> listminfai = [];
@@ -37,9 +37,9 @@ class WeekData extends ChangeNotifier{
     this.dateend = date2;
     this.liststepcharts = [];
     String monthselected = DateFormat('MMMM').format(date1);
-    List<myMonthData>? steplist = FetchedData.stepsData[monthselected];
+    List? steplist = FetchedData.stepsData[monthselected];
     this.liststepcharts = _steps(date1);
-    List<myMonthData>? calorieslist = FetchedData.caloriesData[monthselected];
+    List? calorieslist = FetchedData.caloriesData[monthselected];
     this.listcaloriescharts = _calories(date1);
     
     
@@ -58,7 +58,7 @@ class WeekData extends ChangeNotifier{
 
 List<WeekStepChart> _steps(datestart){
   String monthselected = DateFormat('MMMM').format(datestart);
-  List<myMonthData>? steplist = FetchedData.stepsData[monthselected];
+  List? steplist = FetchedData.stepsData[monthselected];
   List<WeekStepChart> liststepcharts = [];
   for(int i = 0; i<steplist!.length; i++){
     print(steplist[i].day);
@@ -79,7 +79,7 @@ List<WeekStepChart> _steps(datestart){
 
 List<WeekStepChart> _calories(datestart){
   String monthselected = DateFormat('MMMM').format(datestart);
-  List<myMonthData>? calorieslist = FetchedData.caloriesData[monthselected];
+  List? calorieslist = FetchedData.caloriesData[monthselected];
   List<WeekStepChart> listcaloriescharts = [];
   for(int i = 0; i<calorieslist!.length; i++){
     print(calorieslist[i].day);

@@ -97,7 +97,7 @@ class _ProfilePageState extends State<ProfilePage> {
     
     FitbitActivityTimeseriesAPIURL fitbitStepsApiUrl =
     FitbitActivityTimeseriesAPIURL.dateRangeWithResource(
-    startDate: DateTime.parse('2022-05-01 00:00:00'),
+    startDate: DateTime.parse('2022-03-01 00:00:00'),
     endDate: DateTime.now(),
     userID: userID,
     resource: "steps"
@@ -116,7 +116,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   FitbitActivityTimeseriesAPIURL fitbitCaloriesApiUrl =
   FitbitActivityTimeseriesAPIURL.dateRangeWithResource(
-    startDate: DateTime.parse('2022-05-01 00:00:00'),
+    startDate: DateTime.parse('2022-03-01 00:00:00'),
     endDate: DateTime.now(),
     userID: userID,
     resource: "calories"
@@ -135,7 +135,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   FitbitActivityTimeseriesAPIURL fitbitDistanceApiUrl =
   FitbitActivityTimeseriesAPIURL.dateRangeWithResource(
-    startDate: DateTime.parse('2022-05-01 00:00:00'),
+    startDate: DateTime.parse('2022-03-01 00:00:00'),
     endDate: DateTime.now(),
     userID: userID,
     resource: "distance"
@@ -154,7 +154,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   FitbitActivityTimeseriesAPIURL fitbitMinutesFAApiUrl =
   FitbitActivityTimeseriesAPIURL.dateRangeWithResource(
-    startDate: DateTime.parse('2022-05-01 00:00:00'),
+    startDate: DateTime.parse('2022-03-01 00:00:00'),
     endDate: DateTime.now(),
     userID: userID,
     resource: "minutesFairlyActive"
@@ -173,7 +173,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   FitbitActivityTimeseriesAPIURL fitbitMinutesVAApiUrl =
   FitbitActivityTimeseriesAPIURL.dateRangeWithResource(
-    startDate: DateTime.parse('2022-05-01 00:00:00'),
+    startDate: DateTime.parse('2022-03-01 00:00:00'),
     endDate: DateTime.now(),
     userID: userID,
     resource: "minutesVeryActive"
@@ -351,6 +351,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     
                   });
                   Provider.of<VerifyCredentials>(context, listen: false).AssociateAuthorization(widget.username, userId);
+                  Provider.of<DataBaseRepository>(context, listen: false).deleteAllDatas();
                   }) :
                 Consumer<VerifyCredentials>(
                   builder: (context, credentials, child) =>
@@ -400,11 +401,7 @@ class _ProfilePageState extends State<ProfilePage> {
               )
 
             ),
-            ElevatedButton(
-              onPressed:(){
-                Provider.of<DataBaseRepository>(context, listen: false).deleteAllDatas();
-              } , 
-              child: Text('to mare'))],
+    ],
             
           ),
         ),
