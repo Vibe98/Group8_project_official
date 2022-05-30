@@ -72,10 +72,27 @@ class DataBaseRepository extends ChangeNotifier{
       }
 
     }
+  
     final datas = await database.mydatadao.findWeekData(daylist[0], daylist[1], daylist[2], daylist[3], daylist[4], daylist[5], daylist[6], monthlist[0], monthlist[1], monthlist[2], monthlist[3], monthlist[4], monthlist[5],  monthlist[6]);
-
+    if(datas.length<7){
+   
+    for(int i = datas.length; i<7; i++){
+    datas.add(MyData(null,daylist[i], monthlist[i], 0, 0, 0, 0, 0));
+   
+    }
+    }
     return datas;
   
+  }
+
+  Future<List<int>?> findLastDay() async{
+  final result = await database.mydatadao.findLastDay();
+  return result;
+  }
+
+  Future<void> deleteLastDay()async{
+    await database.mydatadao.deleteLastDay();
+    notifyListeners();
   }
 
 }

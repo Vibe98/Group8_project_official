@@ -5,9 +5,10 @@ import 'package:charts_flutter/flutter.dart';
 import 'package:charts_flutter/src/text_style.dart' as style;
 import 'package:charts_flutter/src/text_element.dart' as element;
 import 'package:flutter/cupertino.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class WeekChart {
-  WeekChart(this.x,  this.y, this.barColor);
+  WeekChart(this.x, this.y, this.barColor);
   final String? x;
   final double? y;
   final Color barColor;
@@ -26,8 +27,7 @@ class WeekStepChartGraph extends StatelessWidget {
       Series(
         id: category,
         data: data,
-        domainFn: (WeekChart series, _) =>
-            '${series.x!}',
+        domainFn: (WeekChart series, _) => '${series.x!}',
         measureFn: (WeekChart series, _) => series.y,
         colorFn: (WeekChart series, _) => series.barColor,
       )
@@ -44,16 +44,28 @@ class WeekStepChartGraph extends StatelessWidget {
               Container(
                   alignment: Alignment.center,
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         category,
                         style: Theme.of(context).textTheme.bodyText2,
                         textAlign: TextAlign.center,
                       ),
-                      Icon(Icons.directions_walk)
+                      SizedBox(width: 20),
+                      Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Colors.greenAccent,
+                                width: 2,
+                              )),
+                          child:
+                              Icon(MdiIcons.run, size: 30, color: Colors.black))
                     ],
                   ),
-                  color: Colors.green),
+                  ),
               Expanded(
                 child: BarChart(
                   series,
@@ -75,7 +87,6 @@ class WeekStepChartGraph extends StatelessWidget {
                             'text': '${datumPair.datum.y}'
                           });
                         });
-                    
                       } else {
                         selectedDatum = [];
                       }
@@ -104,8 +115,7 @@ class WeekCaloriesChartGraph extends StatelessWidget {
       Series(
         id: category,
         data: data,
-        domainFn: (WeekChart series, _) =>
-            '${series.x!}',
+        domainFn: (WeekChart series, _) => '${series.x!}',
         measureFn: (WeekChart series, _) => series.y,
         colorFn: (WeekChart series, _) => series.barColor,
       )
@@ -122,16 +132,29 @@ class WeekCaloriesChartGraph extends StatelessWidget {
               Container(
                   alignment: Alignment.center,
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         category,
                         style: Theme.of(context).textTheme.bodyText2,
                         textAlign: TextAlign.center,
                       ),
-                      Icon(CupertinoIcons.flame)
+                      SizedBox(width: 20),
+                      Container(
+                                          height: 40,
+                                          width: 40,
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                color: Colors.amberAccent,
+                                                width: 2,
+                                              )),
+                                          child: Icon(MdiIcons.fire,
+                                              size: 30,
+                                              color: Colors.orange))
                     ],
                   ),
-                  color: Colors.lightGreen),
+                  ),
               Expanded(
                 child: BarChart(
                   series,
@@ -186,16 +209,14 @@ class WeekMinChartGraph extends StatelessWidget {
       Series(
         id: category1,
         data: data1,
-        domainFn: (WeekChart series, _) =>
-            '${series.x!}',
+        domainFn: (WeekChart series, _) => '${series.x!}',
         measureFn: (WeekChart series, _) => series.y,
         colorFn: (WeekChart series, _) => series.barColor,
       ),
       Series(
         id: category2,
         data: data2,
-        domainFn: (WeekChart series, _) =>
-            '${series.x!}',
+        domainFn: (WeekChart series, _) => '${series.x!}',
         measureFn: (WeekChart series, _) => series.y,
         colorFn: (WeekChart series, _) => series.barColor,
       )
@@ -212,16 +233,28 @@ class WeekMinChartGraph extends StatelessWidget {
               Container(
                   alignment: Alignment.center,
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         'MINUTES OF ACTIVITY',
                         style: Theme.of(context).textTheme.bodyText2,
                         textAlign: TextAlign.center,
                       ),
-                      Icon(CupertinoIcons.time)
+                      SizedBox(width:20),
+                      Container(
+                                        height: 40,
+                                        width: 40,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                              color: Colors.purple,
+                                              width: 2,
+                                            )),
+                                        child: Icon(MdiIcons.armFlex,
+                                            size: 30,
+                                            color: Colors.deepPurple))
                     ],
-                  ),
-                  color: Colors.orange),
+                  )),
               Expanded(
                   child: BarChart(
                 series,
@@ -229,9 +262,8 @@ class WeekMinChartGraph extends StatelessWidget {
                 animate: true,
                 behaviors: [
                   SeriesLegend(
-                    
                     position: BehaviorPosition.end,
-                   
+
                     outsideJustification: OutsideJustification.endDrawArea,
                     // By default, if the position of the chart is on the left or right of
                     // the chart, [horizontalFirst] is set to false. This means that the

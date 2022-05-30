@@ -1,9 +1,11 @@
 import 'package:floor/floor.dart';
 
-@Entity(primaryKeys: ['day', 'month']) 
+@entity
 class MyData{
   
-
+  @PrimaryKey(autoGenerate: true)
+  final int? id;
+  
   final int day;
   final int month;
 
@@ -13,6 +15,6 @@ class MyData{
   final double? minutesfa;
   final double? minutesva;
 
-  MyData(this.day, this.month, this.steps, this.distance, this.calories, this.minutesfa, this.minutesva);
+  MyData(this.id, this.day, this.month, this.steps, this.distance, this.calories, this.minutesfa, this.minutesva);
 
 }

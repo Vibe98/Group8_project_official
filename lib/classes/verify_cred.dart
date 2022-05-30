@@ -65,7 +65,11 @@ class VerifyCredentials extends ChangeNotifier{
 
   void hascompleted(String username){
     Profile user = credentials[username];
-    user.complete = true;
+    if(user.complete){
+      user.complete = false;
+    }else{
+      user.complete = true;
+    }
     notifyListeners();
   }
 
