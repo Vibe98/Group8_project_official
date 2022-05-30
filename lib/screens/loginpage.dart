@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:login_flow/classes/verify_cred.dart';
+import 'package:login_flow/repository/databaserepository.dart';
 import 'package:login_flow/screens/forgotpassword.dart';
 import 'package:login_flow/screens/homepage.dart';
+import 'package:login_flow/screens/profilepage.dart';
 import 'package:login_flow/screens/signin.dart';
+import 'package:login_flow/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -49,7 +52,16 @@ class _LoginPageState extends State<LoginPage> {
       if(sc.getString('userid')!=null){
         final userId=sc.getString('userid');
         Provider.of<VerifyCredentials>(context, listen: false).AssociateAuthorization(username, userId);
-      Provider.of<VerifyCredentials>(context, listen: false).hascompleted(username);}
+        /*final listlastday = await Provider.of<DataBaseRepository>(context, listen:false).findLastDay();
+        print(listlastday);
+        if(DateTime.now().day == listlastday![0] && DateTime.now().month == listlastday[1]){
+          Provider.of<DataBaseRepository>(context, listen: false).deleteLastDay();
+          computeMonthData(context, userId!, DateTime.now(), DateTime.now());
+        }else{
+
+        }*/
+        Provider.of<VerifyCredentials>(context, listen: false).hascompleted(username);
+      }
 
     
       
