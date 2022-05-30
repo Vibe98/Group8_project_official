@@ -91,7 +91,6 @@ class _HomePageState extends State<HomePage> {
       initialIndex: 0,
       length: 3,
       child: Scaffold(
-          resizeToAvoidBottomInset: false,
           appBar: AppBar(
             title: const Text('My Data'),
             bottom: const TabBar(
@@ -141,40 +140,27 @@ class _HomePageState extends State<HomePage> {
           body: Center(
             child: Consumer<VerifyCredentials>(
                 builder: (context, credentials, child) {
-              return FutureBuilder(
-                  future: _checkauthorization(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      final completed = snapshot.data as bool;
-                      return TabBarView(
-                        children: <Widget>[
-                          Center(
-                            child: (credentials.isAuthenticated(widget.username) && completed)
-                                ? daywidget(context)
-                                : Text('You\'re not auth, go to your profile and authoriz'),
-                                     
-                          ),
-                          Center(
-                            child: (credentials.isAuthenticated(widget.username) &&
-                                    completed)
-                                ? weekwidget(context)
-                                : Text(
-                                    'You\'re not auth, go to your profile and authoriz'),
-                          ),
-                          Center(
-                            child: (credentials
-                                        .isAuthenticated(widget.username) &&
-                                    completed)
-                                ? monthwidget(context)
-                                : Text(
-                                    'You\'re not auth, go to your profile and authorize'),
-                          ),
-                        ],
-                      );
-                    } else {
-                      return CircularProgressIndicator();
-                    }
-                  });
+              return TabBarView(
+                children: <Widget>[
+                  Center(
+                    child: (credentials.isAuthenticated(widget.username) && credentials.iscompleted(widget.username))
+                        ? daywidget(context)
+                        : Text('You\'re not auth'),
+                  ),
+                  Center(
+                    child: credentials.isAuthenticated(widget.username)
+                        ?  Text('Week data')
+                        : Text(
+                            'You\'re not auth, go to your profile and authorize'),
+                  ),
+                  Center(
+                    child: credentials.isAuthenticated(widget.username)
+                        ? monthwidget(context)
+                        : Text(
+                            'You\'re not auth, go to your profile and authorize'),
+                  ),
+                ],
+              );
             }),
           )),
     );
