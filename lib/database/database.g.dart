@@ -138,6 +138,50 @@ class _$MyDataDao extends MyDataDao {
   }
 
   @override
+  Future<List<MyData?>> findWeekData(
+      int day1,
+      int day2,
+      int day3,
+      int day4,
+      int day5,
+      int day6,
+      int day7,
+      int month1,
+      int month2,
+      int month3,
+      int month4,
+      int month5,
+      int month6,
+      int month7) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM MyData WHERE (day = ?1 AND month = ?8) OR (day = ?2 AND month = ?9) OR (day = ?3 AND month = ?10) OR (day = ?4 AND month = ?11) OR (day = ?5 AND month = ?12) OR (day = ?6 AND month = ?13) OR (day = ?7 AND month = ?14)',
+        mapper: (Map<String, Object?> row) => MyData(
+            row['day'] as int,
+            row['month'] as int,
+            row['steps'] as double?,
+            row['distance'] as double?,
+            row['calories'] as double?,
+            row['minutesfa'] as double?,
+            row['minutesva'] as double?),
+        arguments: [
+          day1,
+          day2,
+          day3,
+          day4,
+          day5,
+          day6,
+          day7,
+          month1,
+          month2,
+          month3,
+          month4,
+          month5,
+          month6,
+          month7
+        ]);
+  }
+
+  @override
   Future<void> deleteAllDatas() async {
     await _queryAdapter.queryNoReturn('DELETE FROM MyData');
   }

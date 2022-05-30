@@ -38,16 +38,6 @@ class _HomePageState extends State<HomePage> {
   // This widget is the root of your application.
   TextEditingController monthController = TextEditingController();
 
-  Future<bool> _checkauthorization() async {
-    final sp = await SharedPreferences.getInstance();
-    bool completed = false;
-    if (sp.getString('userid') != null) {
-      completed = true;
-      Provider.of<VerifyCredentials>(context, listen: false)
-          .hascompleted(widget.username);
-    }
-    return completed;
-  }
 
   Future<void> _showChoiceDialog(BuildContext context) {
     return showDialog(
@@ -141,43 +131,33 @@ class _HomePageState extends State<HomePage> {
           body: Center(
             child: Consumer<VerifyCredentials>(
                 builder: (context, credentials, child) {
-              return FutureBuilder(
-                  future: _checkauthorization(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      final completed = snapshot.data as bool;
-                      return TabBarView(
+              return  TabBarView(
                         children: <Widget>[
                           Center(
-                            child: (credentials.isAuthenticated(widget.username) && completed)
+                            child: (credentials.isAuthenticated(widget.username) && credentials.iscompleted(widget.username))
                                 ? daywidget(context)
                                 : Text('You\'re not auth, go to your profile and authoriz'),
                                      
                           ),
                           Center(
                             child: (credentials.isAuthenticated(widget.username) &&
-                                    completed)
+                                    credentials.iscompleted(widget.username))
                                 ? weekwidget(context)
                                 : Text(
                                     'You\'re not auth, go to your profile and authoriz'),
                           ),
                           Center(
-                            child: (credentials
-                                        .isAuthenticated(widget.username) &&
-                                    completed)
+                            child: (credentials.isAuthenticated(widget.username) &&
+                                    credentials.iscompleted(widget.username))
                                 ? monthwidget(context)
                                 : Text(
                                     'You\'re not auth, go to your profile and authorize'),
                           ),
                         ],
                       );
-                    } else {
-                      return CircularProgressIndicator();
-                    }
-                  });
-            }),
-          )),
-    );
+                    }))
+                    
+                  ));
   }
 
   Widget daywidget(BuildContext context) {

@@ -6,16 +6,15 @@ import 'package:charts_flutter/src/text_style.dart' as style;
 import 'package:charts_flutter/src/text_element.dart' as element;
 import 'package:flutter/cupertino.dart';
 
-class WeekStepChart {
-  WeekStepChart(this.x, this.indexe, this.y, this.barColor);
-  final DateTime? x;
-  final int indexe;
-  final num? y;
+class WeekChart {
+  WeekChart(this.x,  this.y, this.barColor);
+  final String? x;
+  final double? y;
   final Color barColor;
 }
 
 class WeekStepChartGraph extends StatelessWidget {
-  final List<WeekStepChart> data;
+  final List<WeekChart> data;
   final String category;
 
   WeekStepChartGraph({required this.data, required this.category});
@@ -23,14 +22,14 @@ class WeekStepChartGraph extends StatelessWidget {
   @override
   static List selectedDatum = [];
   Widget build(BuildContext context) {
-    List<Series<WeekStepChart, String>> series = [
+    List<Series<WeekChart, String>> series = [
       Series(
         id: category,
         data: data,
-        domainFn: (WeekStepChart series, _) =>
-            '${series.x!.day.toString()}/${series.x!.month.toString()}',
-        measureFn: (WeekStepChart series, _) => series.y,
-        colorFn: (WeekStepChart series, _) => series.barColor,
+        domainFn: (WeekChart series, _) =>
+            '${series.x!}',
+        measureFn: (WeekChart series, _) => series.y,
+        colorFn: (WeekChart series, _) => series.barColor,
       )
     ];
 
@@ -76,7 +75,7 @@ class WeekStepChartGraph extends StatelessWidget {
                             'text': '${datumPair.datum.y}'
                           });
                         });
-                        print(selectedDatum);
+                    
                       } else {
                         selectedDatum = [];
                       }
@@ -93,7 +92,7 @@ class WeekStepChartGraph extends StatelessWidget {
 }
 
 class WeekCaloriesChartGraph extends StatelessWidget {
-  final List<WeekStepChart> data;
+  final List<WeekChart> data;
   final String category;
 
   WeekCaloriesChartGraph({required this.data, required this.category});
@@ -101,14 +100,14 @@ class WeekCaloriesChartGraph extends StatelessWidget {
   @override
   static List selectedDatum = [];
   Widget build(BuildContext context) {
-    List<Series<WeekStepChart, String>> series = [
+    List<Series<WeekChart, String>> series = [
       Series(
         id: category,
         data: data,
-        domainFn: (WeekStepChart series, _) =>
-            '${series.x!.day.toString()}/${series.x!.month.toString()}',
-        measureFn: (WeekStepChart series, _) => series.y,
-        colorFn: (WeekStepChart series, _) => series.barColor,
+        domainFn: (WeekChart series, _) =>
+            '${series.x!}',
+        measureFn: (WeekChart series, _) => series.y,
+        colorFn: (WeekChart series, _) => series.barColor,
       )
     ];
 
@@ -154,7 +153,6 @@ class WeekCaloriesChartGraph extends StatelessWidget {
                             'text': '${datumPair.datum.y}'
                           });
                         });
-                        print(selectedDatum);
                       } else {
                         selectedDatum = [];
                       }
@@ -171,8 +169,8 @@ class WeekCaloriesChartGraph extends StatelessWidget {
 }
 
 class WeekMinChartGraph extends StatelessWidget {
-  final List<WeekStepChart> data1;
-  final List<WeekStepChart> data2;
+  final List<WeekChart> data1;
+  final List<WeekChart> data2;
   final String category1;
   final String category2;
 
@@ -184,22 +182,22 @@ class WeekMinChartGraph extends StatelessWidget {
   @override
   static List selectedDatum = [];
   Widget build(BuildContext context) {
-    List<Series<WeekStepChart, String>> series = [
+    List<Series<WeekChart, String>> series = [
       Series(
         id: category1,
         data: data1,
-        domainFn: (WeekStepChart series, _) =>
-            '${series.x!.day.toString()}/${series.x!.month.toString()}',
-        measureFn: (WeekStepChart series, _) => series.y,
-        colorFn: (WeekStepChart series, _) => series.barColor,
+        domainFn: (WeekChart series, _) =>
+            '${series.x!}',
+        measureFn: (WeekChart series, _) => series.y,
+        colorFn: (WeekChart series, _) => series.barColor,
       ),
       Series(
         id: category2,
         data: data2,
-        domainFn: (WeekStepChart series, _) =>
-            '${series.x!.day.toString()}/${series.x!.month.toString()}',
-        measureFn: (WeekStepChart series, _) => series.y,
-        colorFn: (WeekStepChart series, _) => series.barColor,
+        domainFn: (WeekChart series, _) =>
+            '${series.x!}',
+        measureFn: (WeekChart series, _) => series.y,
+        colorFn: (WeekChart series, _) => series.barColor,
       )
     ];
 
@@ -231,15 +229,9 @@ class WeekMinChartGraph extends StatelessWidget {
                 animate: true,
                 behaviors: [
                   SeriesLegend(
-                    // Positions for "start" and "end" will be left and right respectively
-                    // for widgets with a build context that has directionality ltr.
-                    // For rtl, "start" and "end" will be right and left respectively.
-                    // Since this example has directionality of ltr, the legend is
-                    // positioned on the right side of the chart.
+                    
                     position: BehaviorPosition.end,
-                    // For a legend that is positioned on the left or right of the chart,
-                    // setting the justification for [endDrawArea] is aligned to the
-                    // bottom of the chart draw area.
+                   
                     outsideJustification: OutsideJustification.endDrawArea,
                     // By default, if the position of the chart is on the left or right of
                     // the chart, [horizontalFirst] is set to false. This means that the
@@ -271,7 +263,6 @@ class WeekMinChartGraph extends StatelessWidget {
                           'text': '${datumPair.datum.y}'
                         });
                       });
-                      print(selectedDatum);
                     } else {
                       selectedDatum = [];
                     }

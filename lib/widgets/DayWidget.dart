@@ -77,7 +77,6 @@ class DayWidget extends StatelessWidget {
                       if (snapshot.hasData) {
                         
                         final data = snapshot.data as MyData;
-                        print(data);
                         return Column(children: [
                           Container(
                             height: 60,
