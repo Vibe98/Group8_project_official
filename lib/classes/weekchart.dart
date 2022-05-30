@@ -37,35 +37,37 @@ class WeekStepChartGraph extends StatelessWidget {
       height: 200,
       padding: EdgeInsets.all(10),
       child: Card(
+        elevation: 5,
+        shadowColor: Colors.greenAccent,
         child: Padding(
           padding: const EdgeInsets.all(2.0),
           child: Column(
             children: <Widget>[
               Container(
-                  alignment: Alignment.center,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        category,
-                        style: Theme.of(context).textTheme.bodyText2,
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(width: 20),
-                      Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: Colors.greenAccent,
-                                width: 2,
-                              )),
-                          child:
-                              Icon(MdiIcons.run, size: 30, color: Colors.black))
-                    ],
-                  ),
-                  ),
+                alignment: Alignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      category,
+                      style: Theme.of(context).textTheme.bodyText2,
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(width: 20),
+                    Container(
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: Colors.greenAccent,
+                              width: 2,
+                            )),
+                        child:
+                            Icon(MdiIcons.run, size: 30, color: Colors.black))
+                  ],
+                ),
+              ),
               Expanded(
                 child: BarChart(
                   series,
@@ -125,36 +127,37 @@ class WeekCaloriesChartGraph extends StatelessWidget {
       height: 200,
       padding: EdgeInsets.all(10),
       child: Card(
+        shadowColor: Colors.orange,
+        elevation: 5,
         child: Padding(
           padding: const EdgeInsets.all(2.0),
           child: Column(
             children: <Widget>[
               Container(
-                  alignment: Alignment.center,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        category,
-                        style: Theme.of(context).textTheme.bodyText2,
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(width: 20),
-                      Container(
-                                          height: 40,
-                                          width: 40,
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              border: Border.all(
-                                                color: Colors.amberAccent,
-                                                width: 2,
-                                              )),
-                                          child: Icon(MdiIcons.fire,
-                                              size: 30,
-                                              color: Colors.orange))
-                    ],
-                  ),
-                  ),
+                alignment: Alignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      category,
+                      style: Theme.of(context).textTheme.bodyText2,
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(width: 20),
+                    Container(
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: Colors.amberAccent,
+                              width: 2,
+                            )),
+                        child:
+                            Icon(MdiIcons.fire, size: 30, color: Colors.orange))
+                  ],
+                ),
+              ),
               Expanded(
                 child: BarChart(
                   series,
@@ -226,6 +229,8 @@ class WeekMinChartGraph extends StatelessWidget {
       height: 200,
       padding: EdgeInsets.all(10),
       child: Card(
+        shadowColor: Colors.purpleAccent,
+        elevation: 5,
         child: Padding(
           padding: const EdgeInsets.all(2.0),
           child: Column(
@@ -240,19 +245,18 @@ class WeekMinChartGraph extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodyText2,
                         textAlign: TextAlign.center,
                       ),
-                      SizedBox(width:20),
+                      SizedBox(width: 20),
                       Container(
-                                        height: 40,
-                                        width: 40,
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            border: Border.all(
-                                              color: Colors.purple,
-                                              width: 2,
-                                            )),
-                                        child: Icon(MdiIcons.armFlex,
-                                            size: 30,
-                                            color: Colors.deepPurple))
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Colors.purple,
+                                width: 2,
+                              )),
+                          child: Icon(MdiIcons.armFlex,
+                              size: 30, color: Colors.deepPurple))
                     ],
                   )),
               Expanded(
