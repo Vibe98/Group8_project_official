@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../classes/credentialsFitbitter.dart';
 import '../database/entities/mydata.dart';
 
-Future<List<MyData>> computeMonthData(context, String userID, DateTime startdate, DateTime enddate) async {
+Future<List<MyData>> computeMonthData(String userID, DateTime startdate, DateTime enddate) async {
    
    List<MyData> mydatalist = [];
     //steps

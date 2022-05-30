@@ -52,14 +52,21 @@ class _LoginPageState extends State<LoginPage> {
       if(sc.getString('userid')!=null){
         final userId=sc.getString('userid');
         Provider.of<VerifyCredentials>(context, listen: false).AssociateAuthorization(username, userId);
-        /*final listlastday = await Provider.of<DataBaseRepository>(context, listen:false).findLastDay();
+        final listlastday = await Provider.of<DataBaseRepository>(context, listen:false).findLastDay();
         print(listlastday);
-        if(DateTime.now().day == listlastday![0] && DateTime.now().month == listlastday[1]){
-          Provider.of<DataBaseRepository>(context, listen: false).deleteLastDay();
-          computeMonthData(context, userId!, DateTime.now(), DateTime.now());
-        }else{
+        print(listlastday!.day);
+        print(listlastday.month);
+        Provider.of<DataBaseRepository>(context, listen: false).deleteLastDay();
 
-        }*/
+        if(DateTime.now().day == listlastday.day && DateTime.now().month == listlastday.month){
+              computeMonthData(userId!, DateTime.now(), DateTime.now());
+        }else{
+          DateTime startdate = DateTime.parse('2022-0${listlastday.month}-${listlastday.day}');
+          DateTime enddate = DateTime.now();
+          computeMonthData(userId!, startdate, enddate);
+
+
+        }
         Provider.of<VerifyCredentials>(context, listen: false).hascompleted(username);
       }
 
