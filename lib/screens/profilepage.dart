@@ -238,7 +238,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           redirectUri: CredentialsFitbitter.redirectUri,
                           callbackUrlScheme: 'example');
                           Provider.of<VerifyCredentials>(context, listen: false).AssociateAuthorization(widget.username, userId);
-                          List<MyData> datalist = await computeMonthData(context, credentials.Restituteuser(widget.username)['userID'], DateTime.parse('2022-05-01 00:00:00'), DateTime.now(),); 
+                          List<MyData> datalist = await computeMonthData( credentials.Restituteuser(widget.username)['userID'], DateTime.parse('2022-05-01 00:00:00'), DateTime.now(),); 
                           for(int i =0; i<datalist.length; i++){
                             MyData mydata = datalist[i];
                             Provider.of<DataBaseRepository>(context, listen:false).insertMyData(mydata);
