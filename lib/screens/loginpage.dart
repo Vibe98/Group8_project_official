@@ -49,7 +49,11 @@ class _LoginPageState extends State<LoginPage> {
       if(sc.getString('userid')!=null){
         final userId=sc.getString('userid');
         Provider.of<VerifyCredentials>(context, listen: false).AssociateAuthorization(username, userId);
-      }
+      Provider.of<VerifyCredentials>(context, listen: false).hascompleted(username);}
+
+    
+      
+
       Navigator.pushNamed(context, HomePage.route, arguments: {'username': username});
     }
   }

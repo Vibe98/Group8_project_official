@@ -46,7 +46,7 @@ class _ProfilePageState extends State<ProfilePage> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
+  
   bool ena = false;
 
   @override 
@@ -66,23 +66,11 @@ class _ProfilePageState extends State<ProfilePage> {
     passwordController.text =
         Provider.of<VerifyCredentials>(context, listen: false)
             .Restituteuser(widget.username)['password'];
-    
     super.initState();
     
   }
 
-  Future<bool> _checkauthorization()async{
-    final  sp = await SharedPreferences.getInstance();
-    bool authorized = false;
-    if(sp.getString('userid') != null){
-      authorized = true;
-      Provider.of<VerifyCredentials>(context, listen: false).hascompleted(widget.username);
-    }
-    return authorized;
-    //return  Provider.of<VerifyCredentials>(context, listen: false).iscompleted(widget.username);
-    
-  }
-
+  
   Future<void> computeMonthData(String userID) async {
    
     //steps
@@ -195,11 +183,11 @@ class _ProfilePageState extends State<ProfilePage> {
       
     final sp = await SharedPreferences.getInstance();
     sp.setString('userid', userID);
-    //Provider.of<VerifyCredentials>(context, listen: false).hascompleted(widget.username);
-    
-      setState(() {
+    setState(() {
       
     });
+    
+    Provider.of<VerifyCredentials>(context, listen:false).hascompleted(widget.username);
     
   } 
 
@@ -213,9 +201,7 @@ class _ProfilePageState extends State<ProfilePage> {
     //File? imageFile = Provider.of<VerifyCredentials>(context, listen: false).Restituteuser(widget.username)['image'];
     File? imageFile = null;
     print(imageFile);
-    final bool authorized = false;
-    
-   
+  
 
     ena = actual == -1 ? false : true;
     return Scaffold(
@@ -328,15 +314,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         )
                       : ElevatedButton.styleFrom(shape: CircleBorder())),
             Consumer<VerifyCredentials>(
-              builder: (context, value, child) => FutureBuilder(
-                future: _checkauthorization(),
-                builder: (context, snapshot){
-                if(snapshot.hasData){
-                  final auth = snapshot.data;
-                  print(auth);
-                  // vuol dire che mi ero già autorizzato e quindi mettiamo qui una funzione che fetcha i dati mancanti
-                return Card(
-                  child: value.isAuthenticated(widget.username) || auth  == true ? ElevatedButton( // perchè non iscompleted?
+              builder: (context, value, child) =>  Card(
+                  child: value.isAuthenticated(widget.username) && value.iscompleted(widget.username)  == true ? ElevatedButton(
                     child: Text('You\'re connected. \n Click if you want to disconnect', textAlign: TextAlign.center,), 
                     style: ElevatedButton.styleFrom(
                     primary: Colors.green,
@@ -355,6 +334,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     
                   });
                   Provider.of<VerifyCredentials>(context, listen: false).AssociateAuthorization(widget.username, userId);
+                  
                   }) :
                 Consumer<VerifyCredentials>(
                   builder: (context, credentials, child) =>
@@ -375,43 +355,20 @@ class _ProfilePageState extends State<ProfilePage> {
                           redirectUri: CredentialsFitbitter.redirectUri,
                           callbackUrlScheme: 'example');
                           Provider.of<VerifyCredentials>(context, listen: false).AssociateAuthorization(widget.username, userId);
-                          FutureBuilder(
-                            future:  computeMonthData(credentials.Restituteuser(widget.username)['userID']),
-                            builder:(context, snapshot){
-                              if(snapshot.hasData){
-                               
-                                
-                                  setState(() {
-                                  
-                                });
-                        
-                                
-                                Navigator.pushNamed(context, HomePage.route, arguments: {
-                                  'username': widget.username
-                      
-                                });
-                                return Text('');
-                              }else{
-                                return CircularProgressIndicator();
-                              }
-                            });
+                          computeMonthData(credentials.Restituteuser(widget.username)['userID']);    
                         },
                         ),
                     ],
                   ),
-                ),);}else{
-                  return CircularProgressIndicator();
-                }},
-              )
-
-            ),
+                ),)),
+            
             ElevatedButton(
               onPressed:(){
                 Provider.of<DataBaseRepository>(context, listen: false).deleteAllDatas();
               } , 
-              child: Text('to mare'))],
+              child: Text('to mare')),
             
-          ),
+          ]),
         ),
       ),
     );
