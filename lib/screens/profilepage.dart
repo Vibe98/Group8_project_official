@@ -22,6 +22,7 @@ import '../classes/fetchedData.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 import '../database/entities/mydata.dart';
+import '../utils/utils.dart';
 
 
 class ProfilePage extends StatefulWidget {
@@ -70,126 +71,7 @@ class _ProfilePageState extends State<ProfilePage> {
     
   }
 
-  
-  Future<void> computeMonthData(String userID) async {
-   
-    //steps
-    FitbitActivityTimeseriesDataManager
-        fitbitStepsDataManager =
-        FitbitActivityTimeseriesDataManager(
-      clientID: CredentialsFitbitter.clientID,
-      clientSecret: CredentialsFitbitter.clientSecret,
-      type: "steps",
-    );
-
-    // prendo i dati dal 1 Marzo
     
-    FitbitActivityTimeseriesAPIURL fitbitStepsApiUrl =
-    FitbitActivityTimeseriesAPIURL.dateRangeWithResource(
-    startDate: DateTime.parse('2022-05-01 00:00:00'),
-    endDate: DateTime.now(),
-    userID: userID,
-    resource: "steps"
-    );
-    final steps =
-      await fitbitStepsDataManager.fetch(fitbitStepsApiUrl)
-        as List<FitbitActivityTimeseriesData>;
-  
-  FitbitActivityTimeseriesDataManager
-        fitbitCaloriesDataManager =
-        FitbitActivityTimeseriesDataManager(
-      clientID: CredentialsFitbitter.clientID,
-      clientSecret: CredentialsFitbitter.clientSecret,
-      type: "calories",
-    );
-
-  FitbitActivityTimeseriesAPIURL fitbitCaloriesApiUrl =
-  FitbitActivityTimeseriesAPIURL.dateRangeWithResource(
-    startDate: DateTime.parse('2022-05-01 00:00:00'),
-    endDate: DateTime.now(),
-    userID: userID,
-    resource: "calories"
-    );
-    final calories =
-      await fitbitCaloriesDataManager.fetch(fitbitCaloriesApiUrl)
-        as List<FitbitActivityTimeseriesData>;
-  
-  FitbitActivityTimeseriesDataManager
-        fitbitDistanceDataManager =
-        FitbitActivityTimeseriesDataManager(
-      clientID: CredentialsFitbitter.clientID,
-      clientSecret: CredentialsFitbitter.clientSecret,
-      type: "distance",
-    );
-
-  FitbitActivityTimeseriesAPIURL fitbitDistanceApiUrl =
-  FitbitActivityTimeseriesAPIURL.dateRangeWithResource(
-    startDate: DateTime.parse('2022-05-01 00:00:00'),
-    endDate: DateTime.now(),
-    userID: userID,
-    resource: "distance"
-    );
-    final distances =
-      await fitbitDistanceDataManager.fetch(fitbitDistanceApiUrl)
-        as List<FitbitActivityTimeseriesData>;
-
-  FitbitActivityTimeseriesDataManager
-        fitbitMinutesFADataManager =
-        FitbitActivityTimeseriesDataManager(
-      clientID: CredentialsFitbitter.clientID,
-      clientSecret: CredentialsFitbitter.clientSecret,
-      type: "minutesFairlyActive",
-    );
-
-  FitbitActivityTimeseriesAPIURL fitbitMinutesFAApiUrl =
-  FitbitActivityTimeseriesAPIURL.dateRangeWithResource(
-    startDate: DateTime.parse('2022-05-01 00:00:00'),
-    endDate: DateTime.now(),
-    userID: userID,
-    resource: "minutesFairlyActive"
-    );
-    final minutesFA =
-      await fitbitMinutesFADataManager.fetch(fitbitMinutesFAApiUrl)
-        as List<FitbitActivityTimeseriesData>;
-
-  FitbitActivityTimeseriesDataManager
-        fitbitMinutesVADataManager =
-        FitbitActivityTimeseriesDataManager(
-      clientID: CredentialsFitbitter.clientID,
-      clientSecret: CredentialsFitbitter.clientSecret,
-      type: "minutesVeryActive",
-    );
-
-  FitbitActivityTimeseriesAPIURL fitbitMinutesVAApiUrl =
-  FitbitActivityTimeseriesAPIURL.dateRangeWithResource(
-    startDate: DateTime.parse('2022-05-01 00:00:00'),
-    endDate: DateTime.now(),
-    userID: userID,
-    resource: "minutesVeryActive"
-    );
-    final minutesVA =
-      await fitbitMinutesVADataManager.fetch(fitbitMinutesVAApiUrl)
-        as List<FitbitActivityTimeseriesData>;
-
-
-    for(int i=0; i<steps.length; i++) {
-      
-      MyData mydata = MyData( steps[i].dateOfMonitoring!.day, steps[i].dateOfMonitoring!.month, steps[i].value, distances[i].value, calories[i].value, minutesFA[i].value, minutesVA[i].value);
-      await Provider.of<DataBaseRepository>(context, listen:false).insertMyData(mydata);
-
-
-    }
-
-      
-    final sp = await SharedPreferences.getInstance();
-    sp.setString('userid', userID);
-    setState(() {
-      
-    });
-    
-    Provider.of<VerifyCredentials>(context, listen:false).hascompleted(widget.username);
-    
-  } 
 
   
     
@@ -328,13 +210,14 @@ class _ProfilePageState extends State<ProfilePage> {
                   );
                   String userId = '';
                   Provider.of<DataBaseRepository>(context, listen: false).deleteAllDatas();
+                  
                   final sp = await SharedPreferences.getInstance();
                   sp.remove('userid');
                   setState(() {
                     
                   });
                   Provider.of<VerifyCredentials>(context, listen: false).AssociateAuthorization(widget.username, userId);
-                  
+                  Provider.of<VerifyCredentials>(context, listen: false).hascompleted(widget.username);
                   }) :
                 Consumer<VerifyCredentials>(
                   builder: (context, credentials, child) =>
@@ -355,7 +238,19 @@ class _ProfilePageState extends State<ProfilePage> {
                           redirectUri: CredentialsFitbitter.redirectUri,
                           callbackUrlScheme: 'example');
                           Provider.of<VerifyCredentials>(context, listen: false).AssociateAuthorization(widget.username, userId);
-                          computeMonthData(credentials.Restituteuser(widget.username)['userID']);    
+                          List<MyData> datalist = await computeMonthData(context, credentials.Restituteuser(widget.username)['userID'], DateTime.parse('2022-05-01 00:00:00'), DateTime.now(),); 
+                          for(int i =0; i<datalist.length; i++){
+                            MyData mydata = datalist[i];
+                            Provider.of<DataBaseRepository>(context, listen:false).insertMyData(mydata);
+                          }
+                          final sp = await SharedPreferences.getInstance();
+                            sp.setString('userid', credentials.Restituteuser(widget.username)['userID']);
+                            setState(() {
+                              
+                            });
+                            
+                            Provider.of<VerifyCredentials>(context, listen:false).hascompleted(widget.username);
+      
                         },
                         ),
                     ],

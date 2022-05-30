@@ -126,8 +126,8 @@ class _WeekWidgetState extends State<WeekWidget> {
                               WeekMinChartGraph(
                               data1: listminutesfa, 
                               data2: listminutesva,
-                              category1: 'MINUTES FAIRLY ACITIVE',
-                              category2: 'MINUTES VERY ACTIVE',),]);
+                              category1: 'MIN. F. ACTIVE',
+                              category2: 'MIN. V. ACTIVE',),]);
                     }
                     else{
                           return CircularProgressIndicator();
@@ -150,102 +150,21 @@ Future<List<List<WeekChart>>> fetchweekdata (context, startdate)async{
   List<WeekChart> liststeps = [];
   List<WeekChart>  listminutesva = [];
   List<WeekChart>  listminutesfa = [];
-                    
+
+              
   for(int i=0; i<weekdata.length; i++){
-    listcalories.add(WeekChart('${weekdata[i]!.day}/${weekdata[i]!.month}',weekdata[i]!.calories, ColorUtil.fromDartColor(Colors.purple)));
-    liststeps.add(WeekChart('${weekdata[i]!.day}/${weekdata[i]!.month}',weekdata[i]!.steps, ColorUtil.fromDartColor(Colors.blue)));
-    listminutesva.add(WeekChart('${weekdata[i]!.day}/${weekdata[i]!.month}',weekdata[i]!.minutesva, ColorUtil.fromDartColor(Colors.orange)));
-    listminutesfa.add(WeekChart('${weekdata[i]!.day}/${weekdata[i]!.month}',weekdata[i]!.minutesfa, ColorUtil.fromDartColor(Colors.red)));
+    listcalories.add(WeekChart('${weekdata[i]!.day}/${weekdata[i]!.month}',weekdata[i]!.calories, ColorUtil.fromDartColor(Colors.orange)));
+    liststeps.add(WeekChart('${weekdata[i]!.day}/${weekdata[i]!.month}',weekdata[i]!.steps, ColorUtil.fromDartColor(Colors.greenAccent)));
+    listminutesva.add(WeekChart('${weekdata[i]!.day}/${weekdata[i]!.month}',weekdata[i]!.minutesva, ColorUtil.fromDartColor(Colors.deepPurple)));
+    listminutesfa.add(WeekChart('${weekdata[i]!.day}/${weekdata[i]!.month}',weekdata[i]!.minutesfa, ColorUtil.fromDartColor(Colors.purple)));
     }
+  
+  
   List<List<WeekChart>> listreturned = [];
-  listreturned.add(listcalories);
+
   listreturned.add(liststeps);
+  listreturned.add(listcalories);
   listreturned.add(listminutesva);
   listreturned.add(listminutesfa);
   return listreturned; 
 }
-/*
-Future<Map<String, dynamic>>  _fetchweekdata(startdate, enddate, userID)async{
-  // steps
-  FitbitActivityTimeseriesDataManager fitbitActivityTimeseriesDataManagersteps = FitbitActivityTimeseriesDataManager(
-    clientID: '238C5P',
-    clientSecret: '8b6a58492553191918d2cce62a2052c6',
-    type: 'steps',
-  );
-  FitbitActivityTimeseriesAPIURL fitbitActivityApiUrlsteps = FitbitActivityTimeseriesAPIURL.weekWithResource(
-    baseDate: enddate,
-    userID: userID,
-    resource: 'steps',
-  );
-  final fitbitsteps = await fitbitActivityTimeseriesDataManagersteps
-      .fetch(fitbitActivityApiUrlsteps) as List<FitbitActivityTimeseriesData>;
-  print(fitbitsteps.length);
-  
-  // calories  
-  FitbitActivityTimeseriesDataManager fitbitActivityTimeseriesDataManagercalories = FitbitActivityTimeseriesDataManager(
-    clientID: '238C5P',
-    clientSecret: '8b6a58492553191918d2cce62a2052c6',
-    type: 'activityCalories',
-  );
-  FitbitActivityTimeseriesAPIURL fitbitActivityApiUrlcalories = FitbitActivityTimeseriesAPIURL.weekWithResource(
-    baseDate: enddate,
-    userID: userID,
-    resource: 'activityCalories',
-  );
-  final fitbitcalories = await fitbitActivityTimeseriesDataManagercalories
-      .fetch(fitbitActivityApiUrlcalories) as List<FitbitActivityTimeseriesData>;
-
- 
-  
-  // minutesfairlyactive
-  FitbitActivityTimeseriesDataManager fitbitActivityTimeseriesDataManagermin1 = FitbitActivityTimeseriesDataManager(
-    clientID: '238C5P',
-    clientSecret: '8b6a58492553191918d2cce62a2052c6',
-    type: 'minutesFairlyActive',
-  );
-  FitbitActivityTimeseriesAPIURL fitbitActivityApiUrlmin1 = FitbitActivityTimeseriesAPIURL.weekWithResource(
-    baseDate: enddate,
-    userID: userID,
-    resource: 'minutesFairlyActive',
-  );
-  final fitbitmin1 = await fitbitActivityTimeseriesDataManagermin1
-      .fetch(fitbitActivityApiUrlmin1) as List<FitbitActivityTimeseriesData>;
-
-
-  // minutesVeryActive
-  FitbitActivityTimeseriesDataManager fitbitActivityTimeseriesDataManagermin2 = FitbitActivityTimeseriesDataManager(
-    clientID: '238C5P',
-    clientSecret: '8b6a58492553191918d2cce62a2052c6',
-    type: 'minutesVeryActive',
-  );
-  FitbitActivityTimeseriesAPIURL fitbitActivityApiUrlmin2 = FitbitActivityTimeseriesAPIURL.weekWithResource(
-    baseDate: enddate,
-    userID: userID,
-    resource: 'minutesVeryActive',
-  );
-  final fitbitmin2 = await fitbitActivityTimeseriesDataManagermin2
-      .fetch(fitbitActivityApiUrlmin2) as List<FitbitActivityTimeseriesData>;
-  
-  // sleep
-   FitbitSleepDataManager fitbitSleepDataManager = FitbitSleepDataManager(
-        clientID: '238C5P',
-        clientSecret: '8b6a58492553191918d2cce62a2052c6',
-    );
-  
-  FitbitSleepAPIURL fitbitSleepAPIURL = FitbitSleepAPIURL.withUserIDAndDateRange(
-                                    startDate: startdate,
-                                    endDate: enddate,
-                                    userID: userID,
-                                  );
-
-  final fitbitsleep = await fitbitSleepDataManager.fetch(fitbitSleepAPIURL) as Map<String, FitbitSleepData>;
-
-  print(fitbitsleep);
-  Map<String, dynamic> fitmapdata = {};
-  fitmapdata['steps'] = fitbitsteps;
-  fitmapdata['calories'] = fitbitcalories;
-  fitmapdata['minfai'] = fitbitmin1;
-  fitmapdata['minver'] = fitbitmin2;
-  fitmapdata['sleep'] = fitbitsleep;
-  return fitmapdata;
-}*/
