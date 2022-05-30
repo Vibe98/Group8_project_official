@@ -43,10 +43,10 @@ class _HomePageState extends State<HomePage> {
     bool completed = false;
     if (sp.getString('userid') != null) {
       completed = true;
-      Provider.of<VerifyCredentials>(context, listen: false)
-          .hascompleted(widget.username);
+      Provider.of<VerifyCredentials>(context, listen: false).hascompleted(widget.username);
     }
     return completed;
+    //return  Provider.of<VerifyCredentials>(context, listen: false).iscompleted(widget.username);
   }
 
   Future<void> _showChoiceDialog(BuildContext context) {

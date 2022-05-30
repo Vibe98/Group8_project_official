@@ -79,6 +79,7 @@ class _ProfilePageState extends State<ProfilePage> {
       Provider.of<VerifyCredentials>(context, listen: false).hascompleted(widget.username);
     }
     return authorized;
+    //return  Provider.of<VerifyCredentials>(context, listen: false).iscompleted(widget.username);
     
   }
 
@@ -194,7 +195,7 @@ class _ProfilePageState extends State<ProfilePage> {
       
     final sp = await SharedPreferences.getInstance();
     sp.setString('userid', userID);
-    Provider.of<VerifyCredentials>(context, listen: false).hascompleted(widget.username);
+    //Provider.of<VerifyCredentials>(context, listen: false).hascompleted(widget.username);
     
       setState(() {
       
@@ -332,8 +333,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 builder: (context, snapshot){
                 if(snapshot.hasData){
                   final auth = snapshot.data;
+                  print(auth);
+                  // vuol dire che mi ero già autorizzato e quindi mettiamo qui una funzione che fetcha i dati mancanti
                 return Card(
-                  child: value.isAuthenticated(widget.username) || auth  == true ? ElevatedButton(
+                  child: value.isAuthenticated(widget.username) || auth  == true ? ElevatedButton( // perchè non iscompleted?
                     child: Text('You\'re connected. \n Click if you want to disconnect', textAlign: TextAlign.center,), 
                     style: ElevatedButton.styleFrom(
                     primary: Colors.green,
@@ -345,6 +348,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   clientSecret: CredentialsFitbitter.clientSecret
                   );
                   String userId = '';
+                  Provider.of<DataBaseRepository>(context, listen: false).deleteAllDatas();
                   final sp = await SharedPreferences.getInstance();
                   sp.remove('userid');
                   setState(() {
@@ -375,11 +379,12 @@ class _ProfilePageState extends State<ProfilePage> {
                             future:  computeMonthData(credentials.Restituteuser(widget.username)['userID']),
                             builder:(context, snapshot){
                               if(snapshot.hasData){
-                                FetchedData.complete = true;
+                               
                                 
                                   setState(() {
                                   
                                 });
+                        
                                 
                                 Navigator.pushNamed(context, HomePage.route, arguments: {
                                   'username': widget.username
