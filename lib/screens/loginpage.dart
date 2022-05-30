@@ -33,6 +33,18 @@ class _LoginPageState extends State<LoginPage> {
   _checkLogin();
   }
 
+  String modifyDate(int date){
+    //modifica mese o giorno aggiungendo 0 se inizia con un numero minore di 10
+    String newDate='';
+    if(date<10){
+      newDate = '0$date';
+    }else{
+      newDate = '$date';
+    }
+
+    return newDate;
+  }
+
   void _checkLogin() async{
     final sp = await SharedPreferences.getInstance();
     if(sp.getStringList('username')!=null){
@@ -52,14 +64,21 @@ class _LoginPageState extends State<LoginPage> {
       if(sc.getString('userid')!=null){
         final userId=sc.getString('userid');
         Provider.of<VerifyCredentials>(context, listen: false).AssociateAuthorization(username, userId);
-        /*final listlastday = await Provider.of<DataBaseRepository>(context, listen:false).findLastDay();
+        final listlastday = await Provider.of<DataBaseRepository>(context, listen:false).findLastDay();
         print(listlastday);
-        if(DateTime.now().day == listlastday![0] && DateTime.now().month == listlastday[1]){
-          Provider.of<DataBaseRepository>(context, listen: false).deleteLastDay();
-          computeMonthData(context, userId!, DateTime.now(), DateTime.now());
-        }else{
+        print(listlastday!.day);
+        print(listlastday.month);
+        Provider.of<DataBaseRepository>(context, listen: false).deleteLastDay();
 
-        }*/
+        if(DateTime.now().day == listlastday.day && DateTime.now().month == listlastday.month){
+              computeMonthData(userId!, DateTime.now(), DateTime.now());
+        }else{
+          DateTime startdate = DateTime.parse('2022-${modifyDate(listlastday.month)}-${modifyDate(listlastday.day)}');
+          DateTime enddate = DateTime.now();
+          computeMonthData(userId!, startdate, enddate);
+
+
+        }
         Provider.of<VerifyCredentials>(context, listen: false).hascompleted(username);
       }
 

@@ -26,7 +26,7 @@ abstract class MyDataDao{
   Future<List<MyData>> findAllData();
 
   @Query('SELECT day,month FROM MyData ORDER BY id DESC LIMIT 1')
-  Future<List<int>?> findLastDay();
+  Future<MyData?> findLastDay();
 
    @Query('DELETE * FROM MyData ORDER BY id DESC LIMIT 1')
   Future<void> deleteLastDay();

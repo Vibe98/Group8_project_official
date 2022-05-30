@@ -219,15 +219,24 @@ class _$MyDataDao extends MyDataDao {
   }
 
   @override
-  Future<List<int>?> findLastDay() async {
-    await _queryAdapter
-        .queryNoReturn('SELECT day,month FROM MyData ORDER BY ID DESC LIMIT 1');
+  Future<MyData?> findLastDay() async {
+    return _queryAdapter.query(
+        'SELECT * FROM MyData WHERE day=(SELECT MAX (day) FROM MyData WHERE month=(SELECT MAX (month) FROM MyData))',
+        mapper: (Map<String, Object?> row) => MyData(
+            row['id'] as int?,
+            row['day'] as int,
+            row['month'] as int,
+            row['steps'] as double?,
+            row['distance'] as double?,
+            row['calories'] as double?,
+            row['minutesfa'] as double?,
+            row['minutesva'] as double?));
   }
 
   @override
   Future<void> deleteLastDay() async {
-    await _queryAdapter
-        .queryNoReturn('DELETE * FROM MyData ORDER BY ID DESC LIMIT 1');
+    await _queryAdapter.queryNoReturn(
+        'DELETE FROM MyData WHERE day=(SELECT MAX (day) FROM MyData WHERE month=(SELECT MAX (month) FROM MyData))');
   }
 
   @override

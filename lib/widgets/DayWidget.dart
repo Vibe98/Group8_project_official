@@ -272,7 +272,7 @@ class DayWidget extends StatelessWidget {
                                               fontStyle: FontStyle.normal,
                                               fontSize: 20));
                                             }}
-                                          })*/ 
+                                          }) */
                                     ],
                                   ),
                                 ),
