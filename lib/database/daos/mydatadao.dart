@@ -12,6 +12,10 @@ abstract class MyDataDao{
   @Query('SELECT * FROM MyData WHERE month = :month')
   Future<List<MyData?>> findMonthDatas(int month);
   
+  @Query('SELECT * FROM MyData WHERE (day = :day1 AND month = :month1) OR (day = :day2 AND month = :month2) OR (day = :day3 AND month = :month3) OR (day = :day4 AND month = :month4) OR (day = :day5 AND month = :month5) OR (day = :day6 AND month = :month6) OR (day = :day7 AND month = :month7)')
+  Future<List<MyData?>> findWeekData(int day1, int day2, int day3, int day4, int day5, int day6, int day7,
+                                  int month1, int month2, int month3, int month4, int month5, int month6, int month7);
+
   @insert //inserting
   Future<void> insertMyData(MyData mydata);
 
