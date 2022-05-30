@@ -6,16 +6,17 @@ import 'package:intl/intl.dart';
 import 'package:charts_flutter/flutter.dart';
 import 'package:charts_flutter/src/text_style.dart' as style;
 import 'package:charts_flutter/src/text_element.dart' as element;
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import 'myMonthData.dart';
 import '../database/entities/mydata.dart';
 
-class MonthChartGraph extends StatelessWidget{
+class MonthStepsChartGraph extends StatelessWidget{
   final List<myMonthData> data;
   final int month;
   final String category;
 
-  MonthChartGraph({required this.data, required this.month, required this.category});
+  MonthStepsChartGraph({required this.data, required this.month, required this.category});
 
   @override 
   static List selectedDatum = [];
@@ -40,16 +41,28 @@ class MonthChartGraph extends StatelessWidget{
             Container(
                   alignment: Alignment.center,
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         category,
                         style: Theme.of(context).textTheme.bodyText2,
                         textAlign: TextAlign.center,
                       ),
-                      Icon(Icons.directions_walk)
+                      SizedBox(width: 20),
+                      Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Colors.greenAccent,
+                                width: 2,
+                              )),
+                          child:
+                              Icon(MdiIcons.run, size: 30, color: Colors.black))
                     ],
                   ),
-                  color: Colors.green),
+                  ),
             Expanded(
               child: BarChart(series,
               animate: true,
@@ -94,6 +107,104 @@ class MonthChartGraph extends StatelessWidget{
   }
 }
 
+
+class MonthCaloriesChartGraph extends StatelessWidget{
+  final List<myMonthData> data;
+  final int month;
+  final String category;
+
+  MonthCaloriesChartGraph({required this.data, required this.month, required this.category});
+
+  @override 
+  static List selectedDatum = [];
+  Widget build(BuildContext context){
+    List<Series<myMonthData, String>> series = [
+      Series(
+        id: category,
+        data: data,
+        domainFn: (myMonthData series, _) => series.day,
+        measureFn: (myMonthData series,_) => series.value,
+        colorFn: (myMonthData series,_) => series.barColor,
+      )
+    ];
+
+    return Container(
+      height: 290,
+      padding: EdgeInsets.all(25),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(2),
+          child: Column(children: <Widget>[
+            Container(
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        category,
+                        style: Theme.of(context).textTheme.bodyText2,
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(width: 20),
+                      Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Colors.amberAccent,
+                                width: 2,
+                              )),
+                          child:
+                              Icon(MdiIcons.fire, size: 30, color: Colors.orange))
+                    ],
+                  ),
+                  ),
+            Expanded(
+              child: BarChart(series,
+              animate: true,
+              domainAxis: const OrdinalAxisSpec(
+                    tickProviderSpec: StaticOrdinalTickProviderSpec(
+                    [
+                      TickSpec('5'),
+                      TickSpec('10'),
+                      TickSpec('15'),
+                      TickSpec('20'),
+                      TickSpec('25'),
+                      
+                    ]
+              )),
+              behaviors: [
+                  SelectNearest(eventTrigger: SelectionTrigger.tapAndDrag),
+                  LinePointHighlighter(
+                    symbolRenderer: CustomCircleSymbolRenderer2(),
+                  )
+                ],
+                selectionModels: [
+                  SelectionModelConfig(changedListener: (SelectionModel model) {
+                    if (model.hasDatumSelection) {
+                      selectedDatum = [];
+                      model.selectedDatum.forEach((SeriesDatum datumPair) {
+                        selectedDatum.add({
+                          'color': datumPair.series.colorFn!(0),
+                          'text': '${datumPair.datum.value}'
+                        });
+                      });
+                      print(selectedDatum);
+                    } else {
+                      selectedDatum = [];
+                    }
+                  })
+                ],),
+              )
+          ],)
+        )
+      )
+    );
+  }
+}
+
+
 class MonthMinChartGraph extends StatelessWidget {
   final List<myMonthData> data1;
   final List<myMonthData> data2;
@@ -136,16 +247,28 @@ class MonthMinChartGraph extends StatelessWidget {
               Container(
                   alignment: Alignment.center,
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Minutes of activity',
+                        'MINUTES OF ACTIVITY',
                         style: Theme.of(context).textTheme.bodyText2,
                         textAlign: TextAlign.center,
                       ),
-                      Icon(Icons.directions_walk)
+                      SizedBox(width:20),
+                      Container(
+                                        height: 40,
+                                        width: 40,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                              color: Colors.purple,
+                                              width: 2,
+                                            )),
+                                        child: Icon(MdiIcons.armFlex,
+                                            size: 30,
+                                            color: Colors.deepPurple))
                     ],
-                  ),
-                  color: Colors.green),
+                  )),
               Expanded(
                   child: BarChart(
                 series,
@@ -300,7 +423,7 @@ class CustomCircleSymbolRenderer2 extends CircleSymbolRenderer {
     textStyle.color = Color.black;
     textStyle.fontSize = 15;
 
-    List tooltips = MonthChartGraph.selectedDatum;
+    List tooltips = MonthStepsChartGraph.selectedDatum;
     // String unit = _DashboardState.unit;
     if (tooltips != null && tooltips.length > 0) {
       num tipTextLen = (tooltips[0]['text']).length;

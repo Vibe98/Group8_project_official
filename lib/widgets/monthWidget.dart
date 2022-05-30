@@ -1,9 +1,11 @@
+import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:login_flow/repository/databaserepository.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
+
 
 import '../classes/changeMonth.dart';
 import '../classes/fetchedData.dart';
@@ -35,7 +37,7 @@ class MonthWidget extends StatelessWidget {
                       IconButton(
                           onPressed: () {
                             // one month back
-                            if(DateTime.now().month-pickmonth.month<3){
+                            if(DateTime.now().month-pickmonth.month<2){
                               pickmonth.decreaseMonth();
                             }else{
                               null;
@@ -62,68 +64,38 @@ class MonthWidget extends StatelessWidget {
                               Icon(Icons.arrow_forward_ios, color: Colors.blue)),
                     ],
                   ),
-                  
-                  Consumer<DataBaseRepository>(
-                    builder:(context, db, child) => 
+                   
                     FutureBuilder(
                       initialData: null,
-                      future: db.findMonthDatas(pickmonth.month),
+                      future: fetchMonthData(context, pickmonth.month),
                       builder: (context, snapshot){
+                        switch(snapshot.connectionState){
+                       case ConnectionState.none:
+                       case ConnectionState.waiting:
+                        return CircularProgressIndicator();
+                       case ConnectionState.done:
+                       case ConnectionState.active:
                         if(snapshot.hasData){
-                          final monthData = snapshot.data as List<MyData?>;
-                          
-                          // riempio la variabile fetchedData.stepsData
-                          List<myMonthData> stepsList = [];
-                          for(var i=0;i<monthData.length;i++){
-                            myMonthData steps = myMonthData(day: monthData[i]!.day.toString(), month: monthData[i]!.month.toString(), value: monthData[i]!.steps, barColor: charts.Color(r:0, b:0, g:100));
-                            stepsList.add(steps);
-                          }
-
-                          FetchedData.stepsData.putIfAbsent(DateFormat('MMMM').format(DateTime(0, pickmonth.month)), () => stepsList);
-
-                          // riempio la variabile fetchedData.caloriesData
-                          List<myMonthData> calList = [];
-                          for(var i=0;i<monthData.length;i++){
-                            myMonthData calories = myMonthData(day: monthData[i]!.day.toString(), month: monthData[i]!.month.toString(), value: monthData[i]!.calories, barColor: charts.Color(r:0, b:0, g:100));
-                            calList.add(calories);
-                          }
-
-                          FetchedData.caloriesData.putIfAbsent(DateFormat('MMMM').format(DateTime(0, pickmonth.month)), () => calList);
-
-                          // riempio la variabile fetchedData.minutesFairlyActiveData
-                          List<myMonthData> minFAList = [];
-                          for(var i=0;i<monthData.length;i++){
-                            myMonthData minFA = myMonthData(day: monthData[i]!.day.toString(), month: monthData[i]!.month.toString(), value: monthData[i]!.minutesfa, barColor: charts.Color(r:0, b:0, g:100));
-                            minFAList.add(minFA);
-                          }
-
-                          FetchedData.minutesFairlyActiveData.putIfAbsent(DateFormat('MMMM').format(DateTime(0, pickmonth.month)), () => minFAList);
-
-                          // riempio la variabile fetchedData.minutesVeryActiveData
-                          List<myMonthData> minVAList = [];
-                          for(var i=0;i<monthData.length;i++){
-                            myMonthData minVA = myMonthData(day: monthData[i]!.day.toString(), month: monthData[i]!.month.toString(), value: monthData[i]!.minutesva, barColor: charts.Color(r:0, b:0, g:100));
-                            minVAList.add(minVA);
-                          }
-
-                          FetchedData.minutesVeryActiveData.putIfAbsent(DateFormat('MMMM').format(DateTime(0, pickmonth.month)), () => minVAList);
+                          final monthMap = snapshot.data as Map<String, List<List<myMonthData>>>;
+                          List<List<myMonthData>> monthData = monthMap[DateFormat('MMMM').format(DateTime(0,pickmonth.month))]!;
+                          List<myMonthData> stepsData = monthData[0];
+                          List<myMonthData> calData = monthData[1];
+                          List<myMonthData> minVAData = monthData[2];
+                          List<myMonthData> minFAData = monthData[3];
 
                           return Column(
                             children: [
-                              Text('${pickmonth.month}'),
-                              Text('${FetchedData.stepsData[DateFormat('MMMM').format(DateTime(0,pickmonth.month))]![1].value}'),
     
-                            MonthChartGraph(data: FetchedData.stepsData[DateFormat('MMMM').format(DateTime(0,pickmonth.month))]!, month: pickmonth.month, category: 'Steps',),
-                            MonthChartGraph(data: FetchedData.caloriesData[DateFormat('MMMM').format(DateTime(0,pickmonth.month))]!, month: pickmonth.month, category: 'Calories',),
-                            MonthMinChartGraph(data1: FetchedData.minutesVeryActiveData[DateFormat('MMMM').format(DateTime(0,pickmonth.month))]!, data2: FetchedData.minutesFairlyActiveData[DateFormat('MMMM').format(DateTime(0,pickmonth.month))]!, category1: 'Minutes Very Active', category2: 'Minutes Fairly Active'),
+                            MonthStepsChartGraph(data: stepsData, month: pickmonth.month, category: 'Steps'),
+                            MonthCaloriesChartGraph(data: calData, month: pickmonth.month, category: 'Calories'),
+                            MonthMinChartGraph(data1: minVAData, data2: minFAData, category1: 'Minutes Very Active', category2: 'Minutes Fairly Active'),
                             ],
                       );
                         }else{
                           return CircularProgressIndicator();
-                        }}
+                        }}}
                       
                     ),
-                  ),
                 ],
               ),
             ],
@@ -131,4 +103,34 @@ class MonthWidget extends StatelessWidget {
         ),
       );
     }
+}
+
+Future<Map<String, List<List<myMonthData>>>> fetchMonthData(context, month) async {
+List<MyData?> monthData = await Provider.of<DataBaseRepository>(context, listen:false).findMonthDatas(month);
+List<myMonthData> stepsList = [];
+List<myMonthData> calList = [];
+List<myMonthData> minVAList = [];
+List<myMonthData> minFAList = [];
+for(var i=0;i<monthData.length;i++){
+  myMonthData steps = myMonthData(day: monthData[i]!.day.toString(), month: monthData[i]!.month.toString(), value: monthData[i]!.steps, barColor: charts.ColorUtil.fromDartColor(Colors.greenAccent));
+  stepsList.add(steps);
+  myMonthData calories = myMonthData(day: monthData[i]!.day.toString(), month: monthData[i]!.month.toString(), value: monthData[i]!.calories, barColor: charts.ColorUtil.fromDartColor(Colors.orange));
+  calList.add(calories);
+  myMonthData minFA = myMonthData(day: monthData[i]!.day.toString(), month: monthData[i]!.month.toString(), value: monthData[i]!.minutesfa, barColor: charts.ColorUtil.fromDartColor(Colors.purple));
+  minFAList.add(minFA);
+  myMonthData minVA = myMonthData(day: monthData[i]!.day.toString(), month: monthData[i]!.month.toString(), value: monthData[i]!.minutesva, barColor: charts.ColorUtil.fromDartColor(Colors.deepPurple));
+  minVAList.add(minVA);
+}
+
+List<List<myMonthData>> monthList = [];
+monthList.add(stepsList);
+monthList.add(calList);
+monthList.add(minVAList);
+monthList.add(minFAList);
+
+Map<String, List<List<myMonthData>>> monthReturned = {};
+monthReturned[DateFormat('MMMM').format(DateTime(0, month))] = monthList;
+
+return monthReturned;
+
 }
