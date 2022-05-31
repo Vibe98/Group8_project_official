@@ -11,6 +11,8 @@ import 'package:login_flow/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../database/entities/mydata.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -67,21 +69,29 @@ class _LoginPageState extends State<LoginPage> {
         final userId=sc.getString('userid');
         Provider.of<VerifyCredentials>(context, listen: false).AssociateAuthorization(username, userId);
         final listlastday = await Provider.of<DataBaseRepository>(context, listen:false).findLastDay();
-        print(listlastday);
-        print(listlastday!.day);
-        print(listlastday.month);
+
         Provider.of<DataBaseRepository>(context, listen: false).deleteLastDay();
 
-        if(DateTime.now().day == listlastday.day && DateTime.now().month == listlastday.month){
-              computeMonthData(userId!, DateTime.now(), DateTime.now());
+        if(DateTime.now().day == listlastday!.day && DateTime.now().month == listlastday.month){
+          List<MyData> data = await computeMonthData(
+            userId!, DateTime.now(), DateTime.now());
+
+          Provider.of<DataBaseRepository>(context, listen:false).insertMyData(data[0]);
         }else{
           DateTime startdate = DateTime.parse('2022-${modifyDate(listlastday.month)}-${modifyDate(listlastday.day)}');
           DateTime enddate = DateTime.now();
+          List<MyData> datalist = await computeMonthData(
+            userId!, startdate, enddate);
+          for(int i=0; i<datalist.length; i++){
+            MyData mydata = datalist[i];
+            Provider.of<DataBaseRepository>(context, listen:false)
+            .insertMyData(mydata);
+          }
+
           await FitbitConnector.refreshToken(
             clientID: CredentialsFitbitter.clientID,
             clientSecret: CredentialsFitbitter.clientSecret,
         );
-          computeMonthData(userId!, startdate, enddate);
 
 
         }

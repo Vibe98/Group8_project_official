@@ -221,7 +221,7 @@ class _$MyDataDao extends MyDataDao {
   @override
   Future<MyData?> findLastDay() async {
     return _queryAdapter.query(
-        'SELECT * FROM MyData WHERE day=(SELECT MAX (day) FROM MyData WHERE month=(SELECT MAX (month) FROM MyData))',
+        'SELECT day,month FROM MyData WHERE day=(SELECT MAX(day) FROM MyData WHERE month=(SELECT MAX(month) FROM MyData))',
         mapper: (Map<String, Object?> row) => MyData(
             row['id'] as int?,
             row['day'] as int,
@@ -236,7 +236,7 @@ class _$MyDataDao extends MyDataDao {
   @override
   Future<void> deleteLastDay() async {
     await _queryAdapter.queryNoReturn(
-        'DELETE FROM MyData WHERE day=(SELECT MAX (day) FROM MyData WHERE month=(SELECT MAX (month) FROM MyData))');
+        'DELETE * FROM MyData WHERE day=(SELECT MAX(day) FROM MyData WHERE month=(SELECT MAX(month) FROM MyData))');
   }
 
   @override
