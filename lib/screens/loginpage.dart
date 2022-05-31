@@ -2,6 +2,7 @@ import 'package:fitbitter/fitbitter.dart';
 import 'package:flutter/material.dart';
 import 'package:login_flow/classes/credentialsFitbitter.dart';
 import 'package:login_flow/classes/verify_cred.dart';
+import 'package:login_flow/database/entities/mydata.dart';
 import 'package:login_flow/repository/databaserepository.dart';
 import 'package:login_flow/screens/forgotpassword.dart';
 import 'package:login_flow/screens/homepage.dart';

@@ -5,7 +5,6 @@ import 'package:login_flow/classes/myMonthData.dart';
 import 'package:login_flow/classes/weekchart.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
-import 'package:login_flow/classes/fetchedData.dart';
 
 class WeekData extends ChangeNotifier{
 
