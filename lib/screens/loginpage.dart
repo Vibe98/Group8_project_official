@@ -1,4 +1,6 @@
+import 'package:fitbitter/fitbitter.dart';
 import 'package:flutter/material.dart';
+import 'package:login_flow/classes/credentialsFitbitter.dart';
 import 'package:login_flow/classes/verify_cred.dart';
 import 'package:login_flow/repository/databaserepository.dart';
 import 'package:login_flow/screens/forgotpassword.dart';
@@ -75,6 +77,10 @@ class _LoginPageState extends State<LoginPage> {
         }else{
           DateTime startdate = DateTime.parse('2022-${modifyDate(listlastday.month)}-${modifyDate(listlastday.day)}');
           DateTime enddate = DateTime.now();
+          await FitbitConnector.refreshToken(
+            clientID: CredentialsFitbitter.clientID,
+            clientSecret: CredentialsFitbitter.clientSecret,
+        );
           computeMonthData(userId!, startdate, enddate);
 
 
