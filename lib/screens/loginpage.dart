@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:login_flow/classes/verify_cred.dart';
+import 'package:login_flow/database/entities/mydata.dart';
 import 'package:login_flow/repository/databaserepository.dart';
 import 'package:login_flow/screens/forgotpassword.dart';
 import 'package:login_flow/screens/homepage.dart';
@@ -71,12 +72,15 @@ class _LoginPageState extends State<LoginPage> {
         Provider.of<DataBaseRepository>(context, listen: false).deleteLastDay();
 
         if(DateTime.now().day == listlastday.day && DateTime.now().month == listlastday.month){
-              computeMonthData(userId!, DateTime.now(), DateTime.now());
+              List<MyData> datalist = await computeMonthData(userId!, DateTime.now(), DateTime.now());
         }else{
           DateTime startdate = DateTime.parse('2022-${modifyDate(listlastday.month)}-${modifyDate(listlastday.day)}');
           DateTime enddate = DateTime.now();
-          computeMonthData(userId!, startdate, enddate);
-
+          List<MyData> datalist = await computeMonthData(userId!, startdate, enddate);
+          for(int i=0; i<datalist.length; i++){
+            MyData mydata = datalist[i];
+            Provider.of<DataBaseRepository>(context, listen: false).insertMyData(mydata);
+          }
 
         }
         Provider.of<VerifyCredentials>(context, listen: false).hascompleted(username);
