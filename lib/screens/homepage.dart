@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:login_flow/database/entities/mydata.dart';
 import 'package:login_flow/repository/databaserepository.dart';
+import 'package:login_flow/screens/gardenpage.dart';
 import 'package:login_flow/widgets/weekwidget.dart';
 import 'package:login_flow/classes/credentialsFitbitter.dart';
 import 'package:login_flow/screens/loginpage.dart';
 import 'package:login_flow/screens/profilepage.dart';
 import 'package:login_flow/widgets/monthWidget.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -77,7 +79,17 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
+            backgroundColor: Colors.green,
             title: const Text('My Data'),
+            actions: [
+              IconButton(
+                
+                onPressed: (){
+                  Navigator.pushNamed(context, GardenPage.route, arguments: {'username': widget.username});
+                }, 
+                icon: Icon(MdiIcons.shovel),
+                )
+            ],
             bottom: const TabBar(
               tabs: <Widget>[
                 Tab(
@@ -100,7 +112,7 @@ class _HomePageState extends State<HomePage> {
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
-                          color: Colors.blue)),
+                          color: Colors.greenAccent)),
                   padding: EdgeInsets.fromLTRB(8, 20, 8, 20)),
               CustomListTile(
                   Icons.person,
@@ -113,8 +125,8 @@ class _HomePageState extends State<HomePage> {
                             })
                       }),
               CustomListTile(
-                  Icons.settings,
-                  'Settings',
+                  MdiIcons.ticketPercentOutline,
+                  'Coupons',
                   () => {
                         // TODO go to settings page
                       }),

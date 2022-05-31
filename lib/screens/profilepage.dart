@@ -163,6 +163,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     labelText: 'Password'),
                 obscureText: true,
               ),
+              
+                
               ElevatedButton(
                   onPressed: () {
                     if (actual == -1) {
@@ -221,6 +223,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   builder: (context, credentials, child) =>
                   Column(
                     children: [
+                      
                       ElevatedButton(
                         child: Text('Authorize'),
                         style: ElevatedButton.styleFrom(
@@ -229,12 +232,16 @@ class _ProfilePageState extends State<ProfilePage> {
                         textStyle: TextStyle(
                         fontWeight: FontWeight.bold)), 
                          onPressed:() async{
+                          
                           String? userId = await FitbitConnector.authorize(
                           context: context,
                           clientID: CredentialsFitbitter.clientID,
                           clientSecret: CredentialsFitbitter.clientSecret,
                           redirectUri: CredentialsFitbitter.redirectUri,
                           callbackUrlScheme: 'example');
+                          setState(() {
+                            ena = true;
+                          });
                           Provider.of<VerifyCredentials>(context, listen: false).AssociateAuthorization(widget.username, userId);
                           List<MyData> datalist = await computeMonthData(credentials.Restituteuser(widget.username)['userID'], DateTime.parse('2022-03-01 00:00:00'), DateTime.now(),); 
                           for(int i =0; i<datalist.length; i++){
@@ -243,14 +250,16 @@ class _ProfilePageState extends State<ProfilePage> {
                           }
                           final sp = await SharedPreferences.getInstance();
                             sp.setString('userid', credentials.Restituteuser(widget.username)['userID']);
+                            
                             setState(() {
-                              
+                              ena = false;
                             });
                             
                             Provider.of<VerifyCredentials>(context, listen:false).hascompleted(widget.username);
       
                         },
                         ),
+                        
                     ],
                   ),
                 ),)),

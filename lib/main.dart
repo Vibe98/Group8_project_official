@@ -5,6 +5,7 @@ import 'package:login_flow/classes/weekdata.dart';
 import 'package:login_flow/database/database.dart';
 import 'package:login_flow/repository/databaserepository.dart';
 import 'package:login_flow/screens/forgotpassword.dart';
+import 'package:login_flow/screens/gardenpage.dart';
 import 'package:login_flow/screens/homepage.dart';
 import 'package:login_flow/screens/loginpage.dart';
 import 'package:login_flow/screens/profilepage.dart';
@@ -72,6 +73,12 @@ class MyApp extends StatelessWidget {
             final args = settings.arguments as Map;
             return MaterialPageRoute(builder: (context) {
               return ProfilePage(username: args['username'], keypassed: args['keypassed']);
+            });
+          }else if(settings.name == GardenPage.route){
+            // in questo caso ho un argomento obbligatorio che è la password
+            final args = settings.arguments as Map;
+            return MaterialPageRoute(builder: (context) {
+              return GardenPage(username: args['username']);
             });
           }
           }

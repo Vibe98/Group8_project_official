@@ -224,7 +224,7 @@ class DayWidget extends StatelessWidget {
                                               fontStyle: FontStyle.normal,
                                               fontSize: 20)),
                                       SizedBox(width: 70),
-                                      /*FutureBuilder(
+                                      FutureBuilder(
                                           future: _computeSleepData(
                                               daydate.difference,
                                               value.Restituteuser(
@@ -271,7 +271,7 @@ class DayWidget extends StatelessWidget {
                                               fontStyle: FontStyle.normal,
                                               fontSize: 20));
                                             }}
-                                          }) */
+                                          }) 
                                     ],
                                   ),
                                 ),
@@ -321,7 +321,7 @@ class DayWidget extends StatelessWidget {
                                                 fontSize: 15)),
                                       ],
                                     ),
-                                    SizedBox(width: 25),
+                                    SizedBox(width: 20),
                                     Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
