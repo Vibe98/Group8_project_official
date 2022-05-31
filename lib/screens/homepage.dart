@@ -13,7 +13,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:login_flow/classes/DayDate.dart';
-import 'package:login_flow/classes/fetchedData.dart';
 import 'package:login_flow/widgets/DayWidget.dart';
 import 'dart:ui';
 
@@ -21,7 +20,6 @@ import '../classes/changeMonth.dart';
 import '../classes/monthChartGraph.dart';
 import '../classes/myMonthData.dart';
 import '../classes/verify_cred.dart';
-import '../classes/fetchedData.dart';
 import '../widgets/monthWidget.dart';
 
 class HomePage extends StatefulWidget {

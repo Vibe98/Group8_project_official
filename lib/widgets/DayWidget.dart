@@ -1,6 +1,5 @@
 import 'package:fitbitter/fitbitter.dart';
 import 'package:flutter/material.dart';
-import 'package:login_flow/classes/fetchedData.dart';
 import 'package:login_flow/database/entities/mydata.dart';
 import 'package:login_flow/repository/databaserepository.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';

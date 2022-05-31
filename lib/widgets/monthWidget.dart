@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 
 
 import '../classes/changeMonth.dart';
-import '../classes/fetchedData.dart';
 import '../classes/monthChartGraph.dart';
 import '../classes/myMonthData.dart';
 import '../database/entities/mydata.dart';

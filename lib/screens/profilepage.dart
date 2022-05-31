@@ -12,12 +12,10 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../classes/credentialsFitbitter.dart';
-import '../classes/fetchedData.dart';
 import '../classes/myMonthData.dart';
 import '../classes/verify_cred.dart';
 import '../classes/credentialsFitbitter.dart';
 import '../classes/myMonthData.dart';
-import '../classes/fetchedData.dart';
 
 import 'package:charts_flutter/flutter.dart' as charts;
 

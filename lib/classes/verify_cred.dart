@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:login_flow/classes/profile.dart';
 
-import 'fetchedData.dart';
 
 class VerifyCredentials extends ChangeNotifier{
 
