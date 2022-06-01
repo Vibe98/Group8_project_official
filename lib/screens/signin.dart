@@ -127,6 +127,9 @@ class _SignInState extends State<SignIn> {
                 // add also an image
                 _decideImageView(),
                 ElevatedButton(
+                      style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.green),
+                    ),
                     child: const Text('Select image'),
                     onPressed: () {
                       _showChoiceDialog(context);
@@ -252,6 +255,7 @@ class _SignInState extends State<SignIn> {
                 Consumer<VerifyCredentials>(
                   builder: (context, verifyCred, child) => 
                   FloatingActionButton(
+                    backgroundColor: Colors.green,
                       child: const Icon(Icons.done),
                       onPressed: () async {
                         if(_formKey.currentState!.validate()){

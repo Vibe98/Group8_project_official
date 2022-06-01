@@ -132,7 +132,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         actual == -1 ? InputBorder.none : OutlineInputBorder(),
                     icon: Icon(
                       Icons.person,
-                      color: Colors.blue,
+                      color: Colors.green,
                     ),
                     labelText: 'Name')),
             SizedBox(height: 20),
@@ -144,7 +144,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       actual == -1 ? InputBorder.none : OutlineInputBorder(),
                   icon: Icon(
                     Icons.person,
-                    color: Colors.blue,
+                    color: Colors.green,
                   ),
                   labelText: 'Surname'),
             ),
@@ -155,7 +155,7 @@ class _ProfilePageState extends State<ProfilePage> {
               decoration: InputDecoration(
                   border:
                       actual == -1 ? InputBorder.none : OutlineInputBorder(),
-                  icon: Icon(Icons.email, color: Colors.blue),
+                  icon: Icon(Icons.email, color: Colors.green),
                   labelText: 'E-mail'),
             ),
             SizedBox(height: 20),
@@ -167,12 +167,13 @@ class _ProfilePageState extends State<ProfilePage> {
                       actual == -1 ? InputBorder.none : OutlineInputBorder(),
                   icon: Icon(
                     Icons.key,
-                    color: Colors.blue,
+                    color: Colors.green,
                   ),
                   labelText: 'Password'),
               obscureText: true,
             ),
             ElevatedButton(
+              
                 onPressed: () {
                   if (actual == -1) {
                     setState(() {
