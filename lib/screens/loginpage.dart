@@ -70,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
         final userId=sc.getString('userid');
         Provider.of<VerifyCredentials>(context, listen: false).AssociateAuthorization(username, userId);
         final listlastday = await Provider.of<DataBaseRepository>(context, listen:false).findLastDay();
-        print(listlastday);
+        
         Provider.of<DataBaseRepository>(context, listen: false).deleteLastDay();
 
         if(DateTime.now().day == listlastday!.day && DateTime.now().month == listlastday.month){
@@ -110,7 +110,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Login Page')),
+        appBar: AppBar(title: Text('Login Page'),
+        backgroundColor: Colors.green,),
         body: ListView(
           children: [
             Form(

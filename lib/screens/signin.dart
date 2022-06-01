@@ -103,7 +103,10 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Sign in')),
+      appBar: AppBar(
+        title: const Text('Sign in'),
+        backgroundColor: Colors.green,),
+        
       body: ListView(
         children: [
           Form(

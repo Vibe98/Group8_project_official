@@ -22,7 +22,6 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import '../database/entities/mydata.dart';
 import '../utils/utils.dart';
 
-
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key, required this.username, required this.keypassed})
       : super(key: key);
@@ -30,7 +29,6 @@ class ProfilePage extends StatefulWidget {
   static const route = '/profile';
   final String username;
   final int keypassed;
-  
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -45,11 +43,11 @@ class _ProfilePageState extends State<ProfilePage> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  
+
   bool ena = false;
 
-  @override 
-  void initState(){
+  @override
+  void initState() {
     nameController.text = Provider.of<VerifyCredentials>(context, listen: false)
         .Restituteuser(widget.username)['name'];
 
@@ -66,13 +64,28 @@ class _ProfilePageState extends State<ProfilePage> {
         Provider.of<VerifyCredentials>(context, listen: false)
             .Restituteuser(widget.username)['password'];
     super.initState();
-    
   }
 
+  Future<void>? _showChoiceDialog(BuildContext context) {
     
-
-  
-    
+      return showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            Future.delayed(Duration(seconds: 5), () {
+              Navigator.of(context).pop(true);
+            });
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(32.0))),
+              title: const Text('Connecting to your fitbit account...'),
+              content: Row(mainAxisAlignment: MainAxisAlignment.center,
+              children: [SizedBox(
+                  height: 40, width: 40, child: CircularProgressIndicator(
+                    color: Colors.green
+                  ))]));
+          });
+    } 
     
   
 
@@ -81,54 +94,38 @@ class _ProfilePageState extends State<ProfilePage> {
     //File? imageFile = Provider.of<VerifyCredentials>(context, listen: false).Restituteuser(widget.username)['image'];
     File? imageFile = null;
     print(imageFile);
-  
 
     ena = actual == -1 ? false : true;
     return Scaffold(
-      appBar: AppBar(title: Text('Profile Page')),
+      appBar: AppBar(
+        title: Text('Profile Page'),
+        backgroundColor: Colors.green,),
       body: Form(
         child: SingleChildScrollView(
-          child: Column(
-            children: [ 
-              
-              TextField(
-                readOnly: true,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
-                decoration: InputDecoration(
-                      border: InputBorder.none
-                ),
-                controller: usernameController,
-                
+          child: Column(children: [
+            
+            TextField(
+              readOnly: true,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+              decoration: InputDecoration(border: InputBorder.none),
+              controller: usernameController,
+            ),
+            Container(
+              width: 250.0,
+              height: 190.0,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: imageFile == null
+                        ? AssetImage('assets/images/default_picture.png')
+                        : FileImage(imageFile) as ImageProvider),
               ),
-              Container(
-                width: 250.0,
-                height: 190.0,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: imageFile == null
-                          ? AssetImage('assets/images/default_picture.png')
-                          : FileImage(imageFile) as ImageProvider),
-                ),
-              ),
-              SizedBox(height: 10),
-              TextFormField(
-                  controller: nameController,
-                  enabled: ena,
-                  decoration: InputDecoration(
-                      border: actual == -1
-                          ? InputBorder.none
-                          : OutlineInputBorder(),
-                      icon: Icon(
-                        Icons.person,
-                        color: Colors.blue,
-                      ),
-                      labelText: 'Name')),
-              SizedBox(height: 20),
-              TextFormField(
-                controller: surnameController,
+            ),
+            SizedBox(height: 10),
+            TextFormField(
+                controller: nameController,
                 enabled: ena,
                 decoration: InputDecoration(
                     border:
@@ -137,134 +134,174 @@ class _ProfilePageState extends State<ProfilePage> {
                       Icons.person,
                       color: Colors.blue,
                     ),
-                    labelText: 'Surname'),
-              ),
-              SizedBox(height: 20),
-              TextFormField(
-                controller: emailController,
-                enabled: ena,
-                decoration: InputDecoration(
-                    border:
-                        actual == -1 ? InputBorder.none : OutlineInputBorder(),
-                    icon: Icon(Icons.email, color: Colors.blue),
-                    labelText: 'E-mail'),
-              ),
-              SizedBox(height: 20),
-              TextFormField(
-                controller: passwordController,
-                enabled: ena,
-                decoration: InputDecoration(
-                    border:
-                        actual == -1 ? InputBorder.none : OutlineInputBorder(),
-                    icon: Icon(
-                      Icons.key,
-                      color: Colors.blue,
-                    ),
-                    labelText: 'Password'),
-                obscureText: true,
-              ),
-              ElevatedButton(
-                  onPressed: () {
-                    if (actual == -1) {
-                      setState(() {
-                        actual = 0;
-                      });
-                    } else {
-                      Provider.of<VerifyCredentials>(context, listen: false)
-                          .modifyAccount(
-                              widget.username,
-                              emailController.text,
-                              nameController.text,
-                              surnameController.text,
-                              passwordController.text);
-                      setState(() {
-                        actual = -1;
-                      });
-                    }
-                    ;
-                  },
-                  child: actual == -1
-                      ? Text('Edit Your Infos')
-                      : Icon(Icons.check),
-                  style: actual == -1
-                      ? ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                          ),
-                        )
-                      : ElevatedButton.styleFrom(shape: CircleBorder())),
-            Consumer<VerifyCredentials>(
-              builder: (context, value, child) =>  Card(
-                  child: value.isAuthenticated(widget.username) && value.iscompleted(widget.username)  == true ? ElevatedButton(
-                    child: Text('You\'re connected. \n Click if you want to disconnect', textAlign: TextAlign.center,), 
-                    style: ElevatedButton.styleFrom(
-                    primary: Colors.green,
-                    textStyle: TextStyle(
-                    fontWeight: FontWeight.bold)), 
-                    onPressed: ()async{
-                  await FitbitConnector.unauthorize(
-                  clientID: CredentialsFitbitter.clientID,
-                  clientSecret: CredentialsFitbitter.clientSecret
-                  );
-                  String userId = '';
-                  Provider.of<DataBaseRepository>(context, listen: false).deleteAllDatas();
-                  
-                  final sp = await SharedPreferences.getInstance();
-                  sp.remove('userid');
-                  setState(() {
-                    
-                  });
-                  Provider.of<VerifyCredentials>(context, listen: false).AssociateAuthorization(widget.username, userId);
-                  Provider.of<VerifyCredentials>(context, listen: false).hascompleted(widget.username);
-                  }) :
-                Consumer<VerifyCredentials>(
-                  builder: (context, credentials, child) =>
-                  Column(
-                    children: [
-                      ElevatedButton(
-                        child: Text('Authorize'),
-                        style: ElevatedButton.styleFrom(
-                        primary: Colors.redAccent,
-                    
-                        textStyle: TextStyle(
-                        fontWeight: FontWeight.bold)), 
-                         onPressed:() async{
-                          String? userId = await FitbitConnector.authorize(
-                          context: context,
-                          clientID: CredentialsFitbitter.clientID,
-                          clientSecret: CredentialsFitbitter.clientSecret,
-                          redirectUri: CredentialsFitbitter.redirectUri,
-                          callbackUrlScheme: 'example');
-                          Provider.of<VerifyCredentials>(context, listen: false).AssociateAuthorization(widget.username, userId);
-                          List<MyData> datalist = await computeMonthData(credentials.Restituteuser(widget.username)['userID'], DateTime.parse('2022-03-01 00:00:00'), DateTime.now(),); 
-                          for(int i =0; i<datalist.length; i++){
-                            MyData mydata = datalist[i];
-                            Provider.of<DataBaseRepository>(context, listen:false).insertMyData(mydata);
-                          }
-                          final sp = await SharedPreferences.getInstance();
-                            sp.setString('userid', credentials.Restituteuser(widget.username)['userID']);
-                            setState(() {
-                              
-                            });
-                            
-                            Provider.of<VerifyCredentials>(context, listen:false).hascompleted(widget.username);
-      
-                        },
-                        ),
-                    ],
+                    labelText: 'Name')),
+            SizedBox(height: 20),
+            TextFormField(
+              controller: surnameController,
+              enabled: ena,
+              decoration: InputDecoration(
+                  border:
+                      actual == -1 ? InputBorder.none : OutlineInputBorder(),
+                  icon: Icon(
+                    Icons.person,
+                    color: Colors.blue,
                   ),
-                ),)),
-            
+                  labelText: 'Surname'),
+            ),
+            SizedBox(height: 20),
+            TextFormField(
+              controller: emailController,
+              enabled: ena,
+              decoration: InputDecoration(
+                  border:
+                      actual == -1 ? InputBorder.none : OutlineInputBorder(),
+                  icon: Icon(Icons.email, color: Colors.blue),
+                  labelText: 'E-mail'),
+            ),
+            SizedBox(height: 20),
+            TextFormField(
+              controller: passwordController,
+              enabled: ena,
+              decoration: InputDecoration(
+                  border:
+                      actual == -1 ? InputBorder.none : OutlineInputBorder(),
+                  icon: Icon(
+                    Icons.key,
+                    color: Colors.blue,
+                  ),
+                  labelText: 'Password'),
+              obscureText: true,
+            ),
             ElevatedButton(
-              onPressed:(){
-                Provider.of<DataBaseRepository>(context, listen: false).deleteAllDatas();
-              } , 
-              child: Text('to mare')),
-            
+                onPressed: () {
+                  if (actual == -1) {
+                    setState(() {
+                      actual = 0;
+                    });
+                  } else {
+                    Provider.of<VerifyCredentials>(context, listen: false)
+                        .modifyAccount(
+                            widget.username,
+                            emailController.text,
+                            nameController.text,
+                            surnameController.text,
+                            passwordController.text);
+                    setState(() {
+                      actual = -1;
+                    });
+                  }
+                  ;
+                },
+                child:
+                    actual == -1 ? Text('Edit Your Infos') : Icon(Icons.check),
+                style: actual == -1
+                    ? ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                      )
+                    : ElevatedButton.styleFrom(shape: CircleBorder())),
+            Consumer<VerifyCredentials>(
+                builder: (context, value, child) => Card(
+                      child: value.isAuthenticated(widget.username) &&
+                              value.iscompleted(widget.username) == true
+                          ? ElevatedButton(
+                              child: Text(
+                                'You\'re connected. \n Click if you want to disconnect',
+                                textAlign: TextAlign.center,
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                  primary: Colors.green,
+                                  textStyle:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                              onPressed: () async {
+                                await FitbitConnector.unauthorize(
+                                    clientID: CredentialsFitbitter.clientID,
+                                    clientSecret:
+                                        CredentialsFitbitter.clientSecret);
+                                String userId = '';
+                                Provider.of<DataBaseRepository>(context,
+                                        listen: false)
+                                    .deleteAllDatas();
+
+                                final sp =
+                                    await SharedPreferences.getInstance();
+                                sp.remove('userid');
+                                setState(() {});
+                                Provider.of<VerifyCredentials>(context,
+                                        listen: false)
+                                    .AssociateAuthorization(
+                                        widget.username, userId);
+                                Provider.of<VerifyCredentials>(context,
+                                        listen: false)
+                                    .hascompleted(widget.username);
+                              })
+                          : Consumer<VerifyCredentials>(
+                              builder: (context, credentials, child) => Column(
+                                children: [
+                                  ElevatedButton(
+                                    child: Text('Authorize'),
+                                    style: ElevatedButton.styleFrom(
+                                        primary: Colors.redAccent,
+                                        textStyle: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    onPressed: () async {
+                                      String? userId =
+                                          await FitbitConnector.authorize(
+                                              context: context,
+                                              clientID:
+                                                  CredentialsFitbitter.clientID,
+                                              clientSecret: CredentialsFitbitter
+                                                  .clientSecret,
+                                              redirectUri: CredentialsFitbitter
+                                                  .redirectUri,
+                                              callbackUrlScheme: 'example');
+                                     
+                                      _showChoiceDialog(context);
+                                      Provider.of<VerifyCredentials>(context,
+                                              listen: false)
+                                          .AssociateAuthorization(
+                                              widget.username, userId);
+                                      List<MyData> datalist =
+                                          await computeMonthData(
+                                        credentials.Restituteuser(
+                                            widget.username)['userID'],
+                                        DateTime.parse('2022-03-01 00:00:00'),
+                                        DateTime.now(),
+                                      );
+                                      for (int i = 0;
+                                          i < datalist.length;
+                                          i++) {
+                                        MyData mydata = datalist[i];
+                                        Provider.of<DataBaseRepository>(context,
+                                                listen: false)
+                                            .insertMyData(mydata);
+                                      }
+                                      final sp =
+                                          await SharedPreferences.getInstance();
+                                      sp.setString(
+                                          'userid',
+                                          credentials.Restituteuser(
+                                              widget.username)['userID']);
+
+                                      Provider.of<VerifyCredentials>(context,
+                                              listen: false)
+                                          .hascompleted(widget.username);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                    )),
+            ElevatedButton(
+                onPressed: () {
+                  Provider.of<DataBaseRepository>(context, listen: false)
+                      .deleteAllDatas();
+                },
+                child: Text('to mare')),
           ]),
         ),
       ),
     );
   }
 }
-

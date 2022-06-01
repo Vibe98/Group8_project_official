@@ -37,6 +37,8 @@ class WeekStepChartGraph extends StatelessWidget {
       height: 200,
       padding: EdgeInsets.all(10),
       child: Card(
+        shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),),
         elevation: 5,
         shadowColor: Colors.greenAccent,
         child: Padding(
@@ -127,6 +129,8 @@ class WeekCaloriesChartGraph extends StatelessWidget {
       height: 200,
       padding: EdgeInsets.all(10),
       child: Card(
+        shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),),
         shadowColor: Colors.orange,
         elevation: 5,
         child: Padding(
@@ -229,6 +233,8 @@ class WeekMinChartGraph extends StatelessWidget {
       height: 200,
       padding: EdgeInsets.all(10),
       child: Card(
+        shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),),
         shadowColor: Colors.purpleAccent,
         elevation: 5,
         child: Padding(

@@ -87,6 +87,7 @@ class DataBaseRepository extends ChangeNotifier{
 
   Future<MyData?> findLastDay() async{
   final result = await database.mydatadao.findLastDay();
+  print(result);
   return result;
   }
 

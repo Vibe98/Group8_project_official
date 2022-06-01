@@ -28,7 +28,7 @@ abstract class MyDataDao{
   @Query('SELECT * FROM MyData WHERE id=(SELECT MAX(id) FROM MyData)')
   Future<MyData?> findLastDay();
 
-   @Query('DELETE FROM MyData WHERE id=(SELECT MAX(id) FROM MyData)')
+  @Query('DELETE FROM MyData WHERE id=(SELECT MAX(id) FROM MyData)')
   Future<void> deleteLastDay();
 
 

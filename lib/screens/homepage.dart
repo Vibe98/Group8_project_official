@@ -4,18 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:login_flow/database/entities/mydata.dart';
 import 'package:login_flow/repository/databaserepository.dart';
+import 'package:login_flow/screens/gardenpage.dart';
 import 'package:login_flow/widgets/weekwidget.dart';
 import 'package:login_flow/classes/credentialsFitbitter.dart';
 import 'package:login_flow/screens/loginpage.dart';
 import 'package:login_flow/screens/profilepage.dart';
 import 'package:login_flow/widgets/monthWidget.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:login_flow/classes/DayDate.dart';
 import 'package:login_flow/widgets/DayWidget.dart';
 import 'dart:ui';
-
+import 'package:flutter/cupertino.dart';
 import '../classes/changeMonth.dart';
 import '../classes/monthChartGraph.dart';
 import '../classes/myMonthData.dart';
@@ -41,14 +43,14 @@ class _HomePageState extends State<HomePage> {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Are you sure you want to exit?'),
-            content: SingleChildScrollView(
-                child: ListBody(
-              children: <Widget>[
-                GestureDetector(
+          return CupertinoAlertDialog(
+            
+            content: const Text('Are you sure you want to exit?', style: TextStyle(fontSize: 20)),
+            actions: <Widget>[
+                CupertinoDialogAction(
+                  isDefaultAction: true,
                     child: Text('Yes'),
-                    onTap: () async {
+                    onPressed: () async {
                       final sp = await SharedPreferences.getInstance();
 
                       //rimuovo le credenziali salvate
@@ -57,14 +59,16 @@ class _HomePageState extends State<HomePage> {
                       setState(() {});
                       Navigator.pushReplacementNamed(context, LoginPage.route);
                     }),
-                Padding(padding: EdgeInsets.all(8)),
-                GestureDetector(
-                    child: Text('No'),
-                    onTap: () {
+                
+                CupertinoDialogAction(
+                  isDefaultAction: true,
+                    child: Text('Cancel'),
+                    textStyle: TextStyle(color: Colors.red),
+                    onPressed: () {
                       Navigator.of(context).pop();
                     })
               ],
-            )),
+            
           );
         });
   }
@@ -77,7 +81,17 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
+            backgroundColor: Colors.green,
             title: const Text('My Data'),
+            actions: [
+              IconButton(
+                
+                onPressed: (){
+                  Navigator.pushNamed(context, GardenPage.route, arguments: {'username': widget.username});
+                }, 
+                icon: Icon(MdiIcons.shovel),
+                )
+            ],
             bottom: const TabBar(
               tabs: <Widget>[
                 Tab(
@@ -100,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
-                          color: Colors.blue)),
+                          color: Colors.greenAccent)),
                   padding: EdgeInsets.fromLTRB(8, 20, 8, 20)),
               CustomListTile(
                   Icons.person,
@@ -113,8 +127,8 @@ class _HomePageState extends State<HomePage> {
                             })
                       }),
               CustomListTile(
-                  Icons.settings,
-                  'Settings',
+                  MdiIcons.ticketPercentOutline,
+                  'Coupons',
                   () => {
                         // TODO go to settings page
                       }),
