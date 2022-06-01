@@ -15,6 +15,7 @@ class WeekWidget extends StatelessWidget {
   WeekWidget({required this.username});
 
   final DateRangePickerController _controller = DateRangePickerController();
+  
 
   @override
   Widget build(BuildContext context) {

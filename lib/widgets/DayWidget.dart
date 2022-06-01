@@ -14,58 +14,34 @@ class DayWidget extends StatelessWidget {
 
   DayWidget({required this.username});
 
+  final DateRangePickerController _controller = DateRangePickerController();
+
   @override
   Widget build(BuildContext context) {
     return Consumer<DayData>(builder: (context, daydate, child) {
-      
       return Center(
           child: Column(children: [
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          ElevatedButton(
-              
-              onPressed: () {
-                daydate.changeCalendar();
-              },
-              child: Icon(Icons.calendar_month)),
-          SizedBox(width: 50),
-          daydate.calendar == false
-              ? Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 55),
-                  height: 150,
-                  width: 150,
-                  child: Container(
-                    height: 50,
-                    width: 80,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
-                    child: Center(
-                      child: Text(
-                          ' ${daydate.date.day.toString()} - ${daydate.date.month.toString()} - ${daydate.date.year.toString()}',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 17)),
-                    ),
-                  ))
-              : Container(
-                  height: 150,
-                  width: 150,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
-                  child: SfDateRangePicker(
-                    view: DateRangePickerView.month,
-                    minDate: DateTime(2022, 04, 01),
-                    maxDate: DateTime.now(),
-                    onSelectionChanged:
-                        (DateRangePickerSelectionChangedArgs args) {
-                      final dynamic value = args.value;
+        Container(
+            height: 150,
+            width: 300,
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+                borderRadius: BorderRadius.all(Radius.circular(20))),
+            child: SfDateRangePicker(
+              controller: _controller,
+              view: DateRangePickerView.month,
+              minDate: DateTime(2022, 04, 01),
+              maxDate: DateTime.now(),
+              onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
+                final dynamic value = args.value;
 
-                      daydate.changeDay(value);
-                      daydate.computeDifference();
-                    },
-                  )),
-        ]), // ROW
+                daydate.changeDay(value);
+                daydate.computeDifference();
+              },
+              monthViewSettings: DateRangePickerMonthViewSettings(
+                      enableSwipeSelection: true),
+            )),
+        // ROW
 
         Consumer<VerifyCredentials>(
           builder: ((context, value, child) => Consumer<DataBaseRepository>(
@@ -181,7 +157,8 @@ class DayWidget extends StatelessWidget {
                                               fontStyle: FontStyle.normal,
                                               fontSize: 20)),
                                       SizedBox(width: 40),
-                                      Text('${data.calories!.toStringAsFixed(0)} kcal',
+                                      Text(
+                                          '${data.calories!.toStringAsFixed(0)} kcal',
                                           style: TextStyle(
                                               //color: Colors.blue,
                                               fontWeight: FontWeight.w500,
@@ -226,7 +203,7 @@ class DayWidget extends StatelessWidget {
                                               fontStyle: FontStyle.normal,
                                               fontSize: 20)),
                                       SizedBox(width: 80),
-                                      FutureBuilder(
+                                      /*FutureBuilder(
                                           future: _computeSleepData(
                                               daydate.difference,
                                               value.Restituteuser(
@@ -282,7 +259,7 @@ class DayWidget extends StatelessWidget {
                                               fontStyle: FontStyle.normal,
                                               fontSize: 20));
                                             }}
-                                          }) 
+                                          }) */
                                     ],
                                   ),
                                 ),
@@ -380,7 +357,5 @@ Future<List> _computeSleepData(int difference, String userID) async {
   );
   final fitbitSleepData = await fitbitSleepDataManager.fetch(fitbitSleepAPIURL)
       as List<FitbitSleepData>;
- return(fitbitSleepData);
-
-
+  return (fitbitSleepData);
 }
