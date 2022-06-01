@@ -70,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
         final userId=sc.getString('userid');
         Provider.of<VerifyCredentials>(context, listen: false).AssociateAuthorization(username, userId);
         final listlastday = await Provider.of<DataBaseRepository>(context, listen:false).findLastDay();
-
+        print(listlastday);
         Provider.of<DataBaseRepository>(context, listen: false).deleteLastDay();
 
         if(DateTime.now().day == listlastday!.day && DateTime.now().month == listlastday.month){
@@ -78,6 +78,7 @@ class _LoginPageState extends State<LoginPage> {
             userId!, DateTime.now(), DateTime.now());
 
           Provider.of<DataBaseRepository>(context, listen:false).insertMyData(data[0]);
+          
         }else{
           DateTime startdate = DateTime.parse('2022-${modifyDate(listlastday.month)}-${modifyDate(listlastday.day)}');
           DateTime enddate = DateTime.now();
