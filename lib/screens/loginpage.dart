@@ -12,6 +12,7 @@ import 'package:login_flow/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../classes/DayDate.dart';
 import '../database/entities/mydata.dart';
 
 class LoginPage extends StatefulWidget {
@@ -96,6 +97,8 @@ class _LoginPageState extends State<LoginPage> {
 
 
         }
+        //Provider.of<DayData>(context, listen: false).changeDay(DateTime.now());
+
         Provider.of<VerifyCredentials>(context, listen: false).hascompleted(username);
       }
 

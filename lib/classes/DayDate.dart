@@ -42,6 +42,8 @@ class DayData extends ChangeNotifier{
     notifyListeners();
         
   }
+
+  
   
 }
 
