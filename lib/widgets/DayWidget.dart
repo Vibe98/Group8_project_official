@@ -17,10 +17,12 @@ class DayWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<DayData>(builder: (context, daydate, child) {
+      
       return Center(
           child: Column(children: [
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           ElevatedButton(
+              
               onPressed: () {
                 daydate.changeCalendar();
               },
@@ -132,7 +134,7 @@ class DayWidget extends StatelessWidget {
                                                   fontStyle: FontStyle.normal,
                                                   fontSize: 15)),
                                           Text(
-                                              data.distance!.toStringAsFixed(1),
+                                              '${data.distance!.toStringAsFixed(1)} km',
                                               style: TextStyle(
                                                   //color: Colors.blue,
                                                   fontWeight: FontWeight.w500,
@@ -171,15 +173,15 @@ class DayWidget extends StatelessWidget {
                                               size: 30,
                                               color: Color.fromARGB(
                                                   255, 223, 124, 25))),
-                                      SizedBox(width: 50),
+                                      SizedBox(width: 35),
                                       Text('CALORIES:',
                                           style: TextStyle(
                                               //color: Colors.blue,
                                               fontWeight: FontWeight.w500,
                                               fontStyle: FontStyle.normal,
                                               fontSize: 20)),
-                                      SizedBox(width: 55),
-                                      Text(data.calories!.toStringAsFixed(0),
+                                      SizedBox(width: 40),
+                                      Text('${data.calories!.toStringAsFixed(0)} kcal',
                                           style: TextStyle(
                                               //color: Colors.blue,
                                               fontWeight: FontWeight.w500,
@@ -223,7 +225,7 @@ class DayWidget extends StatelessWidget {
                                               fontWeight: FontWeight.w500,
                                               fontStyle: FontStyle.normal,
                                               fontSize: 20)),
-                                      SizedBox(width: 70),
+                                      SizedBox(width: 80),
                                       FutureBuilder(
                                           future: _computeSleepData(
                                               daydate.difference,
@@ -255,14 +257,23 @@ class DayWidget extends StatelessWidget {
 
                                               int hour = result ~/ 60;
                                               int minutes = result % 60;
-                                              print(hour.toString());
-                                              print(minutes.toString());
+                                              print(daydate.day);
+                                              print(daydate.month);
+                                              if(hour>0){
                                               return Text('$hour : $minutes',
                                               style: TextStyle(
                                               //color: Colors.blue,
                                               fontWeight: FontWeight.w500,
                                               fontStyle: FontStyle.normal,
                                               fontSize: 20));
+                                              } else{
+                                                return Text('- - -',
+                                              style: TextStyle(
+                                              //color: Colors.blue,
+                                              fontWeight: FontWeight.w500,
+                                              fontStyle: FontStyle.normal,
+                                              fontSize: 20));
+                                              }
                                             } else {
                                               return Text('- - -',
                                               style: TextStyle(

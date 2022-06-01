@@ -287,6 +287,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                       Provider.of<VerifyCredentials>(context,
                                               listen: false)
                                           .hascompleted(widget.username);
+                                      Provider.of<DayData>(context, listen: false).changeDay(DateTime.now());
+                                      Provider.of<DayData>(context, listen: false).computeDifference();
+
                                     },
                                   ),
                                 ],
