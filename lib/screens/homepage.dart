@@ -17,7 +17,7 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:login_flow/classes/DayDate.dart';
 import 'package:login_flow/widgets/DayWidget.dart';
 import 'dart:ui';
-
+import 'package:flutter/cupertino.dart';
 import '../classes/changeMonth.dart';
 import '../classes/monthChartGraph.dart';
 import '../classes/myMonthData.dart';
@@ -43,14 +43,14 @@ class _HomePageState extends State<HomePage> {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Are you sure you want to exit?'),
-            content: SingleChildScrollView(
-                child: ListBody(
-              children: <Widget>[
-                GestureDetector(
+          return CupertinoAlertDialog(
+            
+            content: const Text('Are you sure you want to exit?', style: TextStyle(fontSize: 20)),
+            actions: <Widget>[
+                CupertinoDialogAction(
+                  isDefaultAction: true,
                     child: Text('Yes'),
-                    onTap: () async {
+                    onPressed: () async {
                       final sp = await SharedPreferences.getInstance();
 
                       //rimuovo le credenziali salvate
@@ -59,14 +59,16 @@ class _HomePageState extends State<HomePage> {
                       setState(() {});
                       Navigator.pushReplacementNamed(context, LoginPage.route);
                     }),
-                Padding(padding: EdgeInsets.all(8)),
-                GestureDetector(
-                    child: Text('No'),
-                    onTap: () {
+                
+                CupertinoDialogAction(
+                  isDefaultAction: true,
+                    child: Text('Cancel'),
+                    textStyle: TextStyle(color: Colors.red),
+                    onPressed: () {
                       Navigator.of(context).pop();
                     })
               ],
-            )),
+            
           );
         });
   }
