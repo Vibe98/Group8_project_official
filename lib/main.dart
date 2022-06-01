@@ -48,6 +48,8 @@ class MyApp extends StatelessWidget {
           create: (context) => WeekData())
       ],
         child: MaterialApp(
+          theme: ThemeData(
+            primaryColor: Colors.green),
           initialRoute: LoginPage.route,
           onGenerateRoute: (settings) {
             if(settings.name == LoginPage.route){

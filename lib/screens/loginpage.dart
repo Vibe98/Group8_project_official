@@ -125,9 +125,9 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 100),
                   Container(
                     height: 50,
-                    child: const Text('My Application',
+                    child: const Text('Pomidori Application',
                         style: TextStyle(
-                            color: Colors.blue,
+                            color: Colors.green,
                             fontWeight: FontWeight.w500,
                             fontStyle: FontStyle.italic,
                             fontSize: 30)),
@@ -180,6 +180,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: TextButton(
                       child: const Text('Forgot Password',
                           style: TextStyle(
+                            color: Colors.green,
                               fontSize: 15, fontWeight: FontWeight.bold)),
                       onPressed: () {
                         Navigator.pushNamed(context, ForgotPassword.route);
@@ -193,48 +194,51 @@ class _LoginPageState extends State<LoginPage> {
                       height: 50,
                       // padding: EdgeInsets.fromLTRB(10,0,10,0),
                       child: Consumer<VerifyCredentials>(
-                        builder: ((context, cred, child) => 
-                        ElevatedButton(
-                            child: const Text('Login'),
-                            onPressed: () async {
-                              if (_formKey.currentState!.validate()){  
-                                print(usernameController.text);
-                                print(verifyCred.credentials);
-                                if (!verifyCred.credentials.containsKey(usernameController.text)){
-                                // se non c'è un account con username corrente, allora bisogna crearlo
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(
-                                  content: Text('Wrong username! Sign in if you do not have an account',
-                                      style: TextStyle(fontSize: 15)),
-                                  backgroundColor: Colors.red,
-                                ));
-                              }else if (verifyCred.credentials[usernameController.text].password != passwordController.text) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(
-                                  content: Text('Wrong Password: try recover it',
-                                      style: TextStyle(fontSize: 15)),
-                                  backgroundColor: Colors.red,
-                                ));
-                              } else {
-                                // esiste un profilo quindi mi ricavo le sue info e lo salvo in memoria
-                                final name = cred.Restituteuser(usernameController.text)['name'];
-                                final surname = cred.Restituteuser(usernameController.text)['surname'];
-                                final email = cred.Restituteuser(usernameController.text)['email'];
-
-                                final sp = await SharedPreferences.getInstance();
-                                if(sp.getStringList('username')== null){
-                                  sp.setStringList('username', [usernameController.text, name, surname, passwordController.text, email]);
-                                
+                        builder: ((context, cred, child) => ElevatedButton(
+                          style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.green),
+                    ),
+                              child: const Text('Login'),
+                              onPressed: () async {
+                                if (_formKey.currentState!.validate()){  
+                                  print(usernameController.text);
+                                  print(verifyCred.credentials);
+                                  if (!verifyCred.credentials.containsKey(usernameController.text)){
+                                  // se non c'è un account con username corrente, allora bisogna crearlo
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                    content: Text('Wrong username! Sign in if you do not have an account',
+                                        style: TextStyle(fontSize: 15)),
+                                    backgroundColor: Colors.red,
+                                  ));
+                                }else if (verifyCred.credentials[usernameController.text].password != passwordController.text) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                    content: Text('Wrong Password: try recover it',
+                                        style: TextStyle(fontSize: 15)),
+                                    backgroundColor: Colors.red,
+                                  ));
+                                } else {
+                                  // esiste un profilo quindi mi ricavo le sue info e lo salvo in memoria
+                                  final name = cred.Restituteuser(usernameController.text)['name'];
+                                  final surname = cred.Restituteuser(usernameController.text)['surname'];
+                                  final email = cred.Restituteuser(usernameController.text)['email'];
+                        
+                                  final sp = await SharedPreferences.getInstance();
+                                  if(sp.getStringList('username')== null){
+                                    sp.setStringList('username', [usernameController.text, name, surname, passwordController.text, email]);
+                                  
+                                  }
+                                  Navigator.pushNamed(context, HomePage.route, arguments: {
+                                    'username': usernameController.text
+                                  });
+                                              
                                 }
-                                Navigator.pushNamed(context, HomePage.route, arguments: {
-                                  'username': usernameController.text
-                                });
-                      
-                              }
-                            }})),
+                              }})
+                        )),
                       ),
                     ),
-                  ),
+  
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -242,6 +246,7 @@ class _LoginPageState extends State<LoginPage> {
                       TextButton(
                         child: const Text('Sign in',
                             style: TextStyle(
+                              color: Colors.green,
                                 fontSize: 20, fontWeight: FontWeight.w500)),
                         onPressed: () {
                           Navigator.pushNamed(context, SignIn.route);
