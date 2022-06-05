@@ -14,7 +14,24 @@ class DataBaseRepository extends ChangeNotifier{
   }
 
   Future<List<MyData?>> findMonthDatas(int month) async{
+    final maxday;
+    if(month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12){
+      maxday=31;
+    }else if(month == 4 || month == 5 || month == 9 || month == 11){
+      maxday=30;
+    }else{
+      // febbraio
+      maxday=28;
+    }
     final monthdatas = await database.mydatadao.findMonthDatas(month);
+    final curr_day = monthdatas.length;
+    if(curr_day<maxday){
+      // aggiungiamo a monthdatas i dati mancanti a 0
+      for(int i = curr_day; i<maxday; i++){
+        monthdatas.add(MyData(null,i, month, 0, 0, 0, 0, 0));
+   
+      }
+    }
     return monthdatas;
   }
 

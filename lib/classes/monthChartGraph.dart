@@ -93,7 +93,6 @@ class MonthStepsChartGraph extends StatelessWidget{
                           'text': '${datumPair.datum.value}'
                         });
                       });
-                      print(selectedDatum);
                     } else {
                       selectedDatum = [];
                     }

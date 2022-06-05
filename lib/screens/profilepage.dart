@@ -197,6 +197,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     actual == -1 ? Text('Edit Your Infos') : Icon(Icons.check),
                 style: actual == -1
                     ? ElevatedButton.styleFrom(
+                      primary: Colors.green,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0),
                         ),
