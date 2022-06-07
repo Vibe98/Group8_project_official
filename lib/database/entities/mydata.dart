@@ -14,7 +14,8 @@ class MyData{
   final double? calories;
   final double? minutesfa;
   final double? minutesva;
+  final bool? tomatos;
 
-  MyData(this.id, this.day, this.month, this.steps, this.distance, this.calories, this.minutesfa, this.minutesva);
+  MyData(this.id, this.day, this.month, this.steps, this.distance, this.calories, this.minutesfa, this.minutesva, this.tomatos);
 
 }

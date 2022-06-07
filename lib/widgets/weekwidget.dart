@@ -34,15 +34,21 @@ class WeekWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(15),
                 ),
               child: Container(
+                
                 height: 150,
                 width: 300,
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.blueAccent),
-                  borderRadius: BorderRadius.circular(15)),
+                  border: Border.all(color: Colors.amber),
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.black),
                 child: SfDateRangePicker(
+                  
                   controller: _controller,
+                  selectionColor: Colors.amber,
+                  rangeSelectionColor: Colors.amber,
                   view: DateRangePickerView.month,
                   selectionMode: DateRangePickerSelectionMode.range,
+                  
                   onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
                     int firstDayOfWeek = DateTime.sunday % 7;
                     int endDayOfWeek = (firstDayOfWeek - 1) % 7;

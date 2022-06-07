@@ -5,7 +5,7 @@ import 'package:login_flow/repository/databaserepository.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-
+import 'package:login_flow/widgets/tomatochart.dart';
 import '../classes/verify_cred.dart';
 import '../classes/DayDate.dart';
 
@@ -38,8 +38,8 @@ class DayWidget extends StatelessWidget {
                 daydate.changeDay(value);
                 daydate.computeDifference();
               },
-              monthViewSettings: DateRangePickerMonthViewSettings(
-                      enableSwipeSelection: true),
+              monthViewSettings:
+                  DateRangePickerMonthViewSettings(enableSwipeSelection: true),
             )),
         // ROW
 
@@ -66,6 +66,7 @@ class DayWidget extends StatelessWidget {
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10))),
                                   child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Container(
                                           height: 40,
@@ -79,7 +80,7 @@ class DayWidget extends StatelessWidget {
                                               )),
                                           child: Icon(MdiIcons.run,
                                               size: 30, color: Colors.green)),
-                                      SizedBox(width: 60),
+                                      
                                       Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
@@ -98,7 +99,7 @@ class DayWidget extends StatelessWidget {
                                                   fontSize: 15)),
                                         ],
                                       ),
-                                      SizedBox(width: 75),
+                                      
                                       Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
@@ -134,6 +135,7 @@ class DayWidget extends StatelessWidget {
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10))),
                                   child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Container(
                                           height: 40,
@@ -149,14 +151,14 @@ class DayWidget extends StatelessWidget {
                                               size: 30,
                                               color: Color.fromARGB(
                                                   255, 223, 124, 25))),
-                                      SizedBox(width: 35),
+                                      
                                       Text('CALORIES:',
                                           style: TextStyle(
                                               //color: Colors.blue,
                                               fontWeight: FontWeight.w500,
                                               fontStyle: FontStyle.normal,
                                               fontSize: 20)),
-                                      SizedBox(width: 40),
+                                      
                                       Text(
                                           '${data.calories!.toStringAsFixed(0)} kcal',
                                           style: TextStyle(
@@ -179,6 +181,7 @@ class DayWidget extends StatelessWidget {
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10))),
                                   child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Container(
                                           height: 40,
@@ -202,7 +205,7 @@ class DayWidget extends StatelessWidget {
                                               fontWeight: FontWeight.w500,
                                               fontStyle: FontStyle.normal,
                                               fontSize: 20)),
-                                      SizedBox(width: 80),
+                                      
                                       /*FutureBuilder(
                                           future: _computeSleepData(
                                               daydate.difference,
@@ -275,7 +278,9 @@ class DayWidget extends StatelessWidget {
                                           Border.all(color: Colors.blueAccent),
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10))),
-                                  child: Row(children: [
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
                                     Container(
                                         height: 40,
                                         width: 40,
@@ -290,7 +295,7 @@ class DayWidget extends StatelessWidget {
                                             size: 30,
                                             color: Color.fromARGB(
                                                 255, 113, 13, 100))),
-                                    SizedBox(width: 20),
+                                    
                                     Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -309,7 +314,7 @@ class DayWidget extends StatelessWidget {
                                                 fontSize: 15)),
                                       ],
                                     ),
-                                    SizedBox(width: 20),
+                                    
                                     Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -329,7 +334,123 @@ class DayWidget extends StatelessWidget {
                                       ],
                                     ),
                                   ]), // row
-                                ), // container
+                                ),
+                                Card(
+                                  color: const Color(0xff2c4260),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(4)),
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          width: 120,
+                                          height: 180,
+                                          child: data.calories! > 2800
+                                              ? Column(children: [
+                                                  SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Icon(MdiIcons.checkOutline,
+                                                      color: Colors.red),
+                                                  SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Text('calories',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          color: Colors.red))
+                                                ])
+                                              : Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                      AspectRatio(
+                                                        aspectRatio: 0.8,
+                                                        child: TomatoChart(
+                                                            data:
+                                                                data.calories!,
+                                                            name: 'calories',
+                                                            objective: 2800),
+                                                      ),
+                                                    ]),
+                                        ),
+                                        Container(
+                                          width: 120,
+                                          height: 180,
+                                          child: data.steps! > 7000
+                                              ? Column(children: [
+                                                  SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Icon(MdiIcons.checkOutline,
+                                                      color: Colors.red),
+                                                  SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Text('steps',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          color: Colors.red))
+                                                ])
+                                              : Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                      AspectRatio(
+                                                        aspectRatio: 0.8,
+                                                        child: TomatoChart(
+                                                            data:
+                                                                data.steps!,
+                                                            name: 'steps',
+                                                            objective: 7000),
+                                                      ),
+                                                    ])
+                                        ),
+                                        Container(
+                                          width: 120,
+                                          height: 180,
+                                          child: data.minutesfa! +
+                                                      data.minutesva! >
+                                                  30
+                                              ? Column(
+                                                  children: [
+                                                    SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    Icon(MdiIcons.checkOutline,
+                                                        color: Colors.red),
+                                                    SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    Text('minutes',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                            color: Colors.red))
+                                                  ],
+                                                )
+                                              : Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                      AspectRatio(
+                                                        aspectRatio: 0.8,
+                                                        child: TomatoChart(
+                                                            data:
+                                                                data.minutesfa! + data.minutesva!,
+                                                            name: 'minutes',
+                                                            objective: 30),
+                                                      ),
+                                                    ])
+                                        ),
+                                      ]),
+                                ),
+                                data.tomatos! ? Text('Tomato') : Text('No tomato :(')
+
+                                // container
                               ]);
                             } else {
                               return CircularProgressIndicator();
