@@ -28,7 +28,7 @@ class DataBaseRepository extends ChangeNotifier{
     if(curr_day<maxday){
       // aggiungiamo a monthdatas i dati mancanti a 0
       for(int i = curr_day; i<maxday; i++){
-        monthdatas.add(MyData(null,i, month, 0, 0, 0, 0, 0));
+        monthdatas.add(MyData(null,i, month, 0, 0, 0, 0, 0, false));
    
       }
     }

@@ -127,7 +127,6 @@ class MonthWidget extends StatelessWidget {
 
 Future<Map<String, List<List<myMonthData>>>> fetchMonthData(context, month) async {
 List<MyData?> monthData = await Provider.of<DataBaseRepository>(context, listen:false).findMonthDatas(month);
-print('ciao: ${monthData.length}');
 List<myMonthData> stepsList = [];
 List<myMonthData> calList = [];
 List<myMonthData> minVAList = [];
