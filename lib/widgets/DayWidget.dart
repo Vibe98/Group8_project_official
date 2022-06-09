@@ -5,7 +5,7 @@ import 'package:login_flow/repository/databaserepository.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-
+import 'package:login_flow/widgets/tomatochart.dart';
 import '../classes/verify_cred.dart';
 import '../classes/DayDate.dart';
 
@@ -14,58 +14,34 @@ class DayWidget extends StatelessWidget {
 
   DayWidget({required this.username});
 
+  final DateRangePickerController _controller = DateRangePickerController();
+
   @override
   Widget build(BuildContext context) {
     return Consumer<DayData>(builder: (context, daydate, child) {
-      
       return Center(
           child: Column(children: [
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          ElevatedButton(
-              
-              onPressed: () {
-                daydate.changeCalendar();
-              },
-              child: Icon(Icons.calendar_month)),
-          SizedBox(width: 50),
-          daydate.calendar == false
-              ? Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 55),
-                  height: 150,
-                  width: 150,
-                  child: Container(
-                    height: 50,
-                    width: 80,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
-                    child: Center(
-                      child: Text(
-                          ' ${daydate.date.day.toString()} - ${daydate.date.month.toString()} - ${daydate.date.year.toString()}',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 17)),
-                    ),
-                  ))
-              : Container(
-                  height: 150,
-                  width: 150,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
-                  child: SfDateRangePicker(
-                    view: DateRangePickerView.month,
-                    minDate: DateTime(2022, 04, 01),
-                    maxDate: DateTime.now(),
-                    onSelectionChanged:
-                        (DateRangePickerSelectionChangedArgs args) {
-                      final dynamic value = args.value;
+        Container(
+            height: 150,
+            width: 300,
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+                borderRadius: BorderRadius.all(Radius.circular(20))),
+            child: SfDateRangePicker(
+              controller: _controller,
+              view: DateRangePickerView.month,
+              minDate: DateTime(2022, 04, 01),
+              maxDate: DateTime.now(),
+              onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
+                final dynamic value = args.value;
 
-                      daydate.changeDay(value);
-                      daydate.computeDifference();
-                    },
-                  )),
-        ]), // ROW
+                daydate.changeDay(value);
+                daydate.computeDifference();
+              },
+              monthViewSettings:
+                  DateRangePickerMonthViewSettings(enableSwipeSelection: true),
+            )),
+        // ROW
 
         Consumer<VerifyCredentials>(
           builder: ((context, value, child) => Consumer<DataBaseRepository>(
@@ -90,6 +66,7 @@ class DayWidget extends StatelessWidget {
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10))),
                                   child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Container(
                                           height: 40,
@@ -103,7 +80,7 @@ class DayWidget extends StatelessWidget {
                                               )),
                                           child: Icon(MdiIcons.run,
                                               size: 30, color: Colors.green)),
-                                      SizedBox(width: 60),
+                                      
                                       Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
@@ -122,7 +99,7 @@ class DayWidget extends StatelessWidget {
                                                   fontSize: 15)),
                                         ],
                                       ),
-                                      SizedBox(width: 75),
+                                      
                                       Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
@@ -158,6 +135,7 @@ class DayWidget extends StatelessWidget {
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10))),
                                   child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Container(
                                           height: 40,
@@ -173,15 +151,16 @@ class DayWidget extends StatelessWidget {
                                               size: 30,
                                               color: Color.fromARGB(
                                                   255, 223, 124, 25))),
-                                      SizedBox(width: 35),
+                                      
                                       Text('CALORIES:',
                                           style: TextStyle(
                                               //color: Colors.blue,
                                               fontWeight: FontWeight.w500,
                                               fontStyle: FontStyle.normal,
                                               fontSize: 20)),
-                                      SizedBox(width: 40),
-                                      Text('${data.calories!.toStringAsFixed(0)} kcal',
+                                      
+                                      Text(
+                                          '${data.calories!.toStringAsFixed(0)} kcal',
                                           style: TextStyle(
                                               //color: Colors.blue,
                                               fontWeight: FontWeight.w500,
@@ -202,6 +181,7 @@ class DayWidget extends StatelessWidget {
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10))),
                                   child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Container(
                                           height: 40,
@@ -225,8 +205,8 @@ class DayWidget extends StatelessWidget {
                                               fontWeight: FontWeight.w500,
                                               fontStyle: FontStyle.normal,
                                               fontSize: 20)),
-                                      SizedBox(width: 80),
-                                      FutureBuilder(
+                                      
+                                      /*FutureBuilder(
                                           future: _computeSleepData(
                                               daydate.difference,
                                               value.Restituteuser(
@@ -282,7 +262,7 @@ class DayWidget extends StatelessWidget {
                                               fontStyle: FontStyle.normal,
                                               fontSize: 20));
                                             }}
-                                          }) 
+                                          }) */
                                     ],
                                   ),
                                 ),
@@ -298,7 +278,9 @@ class DayWidget extends StatelessWidget {
                                           Border.all(color: Colors.blueAccent),
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10))),
-                                  child: Row(children: [
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
                                     Container(
                                         height: 40,
                                         width: 40,
@@ -313,7 +295,7 @@ class DayWidget extends StatelessWidget {
                                             size: 30,
                                             color: Color.fromARGB(
                                                 255, 113, 13, 100))),
-                                    SizedBox(width: 20),
+                                    
                                     Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -332,7 +314,7 @@ class DayWidget extends StatelessWidget {
                                                 fontSize: 15)),
                                       ],
                                     ),
-                                    SizedBox(width: 20),
+                                    
                                     Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -352,7 +334,123 @@ class DayWidget extends StatelessWidget {
                                       ],
                                     ),
                                   ]), // row
-                                ), // container
+                                ),
+                                Card(
+                                  color: const Color(0xff2c4260),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(4)),
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          width: 120,
+                                          height: 180,
+                                          child: data.calories! > 2800
+                                              ? Column(children: [
+                                                  SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Icon(MdiIcons.checkOutline,
+                                                      color: Colors.red),
+                                                  SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Text('calories',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          color: Colors.red))
+                                                ])
+                                              : Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                      AspectRatio(
+                                                        aspectRatio: 0.8,
+                                                        child: TomatoChart(
+                                                            data:
+                                                                data.calories!,
+                                                            name: 'calories',
+                                                            objective: 2800),
+                                                      ),
+                                                    ]),
+                                        ),
+                                        Container(
+                                          width: 120,
+                                          height: 180,
+                                          child: data.steps! > 7000
+                                              ? Column(children: [
+                                                  SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Icon(MdiIcons.checkOutline,
+                                                      color: Colors.red),
+                                                  SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Text('steps',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          color: Colors.red))
+                                                ])
+                                              : Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                      AspectRatio(
+                                                        aspectRatio: 0.8,
+                                                        child: TomatoChart(
+                                                            data:
+                                                                data.steps!,
+                                                            name: 'steps',
+                                                            objective: 7000),
+                                                      ),
+                                                    ])
+                                        ),
+                                        Container(
+                                          width: 120,
+                                          height: 180,
+                                          child: data.minutesfa! +
+                                                      data.minutesva! >
+                                                  30
+                                              ? Column(
+                                                  children: [
+                                                    SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    Icon(MdiIcons.checkOutline,
+                                                        color: Colors.red),
+                                                    SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    Text('minutes',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                            color: Colors.red))
+                                                  ],
+                                                )
+                                              : Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                      AspectRatio(
+                                                        aspectRatio: 0.8,
+                                                        child: TomatoChart(
+                                                            data:
+                                                                data.minutesfa! + data.minutesva!,
+                                                            name: 'minutes',
+                                                            objective: 30),
+                                                      ),
+                                                    ])
+                                        ),
+                                      ]),
+                                ),
+                                data.tomatos! ? Text('Tomato') : Text('No tomato :(')
+
+                                // container
                               ]);
                             } else {
                               return CircularProgressIndicator();
@@ -380,7 +478,5 @@ Future<List> _computeSleepData(int difference, String userID) async {
   );
   final fitbitSleepData = await fitbitSleepDataManager.fetch(fitbitSleepAPIURL)
       as List<FitbitSleepData>;
- return(fitbitSleepData);
-
-
+  return (fitbitSleepData);
 }

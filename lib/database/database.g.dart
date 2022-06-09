@@ -82,9 +82,9 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `MyData` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `day` INTEGER NOT NULL, `month` INTEGER NOT NULL, `steps` REAL, `distance` REAL, `calories` REAL, `minutesfa` REAL, `minutesva` REAL)');
+            'CREATE TABLE IF NOT EXISTS `MyData` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `day` INTEGER NOT NULL, `month` INTEGER NOT NULL, `steps` REAL, `distance` REAL, `calories` REAL, `minutesfa` REAL, `minutesva` REAL, `tomatos` INTEGER)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `ProfileEntity` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT, `surname` TEXT, `username` TEXT, `password` TEXT, `email` TEXT, `complete` INTEGER NOT NULL, `userID` TEXT NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `CouponEntity` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `day` INTEGER, `month` INTEGER, `present` INTEGER, `used` INTEGER)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -112,7 +112,9 @@ class _$MyDataDao extends MyDataDao {
                   'distance': item.distance,
                   'calories': item.calories,
                   'minutesfa': item.minutesfa,
-                  'minutesva': item.minutesva
+                  'minutesva': item.minutesva,
+                  'tomatos':
+                      item.tomatos == null ? null : (item.tomatos! ? 1 : 0)
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -135,7 +137,8 @@ class _$MyDataDao extends MyDataDao {
             row['distance'] as double?,
             row['calories'] as double?,
             row['minutesfa'] as double?,
-            row['minutesva'] as double?),
+            row['minutesva'] as double?,
+            row['tomatos'] == null ? null : (row['tomatos'] as int) != 0),
         arguments: [day, month]);
   }
 
@@ -150,7 +153,8 @@ class _$MyDataDao extends MyDataDao {
             row['distance'] as double?,
             row['calories'] as double?,
             row['minutesfa'] as double?,
-            row['minutesva'] as double?),
+            row['minutesva'] as double?,
+            row['tomatos'] == null ? null : (row['tomatos'] as int) != 0),
         arguments: [month]);
   }
 
@@ -180,7 +184,8 @@ class _$MyDataDao extends MyDataDao {
             row['distance'] as double?,
             row['calories'] as double?,
             row['minutesfa'] as double?,
-            row['minutesva'] as double?),
+            row['minutesva'] as double?,
+            row['tomatos'] == null ? null : (row['tomatos'] as int) != 0),
         arguments: [
           day1,
           day2,
@@ -215,7 +220,8 @@ class _$MyDataDao extends MyDataDao {
             row['distance'] as double?,
             row['calories'] as double?,
             row['minutesfa'] as double?,
-            row['minutesva'] as double?));
+            row['minutesva'] as double?,
+            row['tomatos'] == null ? null : (row['tomatos'] as int) != 0));
   }
 
   @override
@@ -230,7 +236,8 @@ class _$MyDataDao extends MyDataDao {
             row['distance'] as double?,
             row['calories'] as double?,
             row['minutesfa'] as double?,
-            row['minutesva'] as double?));
+            row['minutesva'] as double?,
+            row['tomatos'] == null ? null : (row['tomatos'] as int) != 0));
   }
 
   @override

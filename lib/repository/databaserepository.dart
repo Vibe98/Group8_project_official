@@ -94,7 +94,7 @@ class DataBaseRepository extends ChangeNotifier{
     if(datas.length<7){
    
     for(int i = datas.length; i<7; i++){
-    datas.add(MyData(null,daylist[i], monthlist[i], 0, 0, 0, 0, 0));
+    datas.add(MyData(null,daylist[i], monthlist[i], 0, 0, 0, 0, 0, false));
    
     }
     }

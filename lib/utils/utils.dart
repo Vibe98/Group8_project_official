@@ -110,7 +110,11 @@ Future<List<MyData>> computeMonthData(String userID, DateTime startdate, DateTim
     for(int i=0; i<steps.length; i++) {
       print('hey');
       print(steps[i].dateOfMonitoring);
-      MyData mydata = MyData(null, steps[i].dateOfMonitoring!.day, steps[i].dateOfMonitoring!.month, steps[i].value, distances[i].value, calories[i].value, minutesFA[i].value, minutesVA[i].value);
+      bool tomato = false;
+      if (steps[i].value! >= 7000 && calories[i].value! >= 2800 && (minutesVA[i].value! + minutesFA[i].value!) >= 30){
+        tomato = true;
+      } 
+      MyData mydata = MyData(null, steps[i].dateOfMonitoring!.day, steps[i].dateOfMonitoring!.month, steps[i].value, distances[i].value, calories[i].value, minutesFA[i].value, minutesVA[i].value, tomato);
       mydatalist.add(mydata);
 
 
