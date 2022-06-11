@@ -80,6 +80,7 @@ class _HomePageState extends State<HomePage> {
       length: 3,
       child: Scaffold(
           resizeToAvoidBottomInset: false,
+          backgroundColor: Color.fromARGB(255, 183, 208, 201),
           appBar: AppBar(
             backgroundColor: Colors.green,
             title: const Text('My Data'),
