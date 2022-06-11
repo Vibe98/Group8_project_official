@@ -3,6 +3,7 @@ import 'package:login_flow/repository/databaserepository.dart';
 import 'package:provider/provider.dart';
 
 import '../classes/credentialsFitbitter.dart';
+import '../database/entities/couponentity.dart';
 import '../database/entities/mydata.dart';
 
 Future<List<MyData>> computeMonthData(String userID, DateTime startdate, DateTime enddate) async {
@@ -124,4 +125,66 @@ Future<List<MyData>> computeMonthData(String userID, DateTime startdate, DateTim
       
    
     
+  }
+
+
+
+
+Future<List<CouponEntity>> computeCoupons(context, String userID, DateTime startdate, DateTime enddate)  async{
+  // gli do gia in ingresso due datetime
+  List<CouponEntity> couponlist = [];
+  Duration? diff = enddate.difference(startdate);
+  int difference = diff.inDays; // differenza tra oggi e per esempio 4 aprile
+
+  int weeks = (difference/7).floor();
+  
+  
+  for(var i=0; i<weeks; i++) {
+    int count = 0;
+    bool present = false;
+    DateTime firstday = startdate.add(Duration(days: 7*i));
+
+    for(var j=0; j<7; j++){
+      DateTime date = firstday.add(Duration(days: j));
+      int day = date.day;
+      int month = date.month;
+
+      MyData? dataoftheday = await Provider.of<DataBaseRepository>(context,listen: false).findDatas(day, month);
+      if(dataoftheday!.tomatos == true){
+        count = count +1;
+        
+      }         
+
+    }
+    if(count > 5){
+      present= true;
+    }
+    CouponEntity coupon = CouponEntity(null, firstday.day, firstday.month, present, false);
+    //Provider.of<DataBaseRepository>(context, listen:false).insertCoupon(coupon);
+    couponlist.add(coupon);
+
+  }
+
+  DateTime lastday = startdate.add(Duration(days: 7*weeks));
+  CouponEntity coupon = CouponEntity(null, lastday.day, lastday.month, false, false);
+  //  Provider.of<DataBaseRepository>(context, listen:false).insertCoupon(coupon); 
+  couponlist.add(coupon);
+
+  return couponlist; 
+                                                   
+                                                  
+
+}
+
+
+  String modifyDate(int? date){
+    //modifica mese o giorno aggiungendo 0 se inizia con un numero minore di 10
+    String newDate='';
+    if(date!<10){
+      newDate = '0$date';
+    }else{
+      newDate = '$date';
+    }
+
+    return newDate;
   }

@@ -63,6 +63,8 @@ class _$AppDatabase extends AppDatabase {
 
   MyDataDao? _mydatadaoInstance;
 
+  CouponDao? _coupondaoInstance;
+
   Future<sqflite.Database> open(String path, List<Migration> migrations,
       [Callback? callback]) async {
     final databaseOptions = sqflite.OpenDatabaseOptions(
@@ -95,6 +97,11 @@ class _$AppDatabase extends AppDatabase {
   @override
   MyDataDao get mydatadao {
     return _mydatadaoInstance ??= _$MyDataDao(database, changeListener);
+  }
+
+  @override
+  CouponDao get coupondao {
+    return _coupondaoInstance ??= _$CouponDao(database, changeListener);
   }
 }
 
@@ -249,5 +256,101 @@ class _$MyDataDao extends MyDataDao {
   @override
   Future<void> insertMyData(MyData mydata) async {
     await _myDataInsertionAdapter.insert(mydata, OnConflictStrategy.abort);
+  }
+}
+
+class _$CouponDao extends CouponDao {
+  _$CouponDao(this.database, this.changeListener)
+      : _queryAdapter = QueryAdapter(database),
+        _couponEntityInsertionAdapter = InsertionAdapter(
+            database,
+            'CouponEntity',
+            (CouponEntity item) => <String, Object?>{
+                  'id': item.id,
+                  'day': item.day,
+                  'month': item.month,
+                  'present':
+                      item.present == null ? null : (item.present! ? 1 : 0),
+                  'used': item.used == null ? null : (item.used! ? 1 : 0)
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<CouponEntity> _couponEntityInsertionAdapter;
+
+  @override
+  Future<CouponEntity?> findCoupon(int day, int month) async {
+    return _queryAdapter.query(
+        'SELECT * FROM CouponEntity WHERE day = ?1 AND month = ?2',
+        mapper: (Map<String, Object?> row) => CouponEntity(
+            row['id'] as int?,
+            row['day'] as int?,
+            row['month'] as int?,
+            row['present'] == null ? null : (row['present'] as int) != 0,
+            row['used'] == null ? null : (row['used'] as int) != 0),
+        arguments: [day, month]);
+  }
+
+  @override
+  Future<List<CouponEntity>> findAllCoupons() async {
+    return _queryAdapter.queryList('SELECT * FROM CouponEntity',
+        mapper: (Map<String, Object?> row) => CouponEntity(
+            row['id'] as int?,
+            row['day'] as int?,
+            row['month'] as int?,
+            row['present'] == null ? null : (row['present'] as int) != 0,
+            row['used'] == null ? null : (row['used'] as int) != 0));
+  }
+
+  @override
+  Future<CouponEntity?> findLastCoupon() async {
+    return _queryAdapter.query(
+        'SELECT * FROM CouponEntity WHERE id=(SELECT MAX(id) FROM CouponEntity)',
+        mapper: (Map<String, Object?> row) => CouponEntity(
+            row['id'] as int?,
+            row['day'] as int?,
+            row['month'] as int?,
+            row['present'] == null ? null : (row['present'] as int) != 0,
+            row['used'] == null ? null : (row['used'] as int) != 0));
+  }
+
+  @override
+  Future<void> updatePresent(bool present, int day, int month) async {
+    await _queryAdapter.queryNoReturn(
+        'UPDATE CouponEntity SET present = ?1 WHERE day = ?2 AND month = ?3',
+        arguments: [present ? 1 : 0, day, month]);
+  }
+
+  @override
+  Future<void> updateUsed(bool used, int day, int month) async {
+    await _queryAdapter.queryNoReturn(
+        'UPDATE CouponEntity SET used = ?1 WHERE day = ?2 AND month = ?3',
+        arguments: [used ? 1 : 0, day, month]);
+  }
+
+  @override
+  Future<int?> numberOfCoupons() async {
+    await _queryAdapter.queryNoReturn('SELECT COUNT (*) FROM CouponEntity');
+  }
+
+  @override
+  Future<void> deleteAllCoupons() async {
+    await _queryAdapter.queryNoReturn('DELETE FROM CouponEntity');
+  }
+
+  @override
+  Future<void> deleteLastCoupon() async {
+    await _queryAdapter.queryNoReturn(
+        'DELETE FROM CouponEntity WHERE id=(SELECT MAX(id) FROM CouponEntity)');
+  }
+
+  @override
+  Future<void> insertCoupon(CouponEntity coupon) async {
+    await _couponEntityInsertionAdapter.insert(
+        coupon, OnConflictStrategy.abort);
   }
 }

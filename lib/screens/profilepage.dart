@@ -19,6 +19,7 @@ import '../classes/myMonthData.dart';
 
 import 'package:charts_flutter/flutter.dart' as charts;
 
+import '../database/entities/couponentity.dart';
 import '../database/entities/mydata.dart';
 import '../utils/utils.dart';
 
@@ -267,7 +268,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           await computeMonthData(
                                         credentials.Restituteuser(
                                             widget.username)['userID'],
-                                        DateTime.parse('2022-03-01 00:00:00'),
+                                        DateTime.parse('2022-04-01 00:00:00'),
                                         DateTime.now(),
                                       );
                                       for (int i = 0;
@@ -284,6 +285,64 @@ class _ProfilePageState extends State<ProfilePage> {
                                           'userid',
                                           credentials.Restituteuser(
                                               widget.username)['userID']);
+                                      
+                                      List<CouponEntity?> list= await Provider.of<DataBaseRepository>(context, listen:false).findAllCoupons();
+                                      if(list.isEmpty){
+                                        print('creo database');
+                                      List<CouponEntity> couponlist = await computeCoupons(context, credentials.Restituteuser(
+                                            widget.username)['userID'], DateTime.parse('2022-04-04 00:00:00'),
+                                        DateTime.now());
+                                      for (int i = 0;
+                                          i < couponlist.length;
+                                          i++) {
+                                        CouponEntity coupon = couponlist[i];
+                                        Provider.of<DataBaseRepository>(context,
+                                                listen: false)
+                                            .insertCoupon(coupon);
+                                      }
+                                      }else{
+                                        print('controllo se aggiornare');
+                                        CouponEntity? lastcoupon = await Provider.of<DataBaseRepository>(context,
+                                                listen: false)
+                                            .findLastCoupon();
+                                        DateTime startdate = DateTime.parse('2022-${modifyDate(lastcoupon!.month)}-${modifyDate(lastcoupon.day)}');
+                                        Duration? diff = DateTime.now().difference(startdate);
+                                        int difference = diff.inDays;
+                                        if(difference > 6){
+                                          print('devo aggiornare');
+                                          Provider.of<DataBaseRepository>(context,
+                                                listen: false)
+                                            .deleteLastCoupon();
+                                          List<CouponEntity> couponlist = await computeCoupons(context, credentials.Restituteuser(
+                                            widget.username)['userID'], startdate, DateTime.now());
+                                      for (int i = 0;
+                                          i < couponlist.length;
+                                          i++) {
+                                        CouponEntity coupon = couponlist[i];
+                                        Provider.of<DataBaseRepository>(context,
+                                                listen: false)
+                                            .insertCoupon(coupon);                                          
+
+                                        }
+                                        
+
+                                      }else{
+                                        print('non devo aggiornare perche sono passati solo $difference giorni');
+                                      }
+                                      }
+
+                                      
+
+                                      CouponEntity? coupon1= await Provider.of<DataBaseRepository>(context, listen:false).findCoupons(16, 5);
+                                      print('16 maggio: ${coupon1!.present}');
+
+                                      CouponEntity? coupon2= await Provider.of<DataBaseRepository>(context, listen:false).findCoupons(9, 5);
+                                      print('9 maggio: ${coupon2!.present}');
+
+
+
+                                      
+
 
                                       Provider.of<VerifyCredentials>(context,
                                               listen: false)
@@ -303,6 +362,20 @@ class _ProfilePageState extends State<ProfilePage> {
                       .deleteAllDatas();
                 },
                 child: Text('to mare')),
+            ElevatedButton(
+                onPressed: () {
+                  Provider.of<DataBaseRepository>(context, listen: false)
+                      .deleteAllCoupons();
+                },
+                child: Text('to pare')),
+
+                ElevatedButton(
+                onPressed: () async {
+                  
+                  List<CouponEntity?> list= await Provider.of<DataBaseRepository>(context, listen:false).findAllCoupons();
+                  print(list.length);
+                },
+                child: Text('numero')),
           ]),
         ),
       ),

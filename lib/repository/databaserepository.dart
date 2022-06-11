@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:login_flow/database/database.dart';
 
+import '../database/entities/couponentity.dart';
 import '../database/entities/mydata.dart';
+import '../database/daos/coupondao.dart';
 
 class DataBaseRepository extends ChangeNotifier{
   final AppDatabase database;
@@ -95,5 +97,59 @@ class DataBaseRepository extends ChangeNotifier{
     await database.mydatadao.deleteLastDay();
     notifyListeners();
   }
+
+
+  // Coupon Entity
+  
+   Future<void> insertCoupon(CouponEntity coupon) async{
+  await database.coupondao.insertCoupon(coupon);
+    notifyListeners();
+  }
+
+  
+  Future<CouponEntity?> findCoupons(int day, int month) async{
+    final coupon = await database.coupondao.findCoupon(day, month);
+    return coupon;
+  }
+  
+  Future<List<CouponEntity>> findAllCoupons()async{
+    final coupons = await database.coupondao.findAllCoupons();
+    return coupons;
+  }
+   Future<CouponEntity?> findLastCoupon() async{
+  final result = await database.coupondao.findLastCoupon();
+  //print(result);
+  return result;
+  }
+
+  Future<void> updatePresent(bool present, int day, int month) async{
+    await database.coupondao.updatePresent(present, day, month);
+    notifyListeners();
+  }
+
+   Future<void> updateUsed(bool used, int day, int month) async{
+    await database.coupondao.updateUsed(used, day, month);
+    notifyListeners();
+  }
+
+  Future<int?> numberOfCoupons() async {
+    final count = await database.coupondao.numberOfCoupons();
+    return count;
+  }
+
+  Future<void> deleteAllCoupons() async{
+    await database.coupondao.deleteAllCoupons();
+    notifyListeners();
+  }
+
+  Future<void> deleteLastCoupon()async{
+    await database.coupondao.deleteLastCoupon();
+    notifyListeners();
+  }
+
+
+ 
+
+
 
 }
