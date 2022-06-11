@@ -25,7 +25,7 @@ class WeekWidget extends StatelessWidget {
     List<WeekChart> listminutesfa = [];
     return Consumer<WeekData>(builder: (context, weekdate, child) {
       return Container(
-        color: Colors.grey,//Color.fromHex(code: code),
+        //Color.fromHex(code: code),
         child: Center(
           child: Column(children: [
             Card(

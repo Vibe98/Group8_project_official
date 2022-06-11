@@ -5,13 +5,17 @@ class TomatoChart extends StatelessWidget {
   final double data;
   final String name;
   final double objective;
-
-
-  TomatoChart({required this.data, required this.name, required this.objective});
+  final int number;
   
+
+
+  TomatoChart({required this.data, required this.name, required this.objective, required this.number});
+  
+
 
   @override
   Widget build(BuildContext context) {
+    
     return BarChart(
       BarChartData(
         barTouchData: barTouchData,
@@ -20,7 +24,7 @@ class TomatoChart extends StatelessWidget {
         barGroups: barGroups,
         gridData: FlGridData(show: false),
         alignment: BarChartAlignment.spaceAround,
-        maxY: objective + objective*0.3,
+        maxY: objective,
       ),
     );
   }
@@ -50,9 +54,9 @@ class TomatoChart extends StatelessWidget {
 
   Widget getTitles(double value, TitleMeta meta) {
     const style = TextStyle(
-      color: Color(0xff7589a2),
+      color: Colors.transparent,
       fontWeight: FontWeight.bold,
-      fontSize: 14,
+      fontSize: 2,
     );
     String text;
     switch (value.toInt()) {
@@ -74,9 +78,9 @@ class TomatoChart extends StatelessWidget {
         show: true,
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
-            showTitles: true,
+            showTitles: false,
             reservedSize: 30,
-            getTitlesWidget: getTitles,
+            
           ),
         ),
         leftTitles: AxisTitles(
@@ -94,10 +98,26 @@ class TomatoChart extends StatelessWidget {
         show: false,
       );
 
-  final _barsGradient = const LinearGradient(
+  final _barsGradient1 =  LinearGradient(
     colors: [
       Colors.lightBlueAccent,
-      Colors.greenAccent,
+      Colors.lightGreenAccent
+    ],
+    begin: Alignment.bottomCenter,
+    end: Alignment.topCenter,
+  );
+  final _barsGradient2 =  LinearGradient(
+    colors: [
+      Colors.deepOrange,
+      Colors.amber
+    ],
+    begin: Alignment.bottomCenter,
+    end: Alignment.topCenter,
+  );
+  final _barsGradient3 =  LinearGradient(
+    colors: [
+      Colors.purple,
+      Colors.pink
     ],
     begin: Alignment.bottomCenter,
     end: Alignment.topCenter,
@@ -109,10 +129,10 @@ class TomatoChart extends StatelessWidget {
           barRods: [
             BarChartRodData(
               toY: data > objective ? objective : data,
-              gradient: _barsGradient,
+              gradient: number == 1 ? _barsGradient1 : number == 2 ? _barsGradient2 : _barsGradient3,
               backDrawRodData: BackgroundBarChartRodData(
             show: true,
-            toY: objective + objective*0.3,
+            toY: objective,
             color: Color.fromARGB(255, 96, 119, 113),
           ),
             )

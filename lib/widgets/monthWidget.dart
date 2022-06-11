@@ -25,7 +25,7 @@ class MonthWidget extends StatelessWidget {
       return Consumer<PickMonth>(
         builder: (context, pickmonth, child) => Center(
           child: Container(
-            color: Colors.grey,
+          
             child: ListView(
               children: [
                 Column(

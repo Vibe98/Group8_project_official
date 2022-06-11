@@ -75,6 +75,9 @@ flutter:
   assets:
     - assets/images/default_picture.png
     - assets/images/prato2.jpg
+    - assets/images/pomodoro_triste.png
+    - assets/images/pomodoro_felice.png
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:
