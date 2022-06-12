@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../classes/DayDate.dart';
+import '../database/entities/couponentity.dart';
 import '../database/entities/mydata.dart';
 
 class LoginPage extends StatefulWidget {
@@ -39,10 +40,10 @@ class _LoginPageState extends State<LoginPage> {
   _checkLogin();
   }
 
-  String modifyDate(int date){
+  String modifyDate(int? date){
     //modifica mese o giorno aggiungendo 0 se inizia con un numero minore di 10
     String newDate='';
-    if(date<10){
+    if(date!<10){
       newDate = '0$date';
     }else{
       newDate = '$date';
@@ -64,6 +65,8 @@ class _LoginPageState extends State<LoginPage> {
       
       // a questo punto devo aggiungere l'account
       Provider.of<VerifyCredentials>(context, listen: false).addAccount(username, name, surname, password, email);
+
+
 
       // prendiamo anche lo userId
       final sc = await SharedPreferences.getInstance();
@@ -89,21 +92,38 @@ class _LoginPageState extends State<LoginPage> {
             MyData mydata = datalist[i];
             Provider.of<DataBaseRepository>(context, listen:false)
             .insertMyData(mydata);
-          }
-
-          await FitbitConnector.refreshToken(
-            clientID: CredentialsFitbitter.clientID,
-            clientSecret: CredentialsFitbitter.clientSecret,
-        );
-
+          }         
 
         }
+      
+        print('controllo se aggiornare');
+        CouponEntity? lastcoupon = await Provider.of<DataBaseRepository>(context,listen: false).findLastCoupon();
+        DateTime startdate = DateTime.parse('2022-${modifyDate(lastcoupon!.month)}-${modifyDate(lastcoupon.day)}');
+        Duration? diff = DateTime.now().difference(startdate);
+        int difference = diff.inDays;
+        if(difference > 6){
+          print('devo aggiornare');
+          Provider.of<DataBaseRepository>(context, listen: false).deleteLastCoupon();
+          List<CouponEntity> couponlist = await computeCoupons(context, userId, startdate, DateTime.now());
+          for (int i = 0; i < couponlist.length; i++) {
+          CouponEntity coupon = couponlist[i];
+          Provider.of<DataBaseRepository>(context, listen: false).insertCoupon(coupon);                                          
+
+          }
+                                        
+
+        }else{
+          print('non devo aggiornare perche sono passati solo $difference giorni');
+        } 
+        
+
+        
         //Provider.of<DayData>(context, listen: false).changeDay(DateTime.now());
 
         Provider.of<VerifyCredentials>(context, listen: false).hascompleted(username);
       }
 
-    
+  
       
 
       Navigator.pushNamed(context, HomePage.route, arguments: {'username': username});

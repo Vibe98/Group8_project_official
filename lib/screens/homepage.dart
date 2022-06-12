@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:login_flow/database/entities/mydata.dart';
 import 'package:login_flow/repository/databaserepository.dart';
+import 'package:login_flow/screens/couponpage.dart';
 import 'package:login_flow/screens/gardenpage.dart';
 import 'package:login_flow/widgets/weekwidget.dart';
 import 'package:login_flow/classes/credentialsFitbitter.dart';
@@ -38,37 +39,34 @@ class _HomePageState extends State<HomePage> {
   // This widget is the root of your application.
   TextEditingController monthController = TextEditingController();
 
-
   Future<void> _showChoiceDialog(BuildContext context) {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
           return CupertinoAlertDialog(
-            
-            content: const Text('Are you sure you want to exit?', style: TextStyle(fontSize: 20)),
+            content: const Text('Are you sure you want to exit?',
+                style: TextStyle(fontSize: 20)),
             actions: <Widget>[
-                CupertinoDialogAction(
+              CupertinoDialogAction(
                   isDefaultAction: true,
-                    child: Text('Yes'),
-                    onPressed: () async {
-                      final sp = await SharedPreferences.getInstance();
+                  child: Text('Yes'),
+                  onPressed: () async {
+                    final sp = await SharedPreferences.getInstance();
 
-                      //rimuovo le credenziali salvate
-                      sp.remove('username');
-                      
-                      setState(() {});
-                      Navigator.pushReplacementNamed(context, LoginPage.route);
-                    }),
-                
-                CupertinoDialogAction(
+                    //rimuovo le credenziali salvate
+                    sp.remove('username');
+
+                    setState(() {});
+                    Navigator.pushReplacementNamed(context, LoginPage.route);
+                  }),
+              CupertinoDialogAction(
                   isDefaultAction: true,
-                    child: Text('Cancel'),
-                    textStyle: TextStyle(color: Colors.red),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    })
-              ],
-            
+                  child: Text('Cancel'),
+                  textStyle: TextStyle(color: Colors.red),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  })
+            ],
           );
         });
   }
@@ -76,97 +74,96 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      initialIndex: 0,
-      length: 3,
-      child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          backgroundColor: Color.fromARGB(255, 183, 208, 201),
-          appBar: AppBar(
-            backgroundColor: Colors.green,
-            title: const Text('My Data'),
-            actions: [
-              IconButton(
-                
-                onPressed: (){
-                  Navigator.pushNamed(context, GardenPage.route, arguments: {'username': widget.username});
-                }, 
-                icon: Icon(MdiIcons.shovel),
+        initialIndex: 0,
+        length: 3,
+        child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            backgroundColor: Color.fromARGB(255, 183, 208, 201),
+            appBar: AppBar(
+              backgroundColor: Colors.green,
+              title: const Text('My Data'),
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, GardenPage.route,
+                        arguments: {'username': widget.username});
+                  },
+                  icon: Icon(MdiIcons.shovel),
                 )
-            ],
-            bottom: const TabBar(
-              tabs: <Widget>[
-                Tab(
-                  text: 'Day',
-                ),
-                Tab(
-                  text: 'Week',
-                ),
-                Tab(
-                  text: 'Month',
-                ),
               ],
+              bottom: const TabBar(
+                tabs: <Widget>[
+                  Tab(
+                    text: 'Day',
+                  ),
+                  Tab(
+                    text: 'Week',
+                  ),
+                  Tab(
+                    text: 'Month',
+                  ),
+                ],
+              ),
             ),
-          ),
-          drawer: Drawer(
-              child: ListView(
-            children: [
-              Container(
-                  child: const Text('Application\'s Options',
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.greenAccent)),
-                  padding: EdgeInsets.fromLTRB(8, 20, 8, 20)),
-              CustomListTile(
-                  Icons.person,
-                  'Your Profile',
-                  () => {
-                        Navigator.pushNamed(context, ProfilePage.route,
-                            arguments: {
-                              'username': widget.username,
-                              'keypassed': -1
-                            })
-                      }),
-              CustomListTile(
-                  MdiIcons.ticketPercentOutline,
-                  'Coupons',
-                  () => {
-                        // TODO go to settings page
-                      }),
-              CustomListTile(
-                  Icons.lock, 'Log Out', () => {_showChoiceDialog(context)}),
-            ],
-          )),
-          body: Center(
-            child: Consumer<VerifyCredentials>(
+            drawer: Drawer(
+                child: ListView(
+              children: [
+                Container(
+                    child: const Text('Application\'s Options',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.greenAccent)),
+                    padding: EdgeInsets.fromLTRB(8, 20, 8, 20)),
+                CustomListTile(
+                    Icons.person,
+                    'Your Profile',
+                    () => {
+                          Navigator.pushNamed(context, ProfilePage.route,
+                              arguments: {
+                                'username': widget.username,
+                                'keypassed': -1
+                              })
+                        }),
+                CustomListTile(
+                    MdiIcons.ticketPercentOutline,
+                    'Coupons',
+                    () => {
+                          Navigator.pushNamed(context, CouponPage.route)
+                          // TODO go to settings page
+                        }),
+                CustomListTile(
+                    Icons.lock, 'Log Out', () => {_showChoiceDialog(context)}),
+              ],
+            )),
+            body: Center(child: Consumer<VerifyCredentials>(
                 builder: (context, credentials, child) {
-              return  TabBarView(
-                        children: <Widget>[
-                          Center(
-                            child: (credentials.isAuthenticated(widget.username) && credentials.iscompleted(widget.username))
-                                ? daywidget(context)
-                                : Text('You\'re not auth, go to your profile and authoriz'),
-                                     
-                          ),
-                          Center(
-                            child: (credentials.isAuthenticated(widget.username) &&
-                                    credentials.iscompleted(widget.username))
-                                ? weekwidget(context)
-                                : Text(
-                                    'You\'re not auth, go to your profile and authoriz'),
-                          ),
-                          Center(
-                            child: (credentials.isAuthenticated(widget.username) &&
-                                    credentials.iscompleted(widget.username))
-                                ? monthwidget(context)
-                                : Text(
-                                    'You\'re not auth, go to your profile and authorize'),
-                          ),
-                        ],
-                      );
-                    }))
-                    
-                  ));
+              return TabBarView(
+                children: <Widget>[
+                  Center(
+                    child: (credentials.isAuthenticated(widget.username) &&
+                            credentials.iscompleted(widget.username))
+                        ? daywidget(context)
+                        : Text(
+                            'You\'re not auth, go to your profile and authoriz'),
+                  ),
+                  Center(
+                    child: (credentials.isAuthenticated(widget.username) &&
+                            credentials.iscompleted(widget.username))
+                        ? weekwidget(context)
+                        : Text(
+                            'You\'re not auth, go to your profile and authoriz'),
+                  ),
+                  Center(
+                    child: (credentials.isAuthenticated(widget.username) &&
+                            credentials.iscompleted(widget.username))
+                        ? monthwidget(context)
+                        : Text(
+                            'You\'re not auth, go to your profile and authorize'),
+                  ),
+                ],
+              );
+            }))));
   }
 
   Widget daywidget(BuildContext context) {
