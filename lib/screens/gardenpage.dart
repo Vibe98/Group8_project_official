@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:login_flow/widgets/viusalizeDayTomato.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
+import '../classes/verify_cred.dart';
 import '../classes/weekchart.dart';
 import '../classes/weekdata.dart';
+import '../database/entities/mydata.dart';
+import '../repository/databaserepository.dart';
 import '../widgets/weekwidget.dart';
 
 class GardenPage extends StatelessWidget {
@@ -16,69 +21,85 @@ class GardenPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('${GardenPage.routename} built');
+    var daydate;
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.green,
-          title: Text(GardenPage.routename),
-        ),
         body: Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
                   image: AssetImage("assets/images/prato2.jpg"),
                   fit: BoxFit.cover),
             ),
-            child: Center(
-                child: Consumer<WeekData>(
-                    builder: ((context, value, child) => FutureBuilder(
-                        future: fetchweekdata(
-                            context,
-                            value
-                                .datestart), //Provider.of<DataBaseRepository>(context, listen: false).findWeekData(value.datestart.day, value.datestart.month),
+            child: Consumer<VerifyCredentials>(
+                builder: ((context, value, child) => Consumer<
+                        DataBaseRepository>(
+                    builder: (context, db, child) => FutureBuilder(
+                        initialData: null,
+                        future: db.findWeekData(
+                            getFirstDay(DateTime.now().day) as int,
+                            DateTime.now().month),
                         builder: (context, snapshot) {
-                          switch (snapshot.connectionState) {
-                            case ConnectionState.none:
-                            case ConnectionState.waiting:
-                              return CircularProgressIndicator();
-                            case ConnectionState.active:
-                            case ConnectionState.done:
-                              if (snapshot.hasData) {
-                                final weeklist =
-                                    snapshot.data as List<List<WeekChart>>;
-                                return Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                          if (snapshot.hasData) {
+                            final data = snapshot.data as List<MyData?>;
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      IconButton(
+                                              onPressed: () {
+                                              Navigator.pop(context);
+                                            }, icon: Icon(Icons.arrow_back_rounded,
+                                            size: 30, color: Colors.white)),
+                                      SizedBox(width: 70),
+                                      Text('Your Garden',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 30)),
+                                      SizedBox(width:100)
+                                    ],
+                                  ),
+                                
+                                SizedBox(height: 30),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text('Day 1'),
-                                        Text('Day 2'),
-                                        Text('Day 3'),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text('Day 4'),
-                                        Text('Day 5'),
-                                        Text('Day 6'),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text('Day 7'),
-                                      ],
-                                    ),
+                                    VisualizeDayTomato(dayId: 0, data: data),
+                                    VisualizeDayTomato(dayId: 1, data: data),
+                                    VisualizeDayTomato(dayId: 2, data: data),
                                   ],
-                                );
-                              } else {
-                                return CircularProgressIndicator();
-                              }
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    VisualizeDayTomato(dayId: 3, data: data),
+                                    VisualizeDayTomato(dayId: 4, data: data),
+                                    VisualizeDayTomato(dayId: 5, data: data),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    VisualizeDayTomato(dayId: 6, data: data),
+                                  ],
+                                ),
+                              ],
+                            );
+                          } else {
+                            return CircularProgressIndicator();
                           }
                         }))))));
   } //build
 
 } //Page
+
+num getFirstDay(int day) {
+  // given the day of today, it resitituate the number of Monday
+  num today = DateTime.now().weekday;
+  num firstDay = DateTime.now().day - today + 1;
+  return firstDay;
+}
