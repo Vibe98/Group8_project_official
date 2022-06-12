@@ -296,6 +296,20 @@ class _$CouponDao extends CouponDao {
   }
 
   @override
+  Future<List<CouponEntity>> findPresendAndUsedCoupons(
+      bool present, bool used) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM CouponEntity WHERE present = ?1 AND used = ?2',
+        mapper: (Map<String, Object?> row) => CouponEntity(
+            row['id'] as int?,
+            row['day'] as int?,
+            row['month'] as int?,
+            row['present'] == null ? null : (row['present'] as int) != 0,
+            row['used'] == null ? null : (row['used'] as int) != 0),
+        arguments: [present ? 1 : 0, used ? 1 : 0]);
+  }
+
+  @override
   Future<List<CouponEntity>> findAllCoupons() async {
     return _queryAdapter.queryList('SELECT * FROM CouponEntity',
         mapper: (Map<String, Object?> row) => CouponEntity(
@@ -330,11 +344,6 @@ class _$CouponDao extends CouponDao {
     await _queryAdapter.queryNoReturn(
         'UPDATE CouponEntity SET used = ?1 WHERE day = ?2 AND month = ?3',
         arguments: [used ? 1 : 0, day, month]);
-  }
-
-  @override
-  Future<int?> numberOfCoupons() async {
-    await _queryAdapter.queryNoReturn('SELECT COUNT (*) FROM CouponEntity');
   }
 
   @override

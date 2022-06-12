@@ -188,3 +188,10 @@ Future<List<CouponEntity>> computeCoupons(context, String userID, DateTime start
 
     return newDate;
   }
+
+
+DateTime computeEndOfWeek(int? day, int? month) {
+  DateTime startdate = DateTime.parse('2022-${modifyDate(month)}-${modifyDate(day)}');
+  DateTime enddate = startdate.add(Duration(days: 6));
+  return enddate;
+}

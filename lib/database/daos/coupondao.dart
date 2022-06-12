@@ -11,6 +11,9 @@ abstract class CouponDao{
   @Query('SELECT * FROM CouponEntity WHERE day = :day AND month = :month')
   Future<CouponEntity?> findCoupon(int day, int month);
 
+  @Query('SELECT * FROM CouponEntity WHERE present = :present AND used = :used')
+  Future<List<CouponEntity>> findPresendAndUsedCoupons(bool present, bool used);  
+
   @Query('SELECT * FROM CouponEntity')
   Future<List<CouponEntity>> findAllCoupons();
 
@@ -22,9 +25,6 @@ abstract class CouponDao{
 
   @Query('UPDATE CouponEntity SET used = :used WHERE day = :day AND month = :month')
   Future<void> updateUsed(bool used, int day, int month);
-
-  @Query('SELECT COUNT (*) FROM CouponEntity')
-  Future<int?> numberOfCoupons();
 
   @Query('DELETE FROM CouponEntity')
   Future<void> deleteAllCoupons();

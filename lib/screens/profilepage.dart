@@ -68,27 +68,26 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void>? _showChoiceDialog(BuildContext context) {
-    
-      return showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            Future.delayed(Duration(seconds: 5), () {
-              Navigator.of(context).pop(true);
-            });
-            return AlertDialog(
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          Future.delayed(Duration(seconds: 5), () {
+            Navigator.of(context).pop(true);
+          });
+          return AlertDialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(32.0))),
               title: const Text('Connecting to your fitbit account...'),
-              content: Row(mainAxisAlignment: MainAxisAlignment.center,
-              children: [SizedBox(
-                  height: 40, width: 40, child: CircularProgressIndicator(
-                    color: Colors.green
-                  ))]));
-          });
-    } 
-    
-  
+              content:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                SizedBox(
+                    height: 40,
+                    width: 40,
+                    child: CircularProgressIndicator(color: Colors.green))
+              ]));
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,11 +99,11 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile Page'),
-        backgroundColor: Colors.green,),
+        backgroundColor: Colors.green,
+      ),
       body: Form(
         child: SingleChildScrollView(
           child: Column(children: [
-            
             TextField(
               readOnly: true,
               textAlign: TextAlign.center,
@@ -174,7 +173,6 @@ class _ProfilePageState extends State<ProfilePage> {
               obscureText: true,
             ),
             ElevatedButton(
-              
                 onPressed: () {
                   if (actual == -1) {
                     setState(() {
@@ -258,26 +256,83 @@ class _ProfilePageState extends State<ProfilePage> {
                                               redirectUri: CredentialsFitbitter
                                                   .redirectUri,
                                               callbackUrlScheme: 'example');
-                                     
+
                                       _showChoiceDialog(context);
                                       Provider.of<VerifyCredentials>(context,
                                               listen: false)
                                           .AssociateAuthorization(
                                               widget.username, userId);
-                                      List<MyData> datalist =
-                                          await computeMonthData(
-                                        credentials.Restituteuser(
-                                            widget.username)['userID'],
-                                        DateTime.parse('2022-04-01 00:00:00'),
-                                        DateTime.now(),
-                                      );
-                                      for (int i = 0;
-                                          i < datalist.length;
-                                          i++) {
-                                        MyData mydata = datalist[i];
+
+                                      // DATABASE
+                                      
+                                      // mydata
+                                      List<MyData?> dataavailablelist =
+                                          await Provider.of<DataBaseRepository>(
+                                                  context,
+                                                  listen: false)
+                                              .findAllData();
+
+                                      if (dataavailablelist.isEmpty) {
+                                        // non ci sono dati, devo creare database
+                                        List<MyData> datalist =
+                                            await computeMonthData(
+                                          credentials.Restituteuser(
+                                              widget.username)['userID'],
+                                          DateTime.parse('2022-04-01 00:00:00'),
+                                          DateTime.now(),
+                                        );
+                                        for (int i = 0;
+                                            i < datalist.length;
+                                            i++) {
+                                          MyData mydata = datalist[i];
+                                          Provider.of<DataBaseRepository>(
+                                                  context,
+                                                  listen: false)
+                                              .insertMyData(mydata);
+                                        }
+                                      } else {
+                                      
+                                        // ci sono gia i dati quindi devo solo fare check per update dell'ultimo giorno + altri eventuali giorni
+                                        final listlastday = await Provider.of<
+                                                    DataBaseRepository>(context,
+                                                listen: false)
+                                            .findLastDay();
+
                                         Provider.of<DataBaseRepository>(context,
                                                 listen: false)
-                                            .insertMyData(mydata);
+                                            .deleteLastDay();
+
+                                        if (DateTime.now().day ==
+                                                listlastday!.day &&
+                                            DateTime.now().month ==
+                                                listlastday.month) {
+                                          List<MyData> data =
+                                              await computeMonthData(
+                                                  userId!,
+                                                  DateTime.now(),
+                                                  DateTime.now());
+
+                                          Provider.of<DataBaseRepository>(
+                                                  context,
+                                                  listen: false)
+                                              .insertMyData(data[0]);
+                                        } else {
+                                          DateTime startdate = DateTime.parse(
+                                              '2022-${modifyDate(listlastday.month)}-${modifyDate(listlastday.day)}');
+                                          DateTime enddate = DateTime.now();
+                                          List<MyData> datalist =
+                                              await computeMonthData(
+                                                  userId!, startdate, enddate);
+                                          for (int i = 0;
+                                              i < datalist.length;
+                                              i++) {
+                                            MyData mydata = datalist[i];
+                                            Provider.of<DataBaseRepository>(
+                                                    context,
+                                                    listen: false)
+                                                .insertMyData(mydata);
+                                          }
+                                        }
                                       }
                                       final sp =
                                           await SharedPreferences.getInstance();
@@ -285,71 +340,82 @@ class _ProfilePageState extends State<ProfilePage> {
                                           'userid',
                                           credentials.Restituteuser(
                                               widget.username)['userID']);
-                                      
-                                      List<CouponEntity?> list= await Provider.of<DataBaseRepository>(context, listen:false).findAllCoupons();
-                                      if(list.isEmpty){
+
+                                      List<CouponEntity?> list =
+                                          await Provider.of<DataBaseRepository>(
+                                                  context,
+                                                  listen: false)
+                                              .findAllCoupons();
+                                      if (list.isEmpty) {
                                         print('creo database');
-                                      List<CouponEntity> couponlist = await computeCoupons(context, credentials.Restituteuser(
-                                            widget.username)['userID'], DateTime.parse('2022-04-04 00:00:00'),
-                                        DateTime.now());
-                                      for (int i = 0;
-                                          i < couponlist.length;
-                                          i++) {
-                                        CouponEntity coupon = couponlist[i];
-                                        Provider.of<DataBaseRepository>(context,
-                                                listen: false)
-                                            .insertCoupon(coupon);
-                                      }
-                                      }else{
-                                        print('controllo se aggiornare');
-                                        CouponEntity? lastcoupon = await Provider.of<DataBaseRepository>(context,
-                                                listen: false)
-                                            .findLastCoupon();
-                                        DateTime startdate = DateTime.parse('2022-${modifyDate(lastcoupon!.month)}-${modifyDate(lastcoupon.day)}');
-                                        Duration? diff = DateTime.now().difference(startdate);
-                                        int difference = diff.inDays;
-                                        if(difference > 6){
-                                          print('devo aggiornare');
-                                          Provider.of<DataBaseRepository>(context,
-                                                listen: false)
-                                            .deleteLastCoupon();
-                                          List<CouponEntity> couponlist = await computeCoupons(context, credentials.Restituteuser(
-                                            widget.username)['userID'], startdate, DateTime.now());
-                                      for (int i = 0;
-                                          i < couponlist.length;
-                                          i++) {
-                                        CouponEntity coupon = couponlist[i];
-                                        Provider.of<DataBaseRepository>(context,
-                                                listen: false)
-                                            .insertCoupon(coupon);                                          
-
+                                        List<CouponEntity> couponlist =
+                                            await computeCoupons(
+                                                context,
+                                                credentials.Restituteuser(
+                                                    widget.username)['userID'],
+                                                DateTime.parse(
+                                                    '2022-04-04 00:00:00'),
+                                                DateTime.now());
+                                        for (int i = 0;
+                                            i < couponlist.length;
+                                            i++) {
+                                          CouponEntity coupon = couponlist[i];
+                                          Provider.of<DataBaseRepository>(
+                                                  context,
+                                                  listen: false)
+                                              .insertCoupon(coupon);
                                         }
-                                        
-
-                                      }else{
-                                        print('non devo aggiornare perche sono passati solo $difference giorni');
+                                      } else {
+                                        print('controllo se aggiornare');
+                                        CouponEntity? lastcoupon =
+                                            await Provider.of<
+                                                        DataBaseRepository>(
+                                                    context,
+                                                    listen: false)
+                                                .findLastCoupon();
+                                        DateTime startdate = DateTime.parse(
+                                            '2022-${modifyDate(lastcoupon!.month)}-${modifyDate(lastcoupon.day)}');
+                                        Duration? diff = DateTime.now()
+                                            .difference(startdate);
+                                        int difference = diff.inDays;
+                                        if (difference > 6) {
+                                          print('devo aggiornare');
+                                          Provider.of<DataBaseRepository>(
+                                                  context,
+                                                  listen: false)
+                                              .deleteLastCoupon();
+                                          List<CouponEntity> couponlist =
+                                              await computeCoupons(
+                                                  context,
+                                                  credentials.Restituteuser(
+                                                      widget
+                                                          .username)['userID'],
+                                                  startdate,
+                                                  DateTime.now());
+                                          for (int i = 0;
+                                              i < couponlist.length;
+                                              i++) {
+                                            CouponEntity coupon = couponlist[i];
+                                            Provider.of<DataBaseRepository>(
+                                                    context,
+                                                    listen: false)
+                                                .insertCoupon(coupon);
+                                          }
+                                        } else {
+                                          print(
+                                              'non devo aggiornare perche sono passati solo $difference giorni');
+                                        }
                                       }
-                                      }
-
-                                      
-
-                                      CouponEntity? coupon1= await Provider.of<DataBaseRepository>(context, listen:false).findCoupons(16, 5);
-                                      print('16 maggio: ${coupon1!.present}');
-
-                                      CouponEntity? coupon2= await Provider.of<DataBaseRepository>(context, listen:false).findCoupons(9, 5);
-                                      print('9 maggio: ${coupon2!.present}');
-
-
-
-                                      
-
 
                                       Provider.of<VerifyCredentials>(context,
                                               listen: false)
                                           .hascompleted(widget.username);
-                                      Provider.of<DayData>(context, listen: false).changeDay(DateTime.now());
-                                      Provider.of<DayData>(context, listen: false).computeDifference();
-
+                                      Provider.of<DayData>(context,
+                                              listen: false)
+                                          .changeDay(DateTime.now());
+                                      Provider.of<DayData>(context,
+                                              listen: false)
+                                          .computeDifference();
                                     },
                                   ),
                                 ],
@@ -368,14 +434,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       .deleteAllCoupons();
                 },
                 child: Text('to pare')),
-
-                ElevatedButton(
-                onPressed: () async {
-                  
-                  List<CouponEntity?> list= await Provider.of<DataBaseRepository>(context, listen:false).findAllCoupons();
-                  print(list.length);
-                },
-                child: Text('numero')),
+            
           ]),
         ),
       ),

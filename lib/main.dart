@@ -4,6 +4,7 @@ import 'package:login_flow/classes/verify_cred.dart';
 import 'package:login_flow/classes/weekdata.dart';
 import 'package:login_flow/database/database.dart';
 import 'package:login_flow/repository/databaserepository.dart';
+import 'package:login_flow/screens/couponpage.dart';
 import 'package:login_flow/screens/forgotpassword.dart';
 import 'package:login_flow/screens/gardenpage.dart';
 import 'package:login_flow/screens/homepage.dart';
@@ -82,8 +83,13 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (context) {
               return GardenPage(username: args['username']);
             });
+          }else if(settings.name == CouponPage.route){
+            return MaterialPageRoute(builder: (context) {
+                return CouponPage();
+            });
           }
           }
+          
         ),
     );
   }

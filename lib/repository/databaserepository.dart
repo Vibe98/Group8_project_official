@@ -116,25 +116,26 @@ class DataBaseRepository extends ChangeNotifier{
     final coupons = await database.coupondao.findAllCoupons();
     return coupons;
   }
+
    Future<CouponEntity?> findLastCoupon() async{
   final result = await database.coupondao.findLastCoupon();
   //print(result);
   return result;
   }
 
+  Future<List<CouponEntity>> findPresendAndUsedCoupons(bool present, bool used)async{
+    final result = await database.coupondao.findPresendAndUsedCoupons(present, used);
+    return result;
+  }
+
   Future<void> updatePresent(bool present, int day, int month) async{
     await database.coupondao.updatePresent(present, day, month);
     notifyListeners();
-  }
+  } // forse da eliminare
 
-   Future<void> updateUsed(bool used, int day, int month) async{
-    await database.coupondao.updateUsed(used, day, month);
+   Future<void> updateUsed(bool used, int? day, int? month) async{
+    await database.coupondao.updateUsed(used, day!, month!);
     notifyListeners();
-  }
-
-  Future<int?> numberOfCoupons() async {
-    final count = await database.coupondao.numberOfCoupons();
-    return count;
   }
 
   Future<void> deleteAllCoupons() async{
