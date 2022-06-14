@@ -35,6 +35,10 @@ class MonthStepsChartGraph extends StatelessWidget{
       height: 290,
       padding: EdgeInsets.all(25),
       child: Card(
+        elevation: 5,
+        shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),),
+        shadowColor: Colors.greenAccent,
         child: Padding(
           padding: const EdgeInsets.all(2),
           child: Column(children: <Widget>[
@@ -129,8 +133,12 @@ class MonthCaloriesChartGraph extends StatelessWidget{
 
     return Container(
       height: 290,
+      
       padding: EdgeInsets.all(25),
       child: Card(
+        shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),),
+        shadowColor: Colors.orangeAccent,
         child: Padding(
           padding: const EdgeInsets.all(2),
           child: Column(children: <Widget>[
@@ -236,9 +244,13 @@ class MonthMinChartGraph extends StatelessWidget {
     ];
 
     return Container(
-      height: 200,
+      height: 290,
+      width: 360,
       padding: EdgeInsets.all(10),
       child: Card(
+        shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),),
+        shadowColor: Colors.purpleAccent,
         child: Padding(
           padding: const EdgeInsets.all(2.0),
           child: Column(

@@ -20,9 +20,8 @@ class DayWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<DayData>(builder: (context, daydate, child) {
       return Center(
-            child: Column(
-              children: [
-        Row(
+        child: Column(children: [
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
@@ -38,7 +37,7 @@ class DayWidget extends StatelessWidget {
                     todayHighlightColor: Colors.orange,
                     controller: _controller,
                     view: DateRangePickerView.month,
-                    minDate: DateTime(2022, 04, 01),
+                    minDate: DateTime(2022, 03, 01),
                     maxDate: DateTime.now(),
                     onSelectionChanged:
                         (DateRangePickerSelectionChangedArgs args) {
@@ -86,14 +85,16 @@ class DayWidget extends StatelessWidget {
                                             height: 120,
                                             child: Image.asset(
                                                 'assets/images/pomodoro_felice.png',
-                                                fit: BoxFit.cover, scale: 10),
+                                                fit: BoxFit.cover,
+                                                scale: 10),
                                           )
                                         : SizedBox(
                                             width: 100,
                                             height: 120,
                                             child: Image.asset(
                                                 'assets/images/pomodoro_triste.png',
-                                                fit: BoxFit.cover, scale: 10),
+                                                fit: BoxFit.cover,
+                                                scale: 10),
                                           );
                                   } else {
                                     return CircularProgressIndicator();
@@ -101,10 +102,10 @@ class DayWidget extends StatelessWidget {
                                 },
                               ))))
             ],
-        ),
-        // ROW
+          ),
+          // ROW
 
-        Consumer<VerifyCredentials>(
+          Consumer<VerifyCredentials>(
             builder: ((context, value, child) => Consumer<DataBaseRepository>(
                   builder: ((context, db, child) => FutureBuilder(
                             initialData: null,
@@ -115,21 +116,123 @@ class DayWidget extends StatelessWidget {
                                 final data = snapshot.data as MyData;
                                 print(data);
                                 return Column(children: [
-                                  Container(
-                                    height: 100,
-                                    width: 350,
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 5),
+                                  Card(
+                                    elevation: 10,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
                                     margin: const EdgeInsets.all(15.0),
-                                    decoration: BoxDecoration(
-                                        border:
-                                            Border.all(color: Colors.blueAccent),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10))),
-                                    child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
+                                    child: Container(
+                                        height:100,
+                                        width: 380,
+                                      child: Column(
+                                        
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                      height: 40,
+                                                      width: 40,
+                                                      decoration: BoxDecoration(
+                                                          shape: BoxShape.circle,
+                                                          border: Border.all(
+                                                            color: Color.fromARGB(
+                                                                255,
+                                                                153,
+                                                                211,
+                                                                155),
+                                                            width: 2,
+                                                          )),
+                                                      child: Icon(MdiIcons.run,
+                                                          size: 30,
+                                                          color: Colors.green)),
+                                                  SizedBox(
+                                                    width: 30,
+                                                  ),
+                                                  RotatedBox(
+                                                    quarterTurns: 1,
+                                                    child: Container(
+                                                      width: 50,
+                                                      height: 200,
+                                                      child: AspectRatio(
+                                                        aspectRatio: 0.6,
+                                                        child: TomatoChart(
+                                                          data: data.steps!,
+                                                          name: 'steps',
+                                                          objective: 7000,
+                                                          number: 1,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Icon(MdiIcons.flagCheckered)
+                                                ]),
+                                            Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.spaceEvenly,
+                                                children: [
+                                                  Column(children: [
+                                                    Text('STEPS:',
+                                                        style: TextStyle(
+                                                            //color: Colors.blue,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontStyle:
+                                                                FontStyle.normal,
+                                                            fontSize: 15)),
+                                                    Text('DISTANCE:',
+                                                        style: TextStyle(
+                                                            //color: Colors.blue,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontStyle:
+                                                                FontStyle.normal,
+                                                            fontSize: 15)),
+                                                  ]),
+                                                  Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.center,
+                                                    children: [
+                                                      Text(
+                                                          data.steps!
+                                                              .round()
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                              //color: Colors.blue,
+                                                              fontWeight:
+                                                                  FontWeight.w500,
+                                                              fontStyle: FontStyle
+                                                                  .normal,
+                                                              fontSize: 15)),
+                                                      Text(
+                                                          '${data.distance!.toStringAsFixed(1)} km',
+                                                          style: TextStyle(
+                                                              //color: Colors.blue,
+                                                              fontWeight:
+                                                                  FontWeight.w500,
+                                                              fontStyle: FontStyle
+                                                                  .normal,
+                                                              fontSize: 15)),
+                                                    ],
+                                                  ),
+                                                ])
+                                          ]),
+                                    ),
+                                  ),
+
+                                  Card(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      margin: const EdgeInsets.all(15.0),
+                                      child: Container(
+                                        height: 100,
+                                        width: 390,
+                                        child: Column(children: [
                                           Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
@@ -141,63 +244,131 @@ class DayWidget extends StatelessWidget {
                                                         shape: BoxShape.circle,
                                                         border: Border.all(
                                                           color: Color.fromARGB(
-                                                              255, 153, 211, 155),
+                                                              255, 216, 159, 105),
                                                           width: 2,
                                                         )),
-                                                    child: Icon(MdiIcons.run,
+                                                    child: Icon(MdiIcons.fire,
                                                         size: 30,
-                                                        color: Colors.green)),
-                                                SizedBox(
-                                                  width: 30,
-                                                ),
+                                                        color: Color.fromARGB(
+                                                            255, 223, 124, 25))),
+                                                SizedBox(width: 30),
                                                 RotatedBox(
                                                   quarterTurns: 1,
                                                   child: Container(
-                                                    width: 50,
                                                     height: 200,
+                                                    width: 50,
                                                     child: AspectRatio(
-                                                      aspectRatio: 0.6,
-                                                      child: TomatoChart(
-                                                        data: data.steps!,
-                                                        name: 'steps',
-                                                        objective: 7000,
-                                                        number: 1,
-                                                      ),
-                                                    ),
+                                                        aspectRatio: 0.8,
+                                                        child: TomatoChart(
+                                                          data: data.calories!,
+                                                          name: 'calories',
+                                                          objective: 2800,
+                                                          number: 2,
+                                                        )),
                                                   ),
                                                 ),
-                                                Icon(MdiIcons.flagCheckered)
+                                                Icon(MdiIcons.flagCheckered),
                                               ]),
                                           Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.spaceEvenly,
                                               children: [
-                                                Column(children: [
-                                                  Text('STEPS:',
-                                                      style: TextStyle(
-                                                          //color: Colors.blue,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontStyle:
-                                                              FontStyle.normal,
-                                                          fontSize: 15)),
-                                                  Text('DISTANCE:',
-                                                      style: TextStyle(
-                                                          //color: Colors.blue,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontStyle:
-                                                              FontStyle.normal,
-                                                          fontSize: 15)),
-                                                ]),
+                                                Text('CALORIES:',
+                                                    style: TextStyle(
+                                                        //color: Colors.blue,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                        fontSize: 20)),
+                                                Text(
+                                                    '${data.calories!.toStringAsFixed(0)} kcal',
+                                                    style: TextStyle(
+                                                        //color: Colors.blue,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                        fontSize: 20))
+                                              ])
+                                        ]),
+                                      )),
+                                      Card(
+                                      margin: const EdgeInsets.all(15.0),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      child: Container(
+                                        height:100,
+                                        width: 380,
+                                        child: Column(children: [
+                                          Row(mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                            children: [
+                                            Container(
+                                                height: 40,
+                                                width: 40,
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    border: Border.all(
+                                                      color: Color.fromARGB(
+                                                          255, 216, 130, 178),
+                                                      width: 2,
+                                                    )),
+                                                child: Icon(MdiIcons.armFlex,
+                                                    size: 30,
+                                                    color: Color.fromARGB(
+                                                        255, 113, 13, 100))),
+                                            SizedBox(width: 30),
+                                            RotatedBox(
+                                              quarterTurns: 1,
+                                              child: Container(
+                                                height: 200,
+                                                width: 50,
+                                                child: AspectRatio(
+                                                  aspectRatio: 0.6,
+                                                  child: TomatoChart(
+                                                    data: data.minutesfa! +
+                                                        data.minutesva!,
+                                                    name: 'minutes',
+                                                    objective: 40,
+                                                    number: 3,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Icon(MdiIcons.flagCheckered)
+                                          ]),
+                                          Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Column(
+                                                  children: [
+                                                    Text('MINUTES VERY ACTIVE:',
+                                                        style: TextStyle(
+                                                            //color: Colors.blue,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontStyle:
+                                                                FontStyle.normal,
+                                                            fontSize: 15)),
+                                                    Text('MINUTES FAIRLY ACTIVE:',
+                                                        style: TextStyle(
+                                                            //color: Colors.blue,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontStyle:
+                                                                FontStyle.normal,
+                                                            fontSize: 15)),
+                                                  ],
+                                                ),
                                                 Column(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
                                                   children: [
                                                     Text(
-                                                        data.steps!
-                                                            .round()
-                                                            .toString(),
+                                                        data.minutesfa.toString(),
                                                         style: TextStyle(
                                                             //color: Colors.blue,
                                                             fontWeight:
@@ -206,7 +377,7 @@ class DayWidget extends StatelessWidget {
                                                                 FontStyle.normal,
                                                             fontSize: 15)),
                                                     Text(
-                                                        '${data.distance!.toStringAsFixed(1)} km',
+                                                        data.minutesva.toString(),
                                                         style: TextStyle(
                                                             //color: Colors.blue,
                                                             fontWeight:
@@ -218,75 +389,8 @@ class DayWidget extends StatelessWidget {
                                                 ),
                                               ])
                                         ]),
-                                  ),
+                                      )), // row
 
-                                  Container(
-                                      height: 100,
-                                      width: 350,
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 5),
-                                      margin: const EdgeInsets.all(15.0),
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Colors.blueAccent),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10))),
-                                      child: Column(children: [
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                  height: 40,
-                                                  width: 40,
-                                                  decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      border: Border.all(
-                                                        color: Color.fromARGB(
-                                                            255, 216, 159, 105),
-                                                        width: 2,
-                                                      )),
-                                                  child: Icon(MdiIcons.fire,
-                                                      size: 30,
-                                                      color: Color.fromARGB(
-                                                          255, 223, 124, 25))),
-                                              SizedBox(width: 30),
-                                              RotatedBox(
-                                                quarterTurns: 1,
-                                                child: Container(
-                                                  height: 200,
-                                                  width: 50,
-                                                  child: AspectRatio(
-                                                      aspectRatio: 0.8,
-                                                      child: TomatoChart(
-                                                        data: data.calories!,
-                                                        name: 'calories',
-                                                        objective: 2800,
-                                                        number: 2,
-                                                      )),
-                                                ),
-                                              ),
-                                              Icon(MdiIcons.flagCheckered),
-                                            ]),
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              Text('CALORIES:',
-                                                  style: TextStyle(
-                                                      //color: Colors.blue,
-                                                      fontWeight: FontWeight.w500,
-                                                      fontStyle: FontStyle.normal,
-                                                      fontSize: 20)),
-                                              Text(
-                                                  '${data.calories!.toStringAsFixed(0)} kcal',
-                                                  style: TextStyle(
-                                                      //color: Colors.blue,
-                                                      fontWeight: FontWeight.w500,
-                                                      fontStyle: FontStyle.normal,
-                                                      fontSize: 20))
-                                            ])
-                                      ])),
                                   Container(
                                     height: 100,
                                     width: 350,
@@ -294,8 +398,8 @@ class DayWidget extends StatelessWidget {
                                         horizontal: 20, vertical: 5),
                                     margin: const EdgeInsets.all(15.0),
                                     decoration: BoxDecoration(
-                                        border:
-                                            Border.all(color: Colors.blueAccent),
+                                        border: Border.all(
+                                            color: Colors.blueAccent),
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10))),
                                     child: Row(
@@ -386,102 +490,7 @@ class DayWidget extends StatelessWidget {
                                     ),
                                   ),
 
-                                  Container(
-                                      height: 100,
-                                      width: 350,
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 5),
-                                      margin: const EdgeInsets.all(15.0),
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Colors.blueAccent),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10))),
-                                      child: Column(children: [
-                                        Row(children: [
-                                          Container(
-                                              height: 40,
-                                              width: 40,
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  border: Border.all(
-                                                    color: Color.fromARGB(
-                                                        255, 216, 130, 178),
-                                                    width: 2,
-                                                  )),
-                                              child: Icon(MdiIcons.armFlex,
-                                                  size: 30,
-                                                  color: Color.fromARGB(
-                                                      255, 113, 13, 100))),
-                                          SizedBox(width: 30),
-                                          RotatedBox(
-                                            quarterTurns: 1,
-                                            child: Container(
-                                              height: 200,
-                                              width: 50,
-                                              child: AspectRatio(
-                                                aspectRatio: 0.6,
-                                                child: TomatoChart(
-                                                  data: data.minutesfa! +
-                                                      data.minutesva!,
-                                                  name: 'minutes',
-                                                  objective: 40,
-                                                  number: 3,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Icon(MdiIcons.flagCheckered)
-                                        ]),
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              Column(
-                                                children: [
-                                                  Text('MINUTES VERY ACTIVE:',
-                                                      style: TextStyle(
-                                                          //color: Colors.blue,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontStyle:
-                                                              FontStyle.normal,
-                                                          fontSize: 15)),
-                                                  Text('MINUTES FAIRLY ACTIVE:',
-                                                      style: TextStyle(
-                                                          //color: Colors.blue,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontStyle:
-                                                              FontStyle.normal,
-                                                          fontSize: 15)),
-                                                ],
-                                              ),
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Text(data.minutesfa.toString(),
-                                                      style: TextStyle(
-                                                          //color: Colors.blue,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontStyle:
-                                                              FontStyle.normal,
-                                                          fontSize: 15)),
-                                                  Text(data.minutesva.toString(),
-                                                      style: TextStyle(
-                                                          //color: Colors.blue,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontStyle:
-                                                              FontStyle.normal,
-                                                          fontSize: 15)),
-                                                ],
-                                              ),
-                                            ])
-                                      ])), // row
-
+                                  
                                   // container
                                 ]);
                               } else {
@@ -493,9 +502,9 @@ class DayWidget extends StatelessWidget {
 
                       ),
                 )),
-        )
-      ]),
-          );
+          )
+        ]),
+      );
     });
   }
 }

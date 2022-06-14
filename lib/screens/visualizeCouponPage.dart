@@ -28,28 +28,25 @@ class _VisualizeCouponScreenState extends State<VisualizeCouponScreen> {
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: Text(
+                Text(
                     'Your Ticket',
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 25.0),
-                  child: Column(
+                
+                 Column(
                     children: <Widget>[
                       ticketDetailsWidget(
                           'Week', '${widget.day}/${widget.month}/${DateTime.now().year}', '', '${computeEndOfWeek(widget.day, widget.month).day}/${computeEndOfWeek(widget.day, widget.month).month}/${DateTime.now().year}'),
     
                     ],
                   ),
-                ),
+                
                 SizedBox(
                         height: 150,
                         width: 150,
@@ -63,17 +60,15 @@ class _VisualizeCouponScreenState extends State<VisualizeCouponScreen> {
                         child: Image.asset('assets/images/barcode_prova.png',
                             fit: BoxFit.cover, scale: 10),
                       ),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(top: 10.0, left: 75.0, right: 75.0),
-                  child: Text('Code: ${randomAlphaNumeric(8)}', style: TextStyle(
+                
+                  Text('Code: ${randomAlphaNumeric(8)}', style: TextStyle(
                               //color: Colors.green,
                               fontWeight: FontWeight.w500,
                               fontStyle: FontStyle.italic,
                               fontSize: 20
                               )),
-                ),
-                SizedBox(height: 20),
+                
+                
                 ElevatedButton(onPressed: () {
                       Navigator.of(context).pop();
                       Navigator.of(context).pop();

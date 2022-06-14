@@ -1,12 +1,9 @@
-import 'package:charts_flutter/flutter.dart';
-import 'package:fitbitter/fitbitter.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import 'package:login_flow/database/entities/mydata.dart';
 import 'package:login_flow/repository/databaserepository.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-
-import '../classes/verify_cred.dart';
 import '../classes/weekchart.dart';
 import '../classes/weekdata.dart';
 
@@ -19,10 +16,6 @@ class WeekWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<WeekChart> liststeps = [];
-    List<WeekChart> listcalories = [];
-    List<WeekChart> listminutesva = [];
-    List<WeekChart> listminutesfa = [];
     return Consumer<WeekData>(builder: (context, weekdate, child) {
       return Container(
         //Color.fromHex(code: code),
@@ -35,20 +28,41 @@ class WeekWidget extends StatelessWidget {
                 ),
               child: Container(
                 
-                height: 150,
+                height: 170,
                 width: 300,
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.amber),
+                 
                   borderRadius: BorderRadius.circular(15),
                   color: Colors.black),
                 child: SfDateRangePicker(
                   
                   controller: _controller,
-                  selectionColor: Colors.amber,
+                  
                   rangeSelectionColor: Colors.amber,
                   view: DateRangePickerView.month,
                   selectionMode: DateRangePickerSelectionMode.range,
-                  
+                  monthViewSettings: const DateRangePickerMonthViewSettings(
+                        showTrailingAndLeadingDates: true,
+                        viewHeaderStyle: DateRangePickerViewHeaderStyle(
+                            textStyle: TextStyle(color: Colors.white)),
+                        enableSwipeSelection: true),
+                    headerStyle: const DateRangePickerHeaderStyle(
+                        textStyle: TextStyle(color: Colors.white)),
+                    yearCellStyle: const DateRangePickerYearCellStyle(
+                      disabledDatesTextStyle: TextStyle(color: Colors.grey),
+                      textStyle: TextStyle(color: Colors.white),
+                      todayTextStyle: TextStyle(color: Colors.white),
+                    ),
+                    selectionColor: Colors.transparent,
+                    selectionTextStyle: const TextStyle(color: Colors.amber),
+                    monthCellStyle: const DateRangePickerMonthCellStyle(
+                      trailingDatesTextStyle: TextStyle(color: Colors.grey),
+                      leadingDatesTextStyle: TextStyle(color: Colors.grey),
+                      disabledDatesTextStyle:
+                          TextStyle(color: Color.fromARGB(255, 95, 91, 91)),
+                      textStyle: TextStyle(color: Colors.white),
+                      todayTextStyle: TextStyle(color: Colors.orange),
+                    ),
                   onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
                     int firstDayOfWeek = DateTime.sunday % 7;
                     int endDayOfWeek = (firstDayOfWeek - 1) % 7;
@@ -73,8 +87,7 @@ class WeekWidget extends StatelessWidget {
                     _controller.selectedRange = PickerDateRange(dat1, dat2);
                     weekdate.changeWeek(dat1, dat2);
                   },
-                  monthViewSettings: DateRangePickerMonthViewSettings(
-                      enableSwipeSelection: true),
+                 
                 ),
               ),),
             
@@ -139,13 +152,13 @@ Future<List<List<WeekChart>>> fetchweekdata(context, startdate) async {
 
   for (int i = 0; i < weekdata.length; i++) {
     listcalories.add(WeekChart('${weekdata[i]!.day}/${weekdata[i]!.month}',
-        weekdata[i]!.calories, ColorUtil.fromDartColor(Colors.orange)));
+        weekdata[i]!.calories, charts.ColorUtil.fromDartColor(Colors.orange)));
     liststeps.add(WeekChart('${weekdata[i]!.day}/${weekdata[i]!.month}',
-        weekdata[i]!.steps, ColorUtil.fromDartColor(Colors.greenAccent)));
+        weekdata[i]!.steps, charts.ColorUtil.fromDartColor(Colors.greenAccent)));
     listminutesva.add(WeekChart('${weekdata[i]!.day}/${weekdata[i]!.month}',
-        weekdata[i]!.minutesva, ColorUtil.fromDartColor(Colors.deepPurple)));
+        weekdata[i]!.minutesva, charts.ColorUtil.fromDartColor(Colors.deepPurple)));
     listminutesfa.add(WeekChart('${weekdata[i]!.day}/${weekdata[i]!.month}',
-        weekdata[i]!.minutesfa, ColorUtil.fromDartColor(Colors.purple)));
+        weekdata[i]!.minutesfa, charts.ColorUtil.fromDartColor(Colors.purple)));
   }
 
   List<List<WeekChart>> listreturned = [];

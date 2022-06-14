@@ -7,6 +7,7 @@ import 'package:login_flow/classes/DayDate.dart';
 import 'package:login_flow/repository/databaserepository.dart';
 import 'package:login_flow/screens/homepage.dart';
 import 'package:login_flow/screens/loginpage.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -72,9 +73,7 @@ class _ProfilePageState extends State<ProfilePage> {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          Future.delayed(Duration(seconds: 5), () {
-            Navigator.of(context).pop(true);
-          });
+          BuildContext dialogContext = context;
           return AlertDialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(32.0))),
@@ -94,7 +93,7 @@ class _ProfilePageState extends State<ProfilePage> {
     //File? imageFile = Provider.of<VerifyCredentials>(context, listen: false).Restituteuser(widget.username)['image'];
     File? imageFile = null;
     print(imageFile);
-
+    print(nameController.toString());
     ena = actual == -1 ? false : true;
     return Scaffold(
       appBar: AppBar(
@@ -111,17 +110,20 @@ class _ProfilePageState extends State<ProfilePage> {
               decoration: InputDecoration(border: InputBorder.none),
               controller: usernameController,
             ),
+            SizedBox(height: 10),
             Container(
-              width: 250.0,
-              height: 190.0,
+              alignment: Alignment.center,
+              width: 200.0,
+              height: 200.0,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: imageFile == null
-                        ? AssetImage('assets/images/default_picture.png')
-                        : FileImage(imageFile) as ImageProvider),
+                color: Color.fromARGB(255, 28, 70, 47),
               ),
+              child: Center(
+                  child: Text(
+                nameController.text[0],
+                style: TextStyle(fontSize: 130, color: Colors.white),
+              )),
             ),
             SizedBox(height: 10),
             TextFormField(
@@ -196,7 +198,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     actual == -1 ? Text('Edit Your Infos') : Icon(Icons.check),
                 style: actual == -1
                     ? ElevatedButton.styleFrom(
-                      primary: Colors.green,
+                        primary: Colors.green,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0),
                         ),
@@ -257,7 +259,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                               redirectUri: CredentialsFitbitter
                                                   .redirectUri,
                                               callbackUrlScheme: 'example');
-
+                                      
                                       _showChoiceDialog(context);
                                       Provider.of<VerifyCredentials>(context,
                                               listen: false)
@@ -265,7 +267,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                               widget.username, userId);
 
                                       // DATABASE
-                                      
+
                                       // mydata
                                       List<MyData?> dataavailablelist =
                                           await Provider.of<DataBaseRepository>(
@@ -279,7 +281,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                             await computeMonthData(
                                           credentials.Restituteuser(
                                               widget.username)['userID'],
-                                          DateTime.parse('2022-04-01 00:00:00'),
+                                          DateTime.parse('2022-03-01 00:00:00'),
                                           DateTime.now(),
                                         );
                                         for (int i = 0;
@@ -292,7 +294,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                               .insertMyData(mydata);
                                         }
                                       } else {
-                                      
                                         // ci sono gia i dati quindi devo solo fare check per update dell'ultimo giorno + altri eventuali giorni
                                         final listlastday = await Provider.of<
                                                     DataBaseRepository>(context,
@@ -355,7 +356,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 credentials.Restituteuser(
                                                     widget.username)['userID'],
                                                 DateTime.parse(
-                                                    '2022-04-04 00:00:00'),
+                                                    '2022-03-06 00:00:00'),
                                                 DateTime.now());
                                         for (int i = 0;
                                             i < couponlist.length;
@@ -417,6 +418,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       Provider.of<DayData>(context,
                                               listen: false)
                                           .computeDifference();
+                                      Navigator.of(context, rootNavigator: true).pop();
                                     },
                                   ),
                                 ],
@@ -435,7 +437,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       .deleteAllCoupons();
                 },
                 child: Text('to pare')),
-            
           ]),
         ),
       ),

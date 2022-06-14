@@ -76,94 +76,101 @@ class _HomePageState extends State<HomePage> {
     return DefaultTabController(
         initialIndex: 0,
         length: 3,
-        child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            backgroundColor: Color.fromARGB(255, 183, 208, 201),
-            appBar: AppBar(
-              backgroundColor: Colors.green,
-              title: const Text('My Data'),
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, GardenPage.route,
-                        arguments: {'username': widget.username});
-                  },
-                  icon: Icon(MdiIcons.shovel),
-                )
-              ],
-              bottom: const TabBar(
-                tabs: <Widget>[
-                  Tab(
-                    text: 'Day',
-                  ),
-                  Tab(
-                    text: 'Week',
-                  ),
-                  Tab(
-                    text: 'Month',
-                  ),
+        child: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Colors.green, Colors.blue])),
+          child: Scaffold(
+              resizeToAvoidBottomInset: false,
+              backgroundColor: Colors.transparent,
+              appBar: AppBar(
+                backgroundColor: Colors.green,
+                title: const Text('My Data'),
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, GardenPage.route,
+                          arguments: {'username': widget.username});
+                    },
+                    icon: Icon(MdiIcons.shovel),
+                  )
                 ],
+                bottom: const TabBar(
+                  tabs: <Widget>[
+                    Tab(
+                      text: 'Day',
+                    ),
+                    Tab(
+                      text: 'Week',
+                    ),
+                    Tab(
+                      text: 'Month',
+                    ),
+                  ],
+                ),
               ),
-            ),
-            drawer: Drawer(
-                child: ListView(
-              children: [
-                Container(
-                    child: const Text('Application\'s Options',
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.greenAccent)),
-                    padding: EdgeInsets.fromLTRB(8, 20, 8, 20)),
-                CustomListTile(
-                    Icons.person,
-                    'Your Profile',
-                    () => {
-                          Navigator.pushNamed(context, ProfilePage.route,
-                              arguments: {
-                                'username': widget.username,
-                                'keypassed': -1
-                              })
-                        }),
-                CustomListTile(
-                    MdiIcons.ticketPercentOutline,
-                    'Coupons',
-                    () => {
-                          Navigator.pushNamed(context, CouponPage.route)
-                          // TODO go to settings page
-                        }),
-                CustomListTile(
-                    Icons.lock, 'Log Out', () => {_showChoiceDialog(context)}),
-              ],
-            )),
-            body: Center(child: Consumer<VerifyCredentials>(
-                builder: (context, credentials, child) {
-              return TabBarView(
-                children: <Widget>[
-                  Center(
-                    child: (credentials.isAuthenticated(widget.username) &&
-                            credentials.iscompleted(widget.username))
-                        ? daywidget(context)
-                        : Text(
-                            'You\'re not auth, go to your profile and authoriz'),
-                  ),
-                  Center(
-                    child: (credentials.isAuthenticated(widget.username) &&
-                            credentials.iscompleted(widget.username))
-                        ? weekwidget(context)
-                        : Text(
-                            'You\'re not auth, go to your profile and authoriz'),
-                  ),
-                  Center(
-                    child: (credentials.isAuthenticated(widget.username) &&
-                            credentials.iscompleted(widget.username))
-                        ? monthwidget(context)
-                        : Text(
-                            'You\'re not auth, go to your profile and authorize'),
-                  ),
+              drawer: Drawer(
+                  child: ListView(
+                children: [
+                  Container(
+                      child: const Text('Application\'s Options',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.greenAccent)),
+                      padding: EdgeInsets.fromLTRB(8, 20, 8, 20)),
+                  CustomListTile(
+                      Icons.person,
+                      'Your Profile',
+                      () => {
+                            Navigator.pushNamed(context, ProfilePage.route,
+                                arguments: {
+                                  'username': widget.username,
+                                  'keypassed': -1
+                                })
+                          }),
+                  CustomListTile(
+                      MdiIcons.ticketPercentOutline,
+                      'Coupons',
+                      () => {
+                            Navigator.pushNamed(context, CouponPage.route)
+                            // TODO go to settings page
+                          }),
+                  CustomListTile(
+                      Icons.lock, 'Log Out', () => {_showChoiceDialog(context)}),
                 ],
-              );
-            }))));
+              )),
+              body: Center(child: Consumer<VerifyCredentials>(
+                  builder: (context, credentials, child) {
+                return TabBarView(
+                  children: <Widget>[
+                    Center(
+                      child: (credentials.isAuthenticated(widget.username) &&
+                              credentials.iscompleted(widget.username))
+                          ? daywidget(context)
+                          : Text(
+                              'You\'re not auth, go to your profile and authoriz'),
+                    ),
+                    Center(
+                      child: (credentials.isAuthenticated(widget.username) &&
+                              credentials.iscompleted(widget.username))
+                          ? weekwidget(context)
+                          : Text(
+                              'You\'re not auth, go to your profile and authoriz'),
+                    ),
+                    Center(
+                      child: (credentials.isAuthenticated(widget.username) &&
+                              credentials.iscompleted(widget.username))
+                          ? monthwidget(context)
+                          : Text(
+                              'You\'re not auth, go to your profile and authorize'),
+                    ),
+                  ],
+                );
+              }))),
+        ));
   }
 
   Widget daywidget(BuildContext context) {

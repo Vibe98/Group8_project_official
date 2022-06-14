@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:login_flow/widgets/viusalizeDayTomato.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../classes/verify_cred.dart';
-import '../classes/weekchart.dart';
-import '../classes/weekdata.dart';
+
 import '../database/entities/mydata.dart';
 import '../repository/databaserepository.dart';
-import '../widgets/weekwidget.dart';
+
 
 class GardenPage extends StatelessWidget {
   const GardenPage({Key? key, required this.username}) : super(key: key);
@@ -44,14 +41,14 @@ class GardenPage extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       IconButton(
                                               onPressed: () {
                                               Navigator.pop(context);
                                             }, icon: Icon(Icons.arrow_back_rounded,
                                             size: 30, color: Colors.white)),
-                                      SizedBox(width: 55),
+                              
                                       Card(
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(15),
@@ -69,7 +66,9 @@ class GardenPage extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                      SizedBox(width:80)
+                                      Text('             '),
+                                      
+                                     
                                     ],
                                   ),
                                 
