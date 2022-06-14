@@ -11,6 +11,7 @@ import 'package:login_flow/screens/homepage.dart';
 import 'package:login_flow/screens/loginpage.dart';
 import 'package:login_flow/screens/profilepage.dart';
 import 'package:login_flow/screens/signin.dart';
+import 'package:login_flow/screens/visualizeCouponPage.dart';
 import 'package:provider/provider.dart';
 import 'package:login_flow/classes/DayDate.dart';
 
@@ -87,10 +88,14 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (context) {
                 return CouponPage();
             });
-          }
+          }else if(settings.name == VisualizeCouponScreen.route){
+            return MaterialPageRoute(builder: (context) {
+              final args = settings.arguments as Map;
+                return VisualizeCouponScreen(day: args['day'], month: args['month']);
+            });
           }
           
-        ),
+          }),
     );
   }
 }

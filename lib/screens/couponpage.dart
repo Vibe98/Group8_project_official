@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:login_flow/repository/databaserepository.dart';
+import 'package:login_flow/screens/visualizeCouponPage.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:random_string/random_string.dart';
+import 'package:flutter_ticket_widget/flutter_ticket_widget.dart';
 
 import '../database/entities/couponentity.dart';
 import '../utils/utils.dart';
@@ -27,7 +29,9 @@ class CouponPage extends StatelessWidget {
                   onPressed: () {
                     Provider.of<DataBaseRepository>(context, listen: false)
                         .updateUsed(true, day, month);
-                    _showCodeDialogue(context);
+                    Navigator.pushNamed(context, VisualizeCouponScreen.route, arguments: {
+                      'day': day, 'month': month
+                    });
 
                     //Navigator.of(context).pop();
                   }),
@@ -43,46 +47,7 @@ class CouponPage extends StatelessWidget {
         });
   }
 
-  Future<void>? _showCodeDialogue(BuildContext context) {
-    return showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(32.0))),
-              title: const Text('Your Code', textAlign: TextAlign.center,),
-              content: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(
-                      height: 300,
-                      width: 300,
-                      child: Image.asset('assets/images/pomodoro_felice.png',
-                          fit: BoxFit.cover, scale: 10),
-                    ),
-                    
-                   Text(randomAlphaNumeric(8), style: TextStyle(
-                            //color: Colors.green,
-                            fontWeight: FontWeight.w500,
-                            fontStyle: FontStyle.italic,
-                            fontSize: 30)),
-                            
-                   ElevatedButton(onPressed: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pop();
-
-                   },
-                   style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all<Color>(
-                                            Colors.green),
-                                  ),
-                   child: Icon(Icons.done))
-                  ]));
-        });
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

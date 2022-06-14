@@ -49,7 +49,7 @@ class MonthWidget extends StatelessWidget {
                                   null;
                                 }
                               },
-                              icon: Icon(Icons.arrow_back_ios, color: Colors.blue)),
+                              icon: Icon(Icons.arrow_back_ios, color: Colors.green)),
                         ),
                         Card(
                           elevation: 10,
@@ -65,9 +65,7 @@ class MonthWidget extends StatelessWidget {
                               ),
                               width: 200,
                               height: 50,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.blue),
-                              )),
+                              ),
                         ),
                         Card(
                           elevation: 10,
@@ -79,7 +77,7 @@ class MonthWidget extends StatelessWidget {
                                 pickmonth.increaseMonth();
                               },
                               icon:
-                                  Icon(Icons.arrow_forward_ios, color: Colors.blue)),
+                                  Icon(Icons.arrow_forward_ios, color: Colors.green)),
                         ),
                       ],
                     ),

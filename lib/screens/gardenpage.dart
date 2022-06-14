@@ -51,17 +51,70 @@ class GardenPage extends StatelessWidget {
                                               Navigator.pop(context);
                                             }, icon: Icon(Icons.arrow_back_rounded,
                                             size: 30, color: Colors.white)),
-                                      SizedBox(width: 70),
-                                      Text('Your Garden',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 30)),
-                                      SizedBox(width:100)
+                                      SizedBox(width: 55),
+                                      Card(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(15),
+                                        ),
+                                        color: Colors.white.withOpacity(0.3),
+                                        child: Container(
+                                          height: 50,
+                                          width: 200,
+                                          child: Center(
+                                            child: Text('Your Garden',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 30)),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(width:80)
                                     ],
                                   ),
                                 
-                                SizedBox(height: 30),
+                                SizedBox(height: 20),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Card(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(15),
+                                        ),
+                                        color: Colors.white.withOpacity(0.3),
+                                        child: IconButton(
+                                          onPressed: () {
+
+                                          },
+                                          icon: Icon(Icons.arrow_back_ios, color: Colors.white)
+                                        )),
+                                        Card(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(15),
+                                        ),
+                                        color: Colors.white.withOpacity(0.3),
+                                        child: Container(
+                                          width: 200,
+                                          height: 50,
+                                          child: Center(child: 
+                                          Text('${data[0]!.day}/${data[0]!.month}/22 - ${data[6]!.day}/${data[6]!.month}/22',
+                                          style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500))
+                                          )
+                                        )
+                                        ),
+                                        Card(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(15),
+                                        ),
+                                        color: Colors.white.withOpacity(0.3),
+                                        child: IconButton(
+                                          onPressed: () {
+
+                                          },
+                                          icon: Icon(Icons.arrow_forward_ios, color: Colors.white)
+                                        ))
+                                ],),
+                                SizedBox(height: 15),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
