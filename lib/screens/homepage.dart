@@ -51,11 +51,14 @@ class _HomePageState extends State<HomePage> {
                   isDefaultAction: true,
                   child: Text('Yes'),
                   onPressed: () async {
+
                     final sp = await SharedPreferences.getInstance();
 
                     //rimuovo le credenziali salvate
-                    sp.remove('username');
-
+                    
+                    sp.setBool('Log', false);
+                    sp.remove('userid');
+                    print(sp.getBool('Log'));
                     setState(() {});
                     Navigator.pushReplacementNamed(context, LoginPage.route);
                   }),

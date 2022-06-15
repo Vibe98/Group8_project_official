@@ -221,6 +221,8 @@ class _SignInState extends State<SignIn> {
                           verifyCred.addAccount(usernameController.text, nameController.text, surnameController.text, passwordController.text, emailController.text);
                           final sp = await SharedPreferences.getInstance();
                           sp.setStringList('username', [usernameController.text, nameController.text, surnameController.text, passwordController.text, emailController.text]);
+                          sp.setBool('Log', true);
+                          print(sp.getBool('Log'));
                           setState(() {
                             
                           });
