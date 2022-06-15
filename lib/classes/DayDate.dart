@@ -10,7 +10,7 @@ class DayData extends ChangeNotifier{
   DateTime date = DateTime.now(); 
   int day = DateTime.now().day;
   String month = DateFormat('MMMM').format(DateTime.now());
-  bool calendar = false;
+  bool sleep = false;
   int difference = DateTime.now().difference(DateTime.now()).inDays;
 
   
@@ -24,15 +24,16 @@ class DayData extends ChangeNotifier{
     date = newdate;
     day = newdate.day;
     month= DateFormat('MMMM').format(newdate);
+    sleep = false;
     
     notifyListeners();
   }
 
-  void changeCalendar(){
-    if(calendar){
-      calendar = false;
+  void changeSleep(){
+    if(sleep){
+      sleep = false;
     }else{
-      calendar = true;
+      sleep = true;
     }
     notifyListeners();
   }

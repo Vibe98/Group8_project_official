@@ -90,9 +90,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    //File? imageFile = Provider.of<VerifyCredentials>(context, listen: false).Restituteuser(widget.username)['image'];
-    File? imageFile = null;
-    print(imageFile);
+   
     print(nameController.toString());
     ena = actual == -1 ? false : true;
     return Scaffold(
@@ -126,8 +124,25 @@ class _ProfilePageState extends State<ProfilePage> {
               )),
             ),
             SizedBox(height: 10),
-            TextFormField(
-                controller: nameController,
+            Container(
+              width: 400,
+              child: TextFormField(
+                  controller: nameController,
+                  enabled: ena,
+                  decoration: InputDecoration(
+                      border:
+                          actual == -1 ? InputBorder.none : OutlineInputBorder(),
+                      icon: Icon(
+                        Icons.person,
+                        color: Colors.green,
+                      ),
+                      labelText: 'Name')),
+            ),
+            SizedBox(height: 20),
+            Container(
+              width: 400,
+              child: TextFormField(
+                controller: surnameController,
                 enabled: ena,
                 decoration: InputDecoration(
                     border:
@@ -136,77 +151,73 @@ class _ProfilePageState extends State<ProfilePage> {
                       Icons.person,
                       color: Colors.green,
                     ),
-                    labelText: 'Name')),
-            SizedBox(height: 20),
-            TextFormField(
-              controller: surnameController,
-              enabled: ena,
-              decoration: InputDecoration(
-                  border:
-                      actual == -1 ? InputBorder.none : OutlineInputBorder(),
-                  icon: Icon(
-                    Icons.person,
-                    color: Colors.green,
-                  ),
-                  labelText: 'Surname'),
+                    labelText: 'Surname'),
+              ),
             ),
             SizedBox(height: 20),
-            TextFormField(
-              controller: emailController,
-              enabled: ena,
-              decoration: InputDecoration(
-                  border:
-                      actual == -1 ? InputBorder.none : OutlineInputBorder(),
-                  icon: Icon(Icons.email, color: Colors.green),
-                  labelText: 'E-mail'),
+            Container(
+              width: 400,
+              child: TextFormField(
+                controller: emailController,
+                enabled: ena,
+                decoration: InputDecoration(
+                    border:
+                        actual == -1 ? InputBorder.none : OutlineInputBorder(),
+                    icon: Icon(Icons.email, color: Colors.green),
+                    labelText: 'E-mail'),
+              ),
             ),
             SizedBox(height: 20),
-            TextFormField(
-              controller: passwordController,
-              enabled: ena,
-              decoration: InputDecoration(
-                  border:
-                      actual == -1 ? InputBorder.none : OutlineInputBorder(),
-                  icon: Icon(
-                    Icons.key,
-                    color: Colors.green,
-                  ),
-                  labelText: 'Password'),
-              obscureText: true,
+            Container(
+              width: 400,
+              child: TextFormField(
+                controller: passwordController,
+                enabled: ena,
+                decoration: InputDecoration(
+                    border:
+                        actual == -1 ? InputBorder.none : OutlineInputBorder(),
+                    icon: Icon(
+                      Icons.key,
+                      color: Colors.green,
+                    ),
+                    labelText: 'Password'),
+                obscureText: true,
+              ),
             ),
-            ElevatedButton(
-                onPressed: () {
-                  if (actual == -1) {
-                    setState(() {
-                      actual = 0;
-                    });
-                  } else {
-                    Provider.of<VerifyCredentials>(context, listen: false)
-                        .modifyAccount(
-                            widget.username,
-                            emailController.text,
-                            nameController.text,
-                            surnameController.text,
-                            passwordController.text);
-                    setState(() {
-                      actual = -1;
-                    });
-                  }
-                  ;
-                },
-                child:
-                    actual == -1 ? Text('Edit Your Infos') : Icon(Icons.check),
-                style: actual == -1
-                    ? ElevatedButton.styleFrom(
-                        primary: Colors.green,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                      )
-                    : ElevatedButton.styleFrom(shape: CircleBorder())),
+            Row(mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ElevatedButton(
+                    onPressed: () {
+                      if (actual == -1) {
+                        setState(() {
+                          actual = 0;
+                        });
+                      } else {
+                        Provider.of<VerifyCredentials>(context, listen: false)
+                            .modifyAccount(
+                                widget.username,
+                                emailController.text,
+                                nameController.text,
+                                surnameController.text,
+                                passwordController.text);
+                        setState(() {
+                          actual = -1;
+                        });
+                      }
+                      ;
+                    },
+                    child:
+                        actual == -1 ? Icon(Icons.edit) : Icon(Icons.check),
+                    style: 
+                         
+                        ElevatedButton.styleFrom(
+                          primary: Colors.green,
+                          shape: CircleBorder())),
+              ],
+            ),
             Consumer<VerifyCredentials>(
-                builder: (context, value, child) => Card(
-                      child: value.isAuthenticated(widget.username) &&
+                builder: (context, value, child) => (
+                     value.isAuthenticated(widget.username) &&
                               value.iscompleted(widget.username) == true
                           ? ElevatedButton(
                               child: Text(
@@ -423,8 +434,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ],
                               ),
-                            ),
+                            )
                     )),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+               children: [       
             ElevatedButton(
                 onPressed: () {
                   Provider.of<DataBaseRepository>(context, listen: false)
@@ -437,6 +450,22 @@ class _ProfilePageState extends State<ProfilePage> {
                       .deleteAllCoupons();
                 },
                 child: Text('to pare')),
+          ]),
+          ElevatedButton(
+            style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 234, 231, 231))),
+            onPressed: () {
+              
+            },
+            
+              child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Delete Account', style: TextStyle(color: Colors.red))
+            
+                ]
+              ),
+            ),
+
+          
           ]),
         ),
       ),

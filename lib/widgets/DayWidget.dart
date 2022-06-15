@@ -123,10 +123,9 @@ class DayWidget extends StatelessWidget {
                                     ),
                                     margin: const EdgeInsets.all(15.0),
                                     child: Container(
-                                        height:100,
-                                        width: 380,
+                                      height: 100,
+                                      width: 380,
                                       child: Column(
-                                        
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
@@ -138,13 +137,15 @@ class DayWidget extends StatelessWidget {
                                                       height: 40,
                                                       width: 40,
                                                       decoration: BoxDecoration(
-                                                          shape: BoxShape.circle,
+                                                          shape:
+                                                              BoxShape.circle,
                                                           border: Border.all(
-                                                            color: Color.fromARGB(
-                                                                255,
-                                                                153,
-                                                                211,
-                                                                155),
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    153,
+                                                                    211,
+                                                                    155),
                                                             width: 2,
                                                           )),
                                                       child: Icon(MdiIcons.run,
@@ -173,7 +174,8 @@ class DayWidget extends StatelessWidget {
                                                 ]),
                                             Row(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment.spaceEvenly,
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
                                                 children: [
                                                   Column(children: [
                                                     Text('STEPS:',
@@ -181,21 +183,22 @@ class DayWidget extends StatelessWidget {
                                                             //color: Colors.blue,
                                                             fontWeight:
                                                                 FontWeight.w500,
-                                                            fontStyle:
-                                                                FontStyle.normal,
+                                                            fontStyle: FontStyle
+                                                                .normal,
                                                             fontSize: 15)),
                                                     Text('DISTANCE:',
                                                         style: TextStyle(
                                                             //color: Colors.blue,
                                                             fontWeight:
                                                                 FontWeight.w500,
-                                                            fontStyle:
-                                                                FontStyle.normal,
+                                                            fontStyle: FontStyle
+                                                                .normal,
                                                             fontSize: 15)),
                                                   ]),
                                                   Column(
                                                     mainAxisAlignment:
-                                                        MainAxisAlignment.center,
+                                                        MainAxisAlignment
+                                                            .center,
                                                     children: [
                                                       Text(
                                                           data.steps!
@@ -204,18 +207,22 @@ class DayWidget extends StatelessWidget {
                                                           style: TextStyle(
                                                               //color: Colors.blue,
                                                               fontWeight:
-                                                                  FontWeight.w500,
-                                                              fontStyle: FontStyle
-                                                                  .normal,
+                                                                  FontWeight
+                                                                      .w500,
+                                                              fontStyle:
+                                                                  FontStyle
+                                                                      .normal,
                                                               fontSize: 15)),
                                                       Text(
                                                           '${data.distance!.toStringAsFixed(1)} km',
                                                           style: TextStyle(
                                                               //color: Colors.blue,
                                                               fontWeight:
-                                                                  FontWeight.w500,
-                                                              fontStyle: FontStyle
-                                                                  .normal,
+                                                                  FontWeight
+                                                                      .w500,
+                                                              fontStyle:
+                                                                  FontStyle
+                                                                      .normal,
                                                               fontSize: 15)),
                                                     ],
                                                   ),
@@ -244,13 +251,19 @@ class DayWidget extends StatelessWidget {
                                                         shape: BoxShape.circle,
                                                         border: Border.all(
                                                           color: Color.fromARGB(
-                                                              255, 216, 159, 105),
+                                                              255,
+                                                              216,
+                                                              159,
+                                                              105),
                                                           width: 2,
                                                         )),
                                                     child: Icon(MdiIcons.fire,
                                                         size: 30,
                                                         color: Color.fromARGB(
-                                                            255, 223, 124, 25))),
+                                                            255,
+                                                            223,
+                                                            124,
+                                                            25))),
                                                 SizedBox(width: 30),
                                                 RotatedBox(
                                                   quarterTurns: 1,
@@ -293,52 +306,60 @@ class DayWidget extends StatelessWidget {
                                               ])
                                         ]),
                                       )),
-                                      Card(
+                                  Card(
                                       margin: const EdgeInsets.all(15.0),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(15),
                                       ),
                                       child: Container(
-                                        height:100,
+                                        height: 100,
                                         width: 380,
                                         child: Column(children: [
-                                          Row(mainAxisAlignment:
+                                          Row(
+                                              mainAxisAlignment:
                                                   MainAxisAlignment.center,
-                                            children: [
-                                            Container(
-                                                height: 40,
-                                                width: 40,
-                                                decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    border: Border.all(
-                                                      color: Color.fromARGB(
-                                                          255, 216, 130, 178),
-                                                      width: 2,
-                                                    )),
-                                                child: Icon(MdiIcons.armFlex,
-                                                    size: 30,
-                                                    color: Color.fromARGB(
-                                                        255, 113, 13, 100))),
-                                            SizedBox(width: 30),
-                                            RotatedBox(
-                                              quarterTurns: 1,
-                                              child: Container(
-                                                height: 200,
-                                                width: 50,
-                                                child: AspectRatio(
-                                                  aspectRatio: 0.6,
-                                                  child: TomatoChart(
-                                                    data: data.minutesfa! +
-                                                        data.minutesva!,
-                                                    name: 'minutes',
-                                                    objective: 40,
-                                                    number: 3,
+                                              children: [
+                                                Container(
+                                                    height: 40,
+                                                    width: 40,
+                                                    decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        border: Border.all(
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              216,
+                                                              130,
+                                                              178),
+                                                          width: 2,
+                                                        )),
+                                                    child: Icon(
+                                                        MdiIcons.armFlex,
+                                                        size: 30,
+                                                        color: Color.fromARGB(
+                                                            255,
+                                                            113,
+                                                            13,
+                                                            100))),
+                                                SizedBox(width: 30),
+                                                RotatedBox(
+                                                  quarterTurns: 1,
+                                                  child: Container(
+                                                    height: 200,
+                                                    width: 50,
+                                                    child: AspectRatio(
+                                                      aspectRatio: 0.6,
+                                                      child: TomatoChart(
+                                                        data: data.minutesfa! +
+                                                            data.minutesva!,
+                                                        name: 'minutes',
+                                                        objective: 40,
+                                                        number: 3,
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                            ),
-                                            Icon(MdiIcons.flagCheckered)
-                                          ]),
+                                                Icon(MdiIcons.flagCheckered)
+                                              ]),
                                           Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.spaceEvenly,
@@ -350,16 +371,17 @@ class DayWidget extends StatelessWidget {
                                                             //color: Colors.blue,
                                                             fontWeight:
                                                                 FontWeight.w500,
-                                                            fontStyle:
-                                                                FontStyle.normal,
+                                                            fontStyle: FontStyle
+                                                                .normal,
                                                             fontSize: 15)),
-                                                    Text('MINUTES FAIRLY ACTIVE:',
+                                                    Text(
+                                                        'MINUTES FAIRLY ACTIVE:',
                                                         style: TextStyle(
                                                             //color: Colors.blue,
                                                             fontWeight:
                                                                 FontWeight.w500,
-                                                            fontStyle:
-                                                                FontStyle.normal,
+                                                            fontStyle: FontStyle
+                                                                .normal,
                                                             fontSize: 15)),
                                                   ],
                                                 ),
@@ -368,129 +390,184 @@ class DayWidget extends StatelessWidget {
                                                       MainAxisAlignment.center,
                                                   children: [
                                                     Text(
-                                                        data.minutesfa.toString(),
+                                                        data.minutesfa
+                                                            .toString(),
                                                         style: TextStyle(
                                                             //color: Colors.blue,
                                                             fontWeight:
                                                                 FontWeight.w500,
-                                                            fontStyle:
-                                                                FontStyle.normal,
+                                                            fontStyle: FontStyle
+                                                                .normal,
                                                             fontSize: 15)),
                                                     Text(
-                                                        data.minutesva.toString(),
+                                                        data.minutesva
+                                                            .toString(),
                                                         style: TextStyle(
                                                             //color: Colors.blue,
                                                             fontWeight:
                                                                 FontWeight.w500,
-                                                            fontStyle:
-                                                                FontStyle.normal,
+                                                            fontStyle: FontStyle
+                                                                .normal,
                                                             fontSize: 15)),
                                                   ],
                                                 ),
                                               ])
                                         ]),
+                                      )),
+
+                                  // row
+                                  Card(
+                                      margin: const EdgeInsets.all(15.0),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      child: Container(
+                                        height: 100,
+                                        width: 380,
+                                        child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Container(
+                                                  alignment: Alignment.center,
+                                                  height: 40,
+                                                  width: 40,
+                                                  decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      border: Border.all(
+                                                        color: Color.fromARGB(
+                                                            255, 127, 157, 209),
+                                                        width: 2,
+                                                      )),
+                                                  child: Center(
+                                                    child: IconButton(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        padding:
+                                                            EdgeInsets.all(1),
+                                                        onPressed: () {
+                                                          daydate.changeSleep();
+                                                        },
+                                                        icon: const Icon(
+                                                            MdiIcons
+                                                                .moonWaxingCrescent,
+                                                            size: 30,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    6,
+                                                                    12,
+                                                                    70))),
+                                                  )),
+                                              daydate.sleep == false
+                                                  ? Text('Click to visualize',
+                                                      style: TextStyle(
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              61,
+                                                              119,
+                                                              163),
+                                                          fontStyle:
+                                                              FontStyle.italic,
+                                                          fontSize: 20))
+                                                  : Container(
+                                                      width: 250,
+                                                      child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceEvenly,
+                                                          children: [
+                                                            Text('SLEEP:',
+                                                                style: TextStyle(
+                                                                    //color: Colors.blue,
+                                                                    fontWeight: FontWeight.w500,
+                                                                    fontStyle: FontStyle.normal,
+                                                                    fontSize: 20)),
+                                                            FutureBuilder(
+                                                                future: _computeSleepData(
+                                                                    daydate
+                                                                        .difference,
+                                                                    value.Restituteuser(
+                                                                            username)[
+                                                                        'userID']),
+                                                                builder: (context,
+                                                                    snapshot) {
+                                                                  switch (snapshot
+                                                                      .connectionState) {
+                                                                    case ConnectionState
+                                                                        .none:
+                                                                    case ConnectionState
+                                                                        .waiting:
+                                                                      print(
+                                                                          'waiting');
+                                                                      return CircularProgressIndicator();
+                                                                    case ConnectionState
+                                                                        .done:
+                                                                    case ConnectionState
+                                                                        .active:
+                                                                      if (snapshot
+                                                                          .hasData) {
+                                                                        final sleepdata =
+                                                                            snapshot.data
+                                                                                as List;
+                                                                        DateTime?
+                                                                            dt1 =
+                                                                            sleepdata[0].entryDateTime;
+                                                                        DateTime?
+                                                                            dt2 =
+                                                                            sleepdata.last.entryDateTime;
+
+                                                                        Duration?
+                                                                            diff =
+                                                                            dt2!.difference(dt1!);
+
+                                                                        int result =
+                                                                            diff.inMinutes; // 2 mins
+
+                                                                        int hour =
+                                                                            result ~/
+                                                                                60;
+                                                                        int minutes =
+                                                                            result %
+                                                                                60;
+                                                                        print(daydate
+                                                                            .day);
+                                                                        print(daydate
+                                                                            .month);
+                                                                        if (hour >
+                                                                            0) {
+                                                                          return Text(
+                                                                              '$hour : $minutes',
+                                                                              style: TextStyle(
+                                                                                  //color: Colors.blue,
+                                                                                  fontWeight: FontWeight.w500,
+                                                                                  fontStyle: FontStyle.normal,
+                                                                                  fontSize: 20));
+                                                                        } else {
+                                                                          return Text(
+                                                                              '- - -',
+                                                                              style: TextStyle(
+                                                                                  //color: Colors.blue,
+                                                                                  fontWeight: FontWeight.w500,
+                                                                                  fontStyle: FontStyle.normal,
+                                                                                  fontSize: 20));
+                                                                        }
+                                                                      } else {
+                                                                        return Text(
+                                                                            '- - -',
+                                                                            style: TextStyle(
+                                                                                //color: Colors.blue,
+                                                                                fontWeight: FontWeight.w500,
+                                                                                fontStyle: FontStyle.normal,
+                                                                                fontSize: 20));
+                                                                      }
+                                                                  }
+                                                                })
+                                                          ]),
+                                                    )
+                                            ]),
                                       )), // row
 
-                                  Container(
-                                    height: 100,
-                                    width: 350,
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 5),
-                                    margin: const EdgeInsets.all(15.0),
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: Colors.blueAccent),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10))),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Container(
-                                            height: 40,
-                                            width: 40,
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                border: Border.all(
-                                                  color: Color.fromARGB(
-                                                      255, 127, 157, 209),
-                                                  width: 2,
-                                                )),
-                                            child: Icon(
-                                                MdiIcons.moonWaxingCrescent,
-                                                size: 30,
-                                                color: Color.fromARGB(
-                                                    255, 6, 12, 70))),
-                                        SizedBox(width: 65),
-                                        Text('SLEEP:',
-                                            style: TextStyle(
-                                                //color: Colors.blue,
-                                                fontWeight: FontWeight.w500,
-                                                fontStyle: FontStyle.normal,
-                                                fontSize: 20)),
-
-                                        /*FutureBuilder(
-                                            future: _computeSleepData(
-                                                daydate.difference,
-                                                value.Restituteuser(
-                                                    username)['userID']),
-                                            builder: (context, snapshot) {
-                                              switch(snapshot.connectionState){
-                                                case ConnectionState.none:
-                                                case ConnectionState.waiting:
-                                                print('waiting');
-                                                return CircularProgressIndicator();
-                                                case ConnectionState.done:
-                                                case ConnectionState.active:
-
-                                              
-                                              if (snapshot.hasData) {
-                                                final sleepdata =
-                                                    snapshot.data as List;
-                                                DateTime? dt1 = sleepdata[0]
-                                                    .entryDateTime;
-                                                DateTime? dt2 = sleepdata
-                                                    .last.entryDateTime;
-
-                                                Duration? diff =
-                                                    dt2!.difference(dt1!);
-
-                                                int result =
-                                                    diff.inMinutes; // 2 mins
-
-                                                int hour = result ~/ 60;
-                                                int minutes = result % 60;
-                                                print(daydate.day);
-                                                print(daydate.month);
-                                                if(hour>0){
-                                                return Text('$hour : $minutes',
-                                                style: TextStyle(
-                                                //color: Colors.blue,
-                                                fontWeight: FontWeight.w500,
-                                                fontStyle: FontStyle.normal,
-                                                fontSize: 20));
-                                                } else{
-                                                  return Text('- - -',
-                                                style: TextStyle(
-                                                //color: Colors.blue,
-                                                fontWeight: FontWeight.w500,
-                                                fontStyle: FontStyle.normal,
-                                                fontSize: 20));
-                                                }
-                                              } else {
-                                                return Text('- - -',
-                                                style: TextStyle(
-                                                //color: Colors.blue,
-                                                fontWeight: FontWeight.w500,
-                                                fontStyle: FontStyle.normal,
-                                                fontSize: 20));
-                                              }}
-                                            }) */
-                                      ],
-                                    ),
-                                  ),
-
-                                  
                                   // container
                                 ]);
                               } else {
