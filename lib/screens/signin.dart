@@ -21,51 +21,9 @@ class _SignInState extends State<SignIn> {
   
   File? imageFile;
 
-  _openGallery (BuildContext context) async {
-    var picture = await ImagePicker().pickImage(source: ImageSource.gallery);
-    this.setState( () {
-      imageFile = File(picture!.path);
-    });
-    Navigator.of(context).pop();
-  }
-  _openCamera(BuildContext context) async {
-    var picture = await ImagePicker().pickImage(source: ImageSource.camera);
-    this.setState( () {
-      imageFile = File(picture!.path);
-    });
-    Navigator.of(context).pop();
-  }
-
-  // function per creare una finestra che si apre per selezionare l'immagine
-  Future<void> _showChoiceDialog(BuildContext context) {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Make a choice!'),
-            content: SingleChildScrollView(
-                child: ListBody(
-              children: <Widget>[
-                GestureDetector(
-                    child: Text('Gallery'),
-                    onTap: () {
-                      _openGallery(context);
-                    }),
-                Padding(padding: EdgeInsets.all(8)),
-                GestureDetector(
-                    child: Text('Camera'),
-                    onTap: () {
-                      _openCamera(context);
-                    })
-              ],
-            )),
-          );
-        });
-  }
 
   Widget _decideImageView() {
-    if (imageFile == null) {
-      return Container(
+    return Container(
         width: 250.0,
         height: 190.0,
         decoration: const BoxDecoration(
@@ -73,22 +31,6 @@ class _SignInState extends State<SignIn> {
           image: DecorationImage(
             fit: BoxFit.fill,
             image: AssetImage('assets/images/default_picture.png'))));
-    } else {
-      return Container(
-        width: 190.0,
-        height: 190.0,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          image: DecorationImage(
-            fit: BoxFit.fill,
-            image: imageFile == null 
-            ? AssetImage('assets/images/default_picture.png')
-            : FileImage(imageFile!) as ImageProvider,
-          )
-        ),
-      );
-      // Image.file(imageFile!, width: 300, height: 250);
-    }
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -126,15 +68,7 @@ class _SignInState extends State<SignIn> {
 
                 // add also an image
                 _decideImageView(),
-                ElevatedButton(
-                      style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.green),
-                    ),
-                    child: const Text('Select image'),
-                    onPressed: () {
-                      _showChoiceDialog(context);
-                    }),
-
+                
                 Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
