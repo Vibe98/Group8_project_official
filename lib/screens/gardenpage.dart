@@ -1,18 +1,26 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:login_flow/database/entities/couponentity.dart';
 import 'package:login_flow/widgets/viusalizeDayTomato.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../classes/verify_cred.dart';
 
+import '../classes/weekchart.dart';
+import '../classes/weekdata.dart';
 import '../database/entities/mydata.dart';
 import '../repository/databaserepository.dart';
+import '../widgets/weekwidget.dart';
 
 class GardenPage extends StatelessWidget {
-  const GardenPage({Key? key, required this.username}) : super(key: key);
+  GardenPage({Key? key, required this.username}) : super(key: key);
 
   final String username;
   static const route = '/garden';
   static const routename = 'GardenPage';
+  final DateRangePickerController _controller = DateRangePickerController();
 
   @override
   Widget build(BuildContext context) {
@@ -25,218 +33,299 @@ class GardenPage extends StatelessWidget {
                   image: AssetImage("assets/images/prato2.jpg"),
                   fit: BoxFit.cover),
             ),
-            child: Consumer<VerifyCredentials>(
-                builder: ((context, value, child) => Consumer<
-                        DataBaseRepository>(
-                    builder: (context, db, child) => FutureBuilder(
-                        initialData: null,
-                        future: db.findWeekData(
-                            getFirstDay(DateTime.now().day) as int,
-                            DateTime.now().month),
+            child: ListView(children: [
+              Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(Icons.arrow_back_rounded,
+                            size: 30, color: Colors.white)),
+                    Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      color: Colors.white.withOpacity(0.3),
+                      child: Container(
+                        height: 50,
+                        width: 200,
+                        child: Center(
+                          child: Text('Your Garden',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 30)),
+                        ),
+                      ),
+                    ),
+                    Text('             '),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Consumer<WeekData>(
+                    builder: ((context, value, child) => FutureBuilder(
+                        future: Provider.of<DataBaseRepository>(context,
+                                listen: false)
+                            .findWeekData(
+                                value.datestart.day,
+                                value.datestart
+                                    .month), //Provider.of<DataBaseRepository>(context, listen: false).findWeekData(value.datestart.day, value.datestart.month),
                         builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            final data = snapshot.data as List<MyData?>;
-                            print(
-                                '${changeWeek('decrease', 2, 3)}');
-                            return Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text('${DateTime.now().weekday + 7}'),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.none:
+                            case ConnectionState.waiting:
+                              return CircularProgressIndicator();
+                            case ConnectionState.active:
+                            case ConnectionState.done:
+                              if (snapshot.hasData) {
+                                final weeklist = snapshot.data as List<MyData>;
+                                return Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    IconButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        icon: Icon(Icons.arrow_back_rounded,
-                                            size: 30, color: Colors.white)),
-                                    Card(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      color: Colors.white.withOpacity(0.3),
-                                      child: Container(
-                                        height: 50,
-                                        width: 200,
-                                        child: Center(
-                                          child: Text('Your Garden',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 30)),
-                                        ),
-                                      ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Container(
+                                            height: 170,
+                                            width: 300,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                                color:
+                                                    Colors.black.withOpacity(0.3)),
+                                            child: Consumer<WeekData>(builder:
+                                                (context, weekdate, child) {
+                                              return Column(children: [
+                                                    Container(
+                                                      height: 170,
+                                                      width: 250,
+                                                      child: SfDateRangePicker(
+                                                        controller: _controller,
+                                                        rangeSelectionColor:
+                                                            Colors.amber,
+                                                        view: DateRangePickerView
+                                                            .month,
+                                                        selectionMode:
+                                                            DateRangePickerSelectionMode
+                                                                .range,
+                                                        monthViewSettings: const DateRangePickerMonthViewSettings(
+                                                            showTrailingAndLeadingDates:
+                                                                true,
+                                                            viewHeaderStyle:
+                                                                DateRangePickerViewHeaderStyle(
+                                                                    textStyle: TextStyle(
+                                                                        color: Colors
+                                                                            .white)),
+                                                            enableSwipeSelection:
+                                                                true),
+                                                        headerStyle:
+                                                            const DateRangePickerHeaderStyle(
+                                                                textStyle: TextStyle(
+                                                                    color: Colors
+                                                                        .white)),
+                                                        yearCellStyle:
+                                                            const DateRangePickerYearCellStyle(
+                                                          disabledDatesTextStyle:
+                                                              TextStyle(
+                                                                  color:
+                                                                      Colors.grey),
+                                                          textStyle: TextStyle(
+                                                              color: Colors.white),
+                                                          todayTextStyle: TextStyle(
+                                                              color: Colors.white),
+                                                        ),
+                                                        selectionColor:
+                                                            Colors.transparent,
+                                                        selectionTextStyle:
+                                                            const TextStyle(
+                                                                color:
+                                                                    Colors.amber),
+                                                        monthCellStyle:
+                                                            const DateRangePickerMonthCellStyle(
+                                                          trailingDatesTextStyle:
+                                                              TextStyle(
+                                                                  color:
+                                                                      Colors.grey),
+                                                          leadingDatesTextStyle:
+                                                              TextStyle(
+                                                                  color:
+                                                                      Colors.grey),
+                                                          disabledDatesTextStyle:
+                                                              TextStyle(
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          95,
+                                                                          91,
+                                                                          91)),
+                                                          textStyle: TextStyle(
+                                                              color: Colors.white),
+                                                          todayTextStyle: TextStyle(
+                                                              color: Colors.orange),
+                                                        ),
+                                                        onSelectionChanged:
+                                                            (DateRangePickerSelectionChangedArgs
+                                                                args) {
+                                                          int firstDayOfWeek =
+                                                              DateTime.sunday % 7;
+                                                          int endDayOfWeek =
+                                                              (firstDayOfWeek - 1) %
+                                                                  7;
+                                                          endDayOfWeek =
+                                                              endDayOfWeek < 0
+                                                                  ? 7 + endDayOfWeek
+                                                                  : endDayOfWeek;
+                                                          PickerDateRange ranges =
+                                                              args.value;
+                                                          DateTime date1 =
+                                                              ranges.startDate!;
+                                                          DateTime date2 = (ranges
+                                                                  .endDate ??
+                                                              ranges.startDate)!;
+                                                          if (date1
+                                                              .isAfter(date2)) {
+                                                            var date = date1;
+                                                            date1 = date2;
+                                                            date2 = date;
+                                                          }
+                                                          int day1 =
+                                                              date1.weekday % 7;
+                                                          int day2 =
+                                                              date2.weekday % 7;
+
+                                                          DateTime dat1 = date1.add(
+                                                              Duration(
+                                                                  days:
+                                                                      (firstDayOfWeek -
+                                                                          day1)));
+                                                          DateTime dat2 = date2.add(
+                                                              Duration(
+                                                                  days:
+                                                                      (endDayOfWeek -
+                                                                          day2)));
+
+                                                          _controller
+                                                                  .selectedRange =
+                                                              PickerDateRange(
+                                                                  dat1, dat2);
+                                                          weekdate.changeWeek(
+                                                              dat1, dat2);
+                                                        },
+                                                      ),
+                                                    ),
+                                              ]);
+                                            })),
+                                            FutureBuilder(
+                                        future: Provider.of<DataBaseRepository>(
+                                                context,
+                                                listen: false)
+                                            .findCoupons(value.datestart.day,
+                                                value.datestart.month),
+                                        builder: (context, snapshot) {
+                                          switch (snapshot.connectionState) {
+                                            case ConnectionState.none:
+                                            case ConnectionState.waiting:
+                                              return CircularProgressIndicator();
+                                            case ConnectionState.active:
+                                            case ConnectionState.done:
+                                              if (snapshot.hasData) {
+                                                final coupon = snapshot.data
+                                                    as CouponEntity;
+                                                if (coupon.present == true) {
+                                                  Future.delayed(Duration.zero,
+                                                      () async {
+                                                    await _showChoiceDialog(
+                                                        context,
+                                                        value.datestart.day,
+                                                        value.datestart.month);
+                                                  });
+                                                  return Icon(MdiIcons.ticket,
+                                                      color: Color.fromARGB(255, 255, 209, 59),
+                                                      size: 45);
+                                                } else {
+                                                  return Text('');
+                                                }
+                                              } else {
+                                                return CircularProgressIndicator();
+                                              }
+                                          }
+                                        }),
+                                      ],
                                     ),
-                                    Text('             '),
+                                    SizedBox(height: 20),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        VisualizeDayTomato(
+                                            dayId: 0, data: weeklist),
+                                        VisualizeDayTomato(
+                                            dayId: 1, data: weeklist),
+                                        VisualizeDayTomato(
+                                            dayId: 2, data: weeklist),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        VisualizeDayTomato(
+                                            dayId: 3, data: weeklist),
+                                        VisualizeDayTomato(
+                                            dayId: 4, data: weeklist),
+                                        VisualizeDayTomato(
+                                            dayId: 5, data: weeklist),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        VisualizeDayTomato(
+                                            dayId: 6, data: weeklist),
+                                      ],
+                                    ),
                                   ],
-                                ),
-                                SizedBox(height: 20),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Card(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                        ),
-                                        color: Colors.white.withOpacity(0.3),
-                                        child: IconButton(
-                                            onPressed: () {},
-                                            icon: Icon(Icons.arrow_back_ios,
-                                                color: Colors.white))),
-                                    Card(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                        ),
-                                        color: Colors.white.withOpacity(0.3),
-                                        child: Container(
-                                            width: 200,
-                                            height: 50,
-                                            child: Center(
-                                                child: Text(
-                                                    '${data[0]!.day}/${data[0]!.month}/22 - ${data[6]!.day}/${data[6]!.month}/22',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 18,
-                                                        fontWeight: FontWeight
-                                                            .w500))))),
-                                    Card(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                        ),
-                                        color: Colors.white.withOpacity(0.3),
-                                        child: IconButton(
-                                            onPressed: () {},
-                                            icon: Icon(Icons.arrow_forward_ios,
-                                                color: Colors.white)))
-                                  ],
-                                ),
-                                SizedBox(height: 15),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    VisualizeDayTomato(dayId: 0, data: data),
-                                    VisualizeDayTomato(dayId: 1, data: data),
-                                    VisualizeDayTomato(dayId: 2, data: data),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    VisualizeDayTomato(dayId: 3, data: data),
-                                    VisualizeDayTomato(dayId: 4, data: data),
-                                    VisualizeDayTomato(dayId: 5, data: data),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    VisualizeDayTomato(dayId: 6, data: data),
-                                  ],
-                                ),
-                              ],
-                            );
-                          } else {
-                            return CircularProgressIndicator();
+                                );
+                              } else {
+                                return CircularProgressIndicator();
+                              }
                           }
-                        }))))));
-  } //build
-
-} //Page
-
-num getFirstDay(int day) {
-  // given the day of today, it resitituate the number of Monday
-  num today = DateTime.now().weekday;
-  num firstDay = DateTime.now().day - today + 1;
-  return firstDay;
-}
-
-List<int> changeWeek(inc_dec, day, month) {
-  // different if we want to increase or decrease the week
-  List<int> weekList = [];
-  int end = 0;
-  int oldmonth = month - 1;
-  int newday=0;
-  int newmonth=0;
-  if (inc_dec == 'increase') {
-    // increase week
-    if (month == 1 ||
-        month == 3 ||
-        month == 5 ||
-        month == 7 ||
-        month == 8 ||
-        month == 10 ||
-        month == 12) {
-      // mese ha 31 giorni
-      end = 31;
-    } else if (month == 4 || month == 6 || month == 9 || month == 11) {
-      // mese ha 30 giorni
-      end = 30;
-    } else {
-      end = 28;
-    }
-    if (day + 7 > end) {
-      // sforo la fine del mese
-      newmonth = month + 1;
-      newday = 7 - (end - day) as int;
-    } else {
-      newday = day + 7;
-      newmonth = month;
-    }
-      if (newday > DateTime.now().day) {
-        // don't increase
-        weekList.add(DateTime.now().day);
-        weekList.add(DateTime.now().month);
-      } else {
-        weekList.add(newday);
-        weekList.add(newmonth);
-      }
-
-  } else {
-    // decrease week
-    if (oldmonth == 1 ||
-        oldmonth == 3 ||
-        oldmonth == 5 ||
-        oldmonth == 7 ||
-        oldmonth == 8 ||
-        oldmonth == 10 ||
-        oldmonth == 12) {
-      // mese ha 31 giorni
-      end = 31;
-    } else if (oldmonth == 4 ||
-        oldmonth == 5 ||
-        oldmonth == 9 ||
-        oldmonth == 11) {
-      // mese ha 30 giorni
-      end = 30;
-    } else {
-      end = 28;
-    }
-    if (day - 7 < 0) {
-      // sforo la fine del mese
-      newmonth = month - 1;
-      newday = end - (7 - day) as int;
-    } else {
-      newday = day - 7;
-      newmonth= month;
-    }
-    if (newmonth < 3) {
-        // iniziato a prendere i dati il 3 marzo
-        // don't decrease
-        weekList.add(1);
-        weekList.add(3);
-      } else {
-        weekList.add(newday);
-        weekList.add(newmonth);
-      }
+                        }))),
+              ]),
+            ])));
   }
-  return weekList;
+} //build
+//Page
+
+Future<void> _showChoiceDialog(BuildContext context, day, month) {
+  return showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          insetPadding: EdgeInsets.fromLTRB(50, 100, 50, 100),
+          elevation: 20,
+          backgroundColor: Colors.white,
+          content: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(
+                  'You have won a coupon! Check the Coupon Page to use it',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+              SizedBox(
+                width: 300,
+                height: 350,
+                child: Image.asset(
+                    'assets/images/trophy.jpg',
+                    fit: BoxFit.cover,
+                    ),
+              )
+            ],
+          ),
+        );
+      });
 }

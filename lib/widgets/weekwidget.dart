@@ -86,6 +86,7 @@ class WeekWidget extends StatelessWidget {
       
                     _controller.selectedRange = PickerDateRange(dat1, dat2);
                     weekdate.changeWeek(dat1, dat2);
+                    print(dat1);
                   },
                  
                 ),

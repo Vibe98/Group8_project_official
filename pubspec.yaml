@@ -80,6 +80,7 @@ flutter:
     - assets/images/pomodoro_triste.png
     - assets/images/pomodoro_felice.png
     - assets/images/barcode_prova.png
+    - assets/images/trophy.jpg
 
 
   # To add assets to your application, add an assets section, like this:
