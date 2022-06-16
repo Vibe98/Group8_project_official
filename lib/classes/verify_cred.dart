@@ -18,6 +18,14 @@ class VerifyCredentials extends ChangeNotifier{
     notifyListeners();
   }
 
+  void removeAccount(String username){
+    
+   
+    credentials[username] = Profile('', '', '', '', '');
+    notifyListeners();
+
+  }
+
   void modifyAccount(String username, String email, String name, String surname, String password){
     Profile user = credentials[username];
     
@@ -37,7 +45,7 @@ class VerifyCredentials extends ChangeNotifier{
     map['username'] = user.username;
     map['email'] = user.email;
     map['password'] = user.password;
-    map['userID'] = '7ML2XV';
+    map['userID'] = user.userID;
     return map;
     
   }

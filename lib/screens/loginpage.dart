@@ -31,13 +31,14 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
+  bool check = false;
   @override 
   void initState() {
     // se lo user è già loggato vado diretto alla HomePage
-  super.initState();
+  
 
-  _checkLogin();
+  _checkLogin(check);
+  super.initState();
   }
 
   String modifyDate(int? date){
@@ -52,9 +53,15 @@ class _LoginPageState extends State<LoginPage> {
     return newDate;
   }
 
-  void _checkLogin() async{
+  void _checkLogin(check) async{
+    
     final sp = await SharedPreferences.getInstance();
-    if(sp.getStringList('username')!=null){
+    print(sp.getBool('Log'));
+    if (sp.getBool('Log')!=null){
+      check = true;
+      if(sp.getStringList('username')!=null){
+      
+      
       // significa che lo user è già loggato
       final credentials = sp.getStringList('username');
       final username = credentials![0];
@@ -65,12 +72,13 @@ class _LoginPageState extends State<LoginPage> {
       
       // a questo punto devo aggiungere l'account
       Provider.of<VerifyCredentials>(context, listen: false).addAccount(username, name, surname, password, email);
-
+    
 
 
       // prendiamo anche lo userId
       final sc = await SharedPreferences.getInstance();
       if(sc.getString('userid')!=null){
+        print('fa in tempo ad entrare qua');
         final userId=sc.getString('userid');
         Provider.of<VerifyCredentials>(context, listen: false).AssociateAuthorization(username, userId);
         final listlastday = await Provider.of<DataBaseRepository>(context, listen:false).findLastDay();
@@ -122,12 +130,22 @@ class _LoginPageState extends State<LoginPage> {
 
         Provider.of<VerifyCredentials>(context, listen: false).hascompleted(username);
       }
-
+      
   
       
-
+      if(sp.getBool('Log')!){
+       
       Navigator.pushNamed(context, HomePage.route, arguments: {'username': username});
-    }
+      }
+    }} else {
+      
+        final uslist = Provider.of<VerifyCredentials>(context, listen: false).credentials.keys.toList();
+        final L = uslist.length;
+        for(int i = 0; i<L; i++){
+        Provider.of<VerifyCredentials>(context, listen: false).removeAccount(uslist[i]);
+      }
+  }
+  
   }
 
   @override
@@ -259,7 +277,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
   
-                  Row(
+                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text('Does not have an account?'),

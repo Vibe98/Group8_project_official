@@ -453,8 +453,17 @@ class _ProfilePageState extends State<ProfilePage> {
           ]),
           ElevatedButton(
             style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 234, 231, 231))),
-            onPressed: () {
-              
+            onPressed: () async{
+               final sp = await SharedPreferences.getInstance();
+               final keys = sp.getKeys().toList();
+               int L = keys.length;
+               for(int i=0; i<L; i++){
+                print(keys[i]);
+                sp.remove(keys[i]);
+               }
+               Provider.of<DataBaseRepository>(context, listen:false).deleteAllCoupons();
+               Provider.of<DataBaseRepository>(context, listen:false).deleteAllDatas();
+               Navigator.pushNamedAndRemoveUntil(context, LoginPage.route, ModalRoute.withName('/'));
             },
             
               child: Row(mainAxisAlignment: MainAxisAlignment.center,
