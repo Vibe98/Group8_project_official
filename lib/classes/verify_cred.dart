@@ -19,9 +19,7 @@ class VerifyCredentials extends ChangeNotifier{
   }
 
   void removeAccount(String username){
-    
-   
-    credentials[username] = Profile('', '', '', '', '');
+    credentials.remove(username);
     notifyListeners();
 
   }
@@ -61,22 +59,26 @@ class VerifyCredentials extends ChangeNotifier{
     }
   }
   bool isAuthenticated(String username){
+    
     Profile user = credentials[username];
+    if (user == null){
+      return false;}else{
     if(user.userID == ''){
       return false;
     }else{
       return true;
-    }
+    }}
    
   }
 
   void hascompleted(String username){
     Profile user = credentials[username];
+    if (user != null){
     if(user.complete){
       user.complete = false;
     }else{
       user.complete = true;
-    }
+    }}
     notifyListeners();
   }
 
