@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:login_flow/classes/verify_cred.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({Key? key}) : super(key: key);
@@ -42,6 +44,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         content: Text(platformResponse),
       ),
     );
+
+    await FlutterEmailSender.send(email);
   }
 
   @override
