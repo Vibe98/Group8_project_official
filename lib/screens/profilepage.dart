@@ -187,7 +187,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Row(mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (actual == -1) {
                         setState(() {
                           actual = 0;
@@ -200,6 +200,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                 nameController.text,
                                 surnameController.text,
                                 passwordController.text);
+                        final sp = await SharedPreferences.getInstance();
+                        if(sp.getStringList('username')!=null){
+                          final answer = sp.getStringList('username')![5];
+
+                          sp.remove('username');
+                          sp.setStringList('username', [widget.username, nameController.text, surnameController.text, passwordController.text, emailController.text, answer]);
+                          }
                         setState(() {
                           actual = -1;
                         });
