@@ -54,11 +54,20 @@ class CouponPage extends StatelessWidget {
       initialIndex: 0,
       length: 2,
       child: Container(
+       
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
+          color: Color.fromARGB(255, 206, 245, 201),
+          /*gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [Colors.green, Color.fromARGB(255, 204, 121, 19)])
+              colors: [Colors.green, Color.fromARGB(255, 204, 121, 19)])*/
+        image: DecorationImage(
+            image: AssetImage("assets/images/trophy_background.png"),
+            opacity: 150,
+            scale: 1,
+            alignment: Alignment(1,0.3)
+            
+          ),
          ),
         child: Scaffold(
             resizeToAvoidBottomInset: false,

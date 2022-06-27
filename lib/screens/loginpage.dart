@@ -1,4 +1,5 @@
 import 'package:fitbitter/fitbitter.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:login_flow/classes/credentialsFitbitter.dart';
 import 'package:login_flow/classes/verify_cred.dart';
@@ -60,8 +61,6 @@ class _LoginPageState extends State<LoginPage> {
     if (sp.getBool('Log')!=null){
       check = true;
       if(sp.getStringList('username')!=null){
-      
-      
       // significa che lo user è già loggato
       final credentials = sp.getStringList('username');
       final username = credentials![0];
@@ -75,12 +74,29 @@ class _LoginPageState extends State<LoginPage> {
       Provider.of<VerifyCredentials>(context, listen: false).addAccount(username, name, surname, password, email, question);
     
 
+      
+      
+      if(sp.getString('userid')!=null){
 
-      // prendiamo anche lo userId
-      final sc = await SharedPreferences.getInstance();
-      if(sc.getString('userid')!=null){
-        print('fa in tempo ad entrare qua');
-        final userId=sc.getString('userid');
+        showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          BuildContext dialogContext = context;
+          return AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(32.0))),
+              title:  Text('Hi, $username. Checking for updates...'),
+              content:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                SizedBox(
+                    height: 40,
+                    width: 40,
+                    child: CircularProgressIndicator(color: Colors.green))
+              ]));
+        });
+        
+        final userId=sp.getString('userid');
         Provider.of<VerifyCredentials>(context, listen: false).AssociateAuthorization(username, userId);
         final listlastday = await Provider.of<DataBaseRepository>(context, listen:false).findLastDay();
         
@@ -131,13 +147,14 @@ class _LoginPageState extends State<LoginPage> {
 
         Provider.of<VerifyCredentials>(context, listen: false).hascompleted(username);
       }
-      
-  
-      
       if(sp.getBool('Log')!){
        
       Navigator.pushNamed(context, HomePage.route, arguments: {'username': username});
+      
       }
+  
+      
+      
     }} else {
       
         final uslist = Provider.of<VerifyCredentials>(context, listen: false).credentials.keys.toList();
@@ -266,9 +283,9 @@ class _LoginPageState extends State<LoginPage> {
                                   final sp = await SharedPreferences.getInstance();
                                   if(sp.getStringList('username')== null){
                                     sp.setStringList('username', [usernameController.text, name, surname, passwordController.text, email]);
-                                  
+                                    
                                   }
-                              
+                                sp.setBool('Log', true);
                                   Navigator.pushNamed(context, HomePage.route, arguments: {
                                     'username': usernameController.text
                                   });

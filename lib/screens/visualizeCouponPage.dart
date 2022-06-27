@@ -50,7 +50,7 @@ class _VisualizeCouponScreenState extends State<VisualizeCouponScreen> {
                 SizedBox(
                         height: 150,
                         width: 150,
-                        child: Image.asset('assets/images/pomodoro_felice.png',
+                        child: Image.asset('assets/images/pomodoro_medaglia.jpg',
                             fit: BoxFit.cover, scale: 10),
                       ),
                 

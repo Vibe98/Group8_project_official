@@ -52,7 +52,7 @@ class DataBaseRepository extends ChangeNotifier{
     return datas;
   }
 
-   Future<List<MyData?>> findWeekData(int daystart, int monthstart) async{
+  Future<List<MyData?>> findWeekData(int daystart, int monthstart) async{
     List<int> daylist = [];
     List<int> monthlist = [];
     int day = daystart;
