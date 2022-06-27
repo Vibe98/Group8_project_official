@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:fitbitter/fitbitter.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:login_flow/classes/DayDate.dart';
@@ -87,6 +88,44 @@ class _ProfilePageState extends State<ProfilePage> {
               ]));
         });
   }
+
+  Future<void> _showDeleteDialogue(BuildContext context) {
+   return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            content: const Text('Are you sure you want to delete your account?',
+                style: TextStyle(fontSize: 20)),
+            actions: <Widget>[
+              CupertinoDialogAction(
+                  isDefaultAction: true,
+                  child: Text('Yes'),
+                  onPressed: () async {
+
+                    final sp = await SharedPreferences.getInstance();
+               final keys = sp.getKeys().toList();
+               int L = keys.length;
+               for(int i=0; i<L; i++){
+                print(keys[i]);
+                sp.remove(keys[i]);
+               }
+               Provider.of<DataBaseRepository>(context, listen:false).deleteAllCoupons();
+               Provider.of<DataBaseRepository>(context, listen:false).deleteAllDatas();
+               Navigator.pushNamedAndRemoveUntil(context, LoginPage.route, ModalRoute.withName('/'));
+                  }),
+              CupertinoDialogAction(
+                  isDefaultAction: true,
+                  child: Text('Cancel'),
+                  textStyle: TextStyle(color: Colors.red),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  })
+            ],
+          );
+        });
+  }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -461,16 +500,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ElevatedButton(
             style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 234, 231, 231))),
             onPressed: () async{
-               final sp = await SharedPreferences.getInstance();
-               final keys = sp.getKeys().toList();
-               int L = keys.length;
-               for(int i=0; i<L; i++){
-                print(keys[i]);
-                sp.remove(keys[i]);
-               }
-               Provider.of<DataBaseRepository>(context, listen:false).deleteAllCoupons();
-               Provider.of<DataBaseRepository>(context, listen:false).deleteAllDatas();
-               Navigator.pushNamedAndRemoveUntil(context, LoginPage.route, ModalRoute.withName('/'));
+               _showDeleteDialogue(context);
             },
             
               child: Row(mainAxisAlignment: MainAxisAlignment.center,
