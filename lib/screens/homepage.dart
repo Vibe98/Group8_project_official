@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
                     sp.remove('userid');
                     print(sp.getBool('Log'));
                     setState(() {});
-                    Navigator.pushReplacementNamed(context, LoginPage.route);
+                    Navigator.pushNamedAndRemoveUntil(context, LoginPage.route, ModalRoute.withName('/'));
                   }),
               CupertinoDialogAction(
                   isDefaultAction: true,

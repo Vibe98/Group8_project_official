@@ -69,9 +69,10 @@ class _LoginPageState extends State<LoginPage> {
       final surname = credentials[2];
       final password = credentials[3];
       final email = credentials[4];
+      final question = credentials[5];
       
       // a questo punto devo aggiungere l'account
-      Provider.of<VerifyCredentials>(context, listen: false).addAccount(username, name, surname, password, email);
+      Provider.of<VerifyCredentials>(context, listen: false).addAccount(username, name, surname, password, email, question);
     
 
 
@@ -240,7 +241,7 @@ class _LoginPageState extends State<LoginPage> {
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()){  
                                   print(usernameController.text);
-                                  print(verifyCred.credentials);
+                          
                                   if (!verifyCred.credentials.containsKey(usernameController.text)){
                                   // se non c'è un account con username corrente, allora bisogna crearlo
                                   ScaffoldMessenger.of(context)
@@ -267,6 +268,7 @@ class _LoginPageState extends State<LoginPage> {
                                     sp.setStringList('username', [usernameController.text, name, surname, passwordController.text, email]);
                                   
                                   }
+                              
                                   Navigator.pushNamed(context, HomePage.route, arguments: {
                                     'username': usernameController.text
                                   });

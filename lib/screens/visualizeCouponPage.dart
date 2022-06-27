@@ -57,7 +57,7 @@ class _VisualizeCouponScreenState extends State<VisualizeCouponScreen> {
                 SizedBox(
                         height: 100,
                         width: 300,
-                        child: Image.asset('assets/images/barcode_prova.png',
+                        child: Image.asset('assets/images/barcode.png',
                             fit: BoxFit.cover, scale: 10),
                       ),
                 

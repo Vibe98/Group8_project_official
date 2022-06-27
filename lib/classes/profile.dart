@@ -11,16 +11,18 @@ class Profile{
   String? email;
   bool complete = false;
   String userID = '';
+  String? question;
 
 
   @override 
-  Profile(String name, String surname, String username, String password, String email){
+  Profile(String name, String surname, String username, String password, String email, String question){
     this.name = name;
     this.surname = surname;
     this.password = password;
     this.username = username;
     this.email = email;
-  }
+    this.question = question;
+  } 
   // creo una classe utente con le informazioni richieste nella login page. 
  
 }

@@ -41,7 +41,7 @@ class _SignInState extends State<SignIn> {
   TextEditingController nameController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
   TextEditingController surnameController = TextEditingController();
-
+  TextEditingController questionController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -185,6 +185,27 @@ class _SignInState extends State<SignIn> {
                         labelText: 'Confirm Password *'),
                   ),
                 ),
+                Text('Control Question', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20)),
+                SizedBox(height: 10),
+                Text('When is your mom\'s birthday?', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18), textAlign: TextAlign.left),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                  child: TextFormField(
+                    controller: questionController,
+                    textInputAction: TextInputAction.next,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Answer *',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Mandatory field';
+                      } 
+                      return null;
+                    },
+                  ),
+                ),
                 // add a button
                 Consumer<VerifyCredentials>(
                   builder: (context, verifyCred, child) => 
@@ -218,9 +239,9 @@ class _SignInState extends State<SignIn> {
                           print(emailController.text);
                           print(passwordController.text);
                           
-                          verifyCred.addAccount(usernameController.text, nameController.text, surnameController.text, passwordController.text, emailController.text);
+                          verifyCred.addAccount(usernameController.text, nameController.text, surnameController.text, passwordController.text, emailController.text, questionController.text);
                           final sp = await SharedPreferences.getInstance();
-                          sp.setStringList('username', [usernameController.text, nameController.text, surnameController.text, passwordController.text, emailController.text]);
+                          sp.setStringList('username', [usernameController.text, nameController.text, surnameController.text, passwordController.text, emailController.text, questionController.text]);
                           sp.setBool('Log', true);
                           print(sp.getBool('Log'));
                           setState(() {

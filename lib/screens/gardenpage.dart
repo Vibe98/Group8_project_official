@@ -286,6 +286,7 @@ class GardenPage extends StatelessWidget {
                                       children: [
                                         VisualizeDayTomato(
                                             dayId: 6, data: weeklist),
+                                      
                                       ],
                                     ),
                                   ],
