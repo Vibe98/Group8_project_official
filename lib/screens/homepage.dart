@@ -1,27 +1,16 @@
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:fitbitter/fitbitter.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:login_flow/database/entities/mydata.dart';
-import 'package:login_flow/repository/databaserepository.dart';
 import 'package:login_flow/screens/couponpage.dart';
 import 'package:login_flow/screens/gardenpage.dart';
 import 'package:login_flow/widgets/weekwidget.dart';
-import 'package:login_flow/classes/credentialsFitbitter.dart';
 import 'package:login_flow/screens/loginpage.dart';
 import 'package:login_flow/screens/profilepage.dart';
 import 'package:login_flow/widgets/monthWidget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'package:login_flow/classes/DayDate.dart';
 import 'package:login_flow/widgets/DayWidget.dart';
-import 'dart:ui';
 import 'package:flutter/cupertino.dart';
-import '../classes/changeMonth.dart';
-import '../classes/monthChartGraph.dart';
-import '../classes/myMonthData.dart';
 import '../classes/verify_cred.dart';
 import '../widgets/monthWidget.dart';
 
@@ -36,7 +25,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // This widget is the root of your application.
   TextEditingController monthController = TextEditingController();
 
   Future<void> _showChoiceDialog(BuildContext context) {
@@ -49,23 +37,18 @@ class _HomePageState extends State<HomePage> {
             actions: <Widget>[
               CupertinoDialogAction(
                   isDefaultAction: true,
-                  child: Text('Yes'),
+                  child: const Text('Yes'),
                   onPressed: () async {
-
                     final sp = await SharedPreferences.getInstance();
-
-                    //rimuovo le credenziali salvate
-                    
                     sp.setBool('Log', false);
                     sp.remove('userid');
-                    print(sp.getBool('Log'));
                     setState(() {});
                     Navigator.pushNamedAndRemoveUntil(context, LoginPage.route, ModalRoute.withName('/'));
                   }),
               CupertinoDialogAction(
                   isDefaultAction: true,
-                  child: Text('Cancel'),
-                  textStyle: TextStyle(color: Colors.red),
+                  child: const Text('Cancel'),
+                  textStyle: const TextStyle(color: Colors.red),
                   onPressed: () {
                     Navigator.of(context).pop();
                   })
@@ -97,7 +80,7 @@ class _HomePageState extends State<HomePage> {
                       Navigator.pushNamed(context, GardenPage.route,
                           arguments: {'username': widget.username});
                     },
-                    icon: Icon(MdiIcons.shovel),
+                    icon: const Icon(MdiIcons.shovel),
                   )
                 ],
                 bottom: const TabBar(
@@ -123,15 +106,14 @@ class _HomePageState extends State<HomePage> {
                               fontSize: 20,
                               fontWeight: FontWeight.w500,
                               color: Colors.greenAccent)),
-                      padding: EdgeInsets.fromLTRB(8, 20, 8, 20)),
+                      padding: const EdgeInsets.fromLTRB(8, 20, 8, 20)),
                   CustomListTile(
                       Icons.person,
                       'Your Profile',
                       () => {
                             Navigator.pushNamed(context, ProfilePage.route,
                                 arguments: {
-                                  'username': widget.username,
-                                  'keypassed': -1
+                                  'username': widget.username
                                 })
                           }),
                   CustomListTile(
@@ -139,7 +121,6 @@ class _HomePageState extends State<HomePage> {
                       'Coupons',
                       () => {
                             Navigator.pushNamed(context, CouponPage.route)
-                            // TODO go to settings page
                           }),
                   CustomListTile(
                       Icons.lock, 'Log Out', () => {_showChoiceDialog(context)}),
@@ -153,21 +134,21 @@ class _HomePageState extends State<HomePage> {
                       child: (credentials.isAuthenticated(widget.username) &&
                               credentials.iscompleted(widget.username))
                           ? daywidget(context)
-                          : Text(
-                              'You\'re not auth, go to your profile and authoriz'),
+                          : const Text(
+                              'You\'re not auth, go to your profile and authorize'),
                     ),
                     Center(
                       child: (credentials.isAuthenticated(widget.username) &&
                               credentials.iscompleted(widget.username))
                           ? weekwidget(context)
-                          : Text(
-                              'You\'re not auth, go to your profile and authoriz'),
+                          : const Text(
+                              'You\'re not auth, go to your profile and authorize'),
                     ),
                     Center(
                       child: (credentials.isAuthenticated(widget.username) &&
                               credentials.iscompleted(widget.username))
                           ? monthwidget(context)
-                          : Text(
+                          : const Text(
                               'You\'re not auth, go to your profile and authorize'),
                     ),
                   ],
@@ -217,16 +198,16 @@ class CustomListTile extends StatelessWidget {
                     Row(
                       children: <Widget>[
                         Icon(icon),
-                        Padding(
+                        const Padding(
                           padding: const EdgeInsets.all(8.0),
                         ),
                         Text(
                           text,
-                          style: TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: 16),
                         ),
                       ],
                     ),
-                    Icon(Icons.arrow_right)
+                    const Icon(Icons.arrow_right)
                   ],
                 ))),
       ),

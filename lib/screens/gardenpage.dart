@@ -1,18 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:login_flow/database/entities/couponentity.dart';
 import 'package:login_flow/widgets/viusalizeDayTomato.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-
-import '../classes/verify_cred.dart';
-
-import '../classes/weekchart.dart';
 import '../classes/weekdata.dart';
 import '../database/entities/mydata.dart';
 import '../repository/databaserepository.dart';
-import '../widgets/weekwidget.dart';
+
 
 class GardenPage extends StatelessWidget {
   GardenPage({Key? key, required this.username}) : super(key: key);
@@ -24,8 +19,6 @@ class GardenPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('${GardenPage.routename} built');
-    var daydate;
     return Scaffold(
         body: Container(
             decoration: const BoxDecoration(
@@ -42,7 +35,7 @@ class GardenPage extends StatelessWidget {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        icon: Icon(Icons.arrow_back_rounded,
+                        icon: const Icon(Icons.arrow_back_rounded,
                             size: 30, color: Colors.white)),
                     Card(
                       shape: RoundedRectangleBorder(
@@ -52,7 +45,7 @@ class GardenPage extends StatelessWidget {
                       child: Container(
                         height: 50,
                         width: 200,
-                        child: Center(
+                        child: const Center(
                           child: Text('Your Garden',
                               style: TextStyle(
                                   color: Colors.white,
@@ -61,10 +54,10 @@ class GardenPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Text('             '),
+                    const Text('             '),
                   ],
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Consumer<WeekData>(
                     builder: ((context, value, child) => FutureBuilder(
                         future: Provider.of<DataBaseRepository>(context,
@@ -72,12 +65,12 @@ class GardenPage extends StatelessWidget {
                             .findWeekData(
                                 value.datestart.day,
                                 value.datestart
-                                    .month), //Provider.of<DataBaseRepository>(context, listen: false).findWeekData(value.datestart.day, value.datestart.month),
+                                    .month), 
                         builder: (context, snapshot) {
                           switch (snapshot.connectionState) {
                             case ConnectionState.none:
                             case ConnectionState.waiting:
-                              return CircularProgressIndicator();
+                              return const CircularProgressIndicator();
                             case ConnectionState.active:
                             case ConnectionState.done:
                               if (snapshot.hasData) {
@@ -228,7 +221,7 @@ class GardenPage extends StatelessWidget {
                                           switch (snapshot.connectionState) {
                                             case ConnectionState.none:
                                             case ConnectionState.waiting:
-                                              return CircularProgressIndicator();
+                                              return const CircularProgressIndicator();
                                             case ConnectionState.active:
                                             case ConnectionState.done:
                                               if (snapshot.hasData) {
@@ -242,20 +235,20 @@ class GardenPage extends StatelessWidget {
                                                         value.datestart.day,
                                                         value.datestart.month);
                                                   });
-                                                  return Icon(MdiIcons.ticket,
+                                                  return const Icon(MdiIcons.ticket,
                                                       color: Color.fromARGB(255, 255, 209, 59),
                                                       size: 45);
                                                 } else {
-                                                  return Text('');
+                                                  return const Text('');
                                                 }
                                               } else {
-                                                return CircularProgressIndicator();
+                                                return const CircularProgressIndicator();
                                               }
                                           }
                                         }),
                                       ],
                                     ),
-                                    SizedBox(height: 20),
+                                    const SizedBox(height: 20),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
@@ -292,15 +285,14 @@ class GardenPage extends StatelessWidget {
                                   ],
                                 );
                               } else {
-                                return CircularProgressIndicator();
+                                return const CircularProgressIndicator();
                               }
                           }
                         }))),
               ]),
             ])));
   }
-} //build
-//Page
+}
 
 Future<void> _showChoiceDialog(BuildContext context, day, month) {
   return showDialog(
@@ -308,13 +300,13 @@ Future<void> _showChoiceDialog(BuildContext context, day, month) {
       barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
-          insetPadding: EdgeInsets.fromLTRB(50, 100, 50, 100),
+          insetPadding: const EdgeInsets.fromLTRB(50, 100, 50, 100),
           elevation: 20,
           backgroundColor: Colors.white,
           content: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(
+              const Text(
                   'You have won a coupon! Check the Coupon Page to use it',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
               SizedBox(

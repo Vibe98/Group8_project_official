@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:login_flow/classes/profile.dart';
 
@@ -14,7 +12,7 @@ class VerifyCredentials extends ChangeNotifier{
     
     Profile user = Profile(name, surname, username, password, email, question);
     credentials[username] = user;
-    print(user.email);
+
     notifyListeners();
   }
 
@@ -91,7 +89,5 @@ class VerifyCredentials extends ChangeNotifier{
       return false;
     }
   }
-
-    
-   
+ 
 }

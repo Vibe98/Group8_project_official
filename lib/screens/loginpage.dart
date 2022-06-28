@@ -1,19 +1,13 @@
-import 'package:fitbitter/fitbitter.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:login_flow/classes/credentialsFitbitter.dart';
 import 'package:login_flow/classes/verify_cred.dart';
 import 'package:login_flow/database/entities/mydata.dart';
 import 'package:login_flow/repository/databaserepository.dart';
 import 'package:login_flow/screens/forgotpassword.dart';
 import 'package:login_flow/screens/homepage.dart';
-import 'package:login_flow/screens/profilepage.dart';
 import 'package:login_flow/screens/signin.dart';
 import 'package:login_flow/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../classes/DayDate.dart';
 import '../database/entities/couponentity.dart';
 import '../database/entities/mydata.dart';
 
@@ -27,41 +21,22 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  //Form globalkey: this is required to validate the form fields.
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  bool check = false;
+
   @override 
   void initState() {
-    // se lo user è già loggato vado diretto alla HomePage
-  
-
-  _checkLogin(check);
+  _checkLogin();
   super.initState();
   }
 
-  String modifyDate(int? date){
-    //modifica mese o giorno aggiungendo 0 se inizia con un numero minore di 10
-    String newDate='';
-    if(date!<10){
-      newDate = '0$date';
-    }else{
-      newDate = '$date';
-    }
-
-    return newDate;
-  }
-
-  void _checkLogin(check) async{
+  void _checkLogin() async{
     
     final sp = await SharedPreferences.getInstance();
-    print(sp.getBool('Log'));
     if (sp.getBool('Log')!=null){
-      check = true;
       if(sp.getStringList('username')!=null){
-      // significa che lo user è già loggato
       final credentials = sp.getStringList('username');
       final username = credentials![0];
       final name = credentials[1];
@@ -70,26 +45,21 @@ class _LoginPageState extends State<LoginPage> {
       final email = credentials[4];
       final question = credentials[5];
       
-      // a questo punto devo aggiungere l'account
       Provider.of<VerifyCredentials>(context, listen: false).addAccount(username, name, surname, password, email, question);
-    
-
-      
-      
+ 
       if(sp.getString('userid')!=null){
 
         showDialog(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          BuildContext dialogContext = context;
           return AlertDialog(
-              shape: RoundedRectangleBorder(
+              shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(32.0))),
               title:  Text('Hi, $username. Checking for updates...'),
               content:
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                SizedBox(
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                 SizedBox(
                     height: 40,
                     width: 40,
                     child: CircularProgressIndicator(color: Colors.green))
@@ -120,37 +90,27 @@ class _LoginPageState extends State<LoginPage> {
           }         
 
         }
-      
-        print('controllo se aggiornare');
+
         CouponEntity? lastcoupon = await Provider.of<DataBaseRepository>(context,listen: false).findLastCoupon();
         DateTime startdate = DateTime.parse('2022-${modifyDate(lastcoupon!.month)}-${modifyDate(lastcoupon.day)}');
         Duration? diff = DateTime.now().difference(startdate);
         int difference = diff.inDays;
         if(difference > 6){
-          print('devo aggiornare');
+    
           Provider.of<DataBaseRepository>(context, listen: false).deleteLastCoupon();
           List<CouponEntity> couponlist = await computeCoupons(context, userId, startdate, DateTime.now());
           for (int i = 0; i < couponlist.length; i++) {
           CouponEntity coupon = couponlist[i];
           Provider.of<DataBaseRepository>(context, listen: false).insertCoupon(coupon);                                          
 
-          }
-                                        
+          }                            
 
-        }else{
-          print('non devo aggiornare perche sono passati solo $difference giorni');
-        } 
-        
-
-        
-        //Provider.of<DayData>(context, listen: false).changeDay(DateTime.now());
+        }
 
         Provider.of<VerifyCredentials>(context, listen: false).hascompleted(username);
       }
       if(sp.getBool('Log')!){
-       
       Navigator.pushNamed(context, HomePage.route, arguments: {'username': username});
-      
       }
   
       
@@ -169,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Login Page'),
+        appBar: AppBar(title: const Text('Login Page'),
         backgroundColor: Colors.green,),
         body: ListView(
           children: [
@@ -187,15 +147,15 @@ class _LoginPageState extends State<LoginPage> {
                             fontWeight: FontWeight.w500,
                             fontStyle: FontStyle.italic,
                             fontSize: 30)),
-                    //padding: EdgeInsets.fromLTRB(0,30,0,15),
+                   
                   ),
                   Container(
                     child:
                         const Text('Sign in', style: TextStyle(fontSize: 20)),
-                    // padding: EdgeInsets.fromLTRB(0,0,0,15),
+                    
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                     child: TextFormField(
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -213,9 +173,9 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  //const SizedBox(height: 20),
+                  
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: TextFormField(
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -248,7 +208,7 @@ class _LoginPageState extends State<LoginPage> {
                     Container(
                       width: 350,
                       height: 50,
-                      // padding: EdgeInsets.fromLTRB(10,0,10,0),
+                    
                       child: Consumer<VerifyCredentials>(
                         builder: ((context, cred, child) => ElevatedButton(
                           style: ButtonStyle(
@@ -260,7 +220,7 @@ class _LoginPageState extends State<LoginPage> {
                                   print(usernameController.text);
                           
                                   if (!verifyCred.credentials.containsKey(usernameController.text)){
-                                  // se non c'è un account con username corrente, allora bisogna crearlo
+                                  
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(const SnackBar(
                                     content: Text('Wrong username! Sign in if you do not have an account',

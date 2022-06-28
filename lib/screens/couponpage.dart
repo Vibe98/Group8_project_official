@@ -4,9 +4,6 @@ import 'package:login_flow/repository/databaserepository.dart';
 import 'package:login_flow/screens/visualizeCouponPage.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:random_string/random_string.dart';
-import 'package:flutter_ticket_widget/flutter_ticket_widget.dart';
-
 import '../database/entities/couponentity.dart';
 import '../utils/utils.dart';
 
@@ -25,20 +22,18 @@ class CouponPage extends StatelessWidget {
             actions: <Widget>[
               CupertinoDialogAction(
                   isDefaultAction: true,
-                  child: Text('Yes'),
+                  child: const Text('Yes'),
                   onPressed: () {
                     Provider.of<DataBaseRepository>(context, listen: false)
                         .updateUsed(true, day, month);
                     Navigator.pushNamed(context, VisualizeCouponScreen.route, arguments: {
                       'day': day, 'month': month
                     });
-
-                    //Navigator.of(context).pop();
                   }),
               CupertinoDialogAction(
                   isDefaultAction: true,
-                  child: Text('No'),
-                  textStyle: TextStyle(color: Colors.red),
+                  child: const Text('No'),
+                  textStyle: const TextStyle(color: Colors.red),
                   onPressed: () {
                     Navigator.of(context).pop();
                   })
@@ -57,10 +52,6 @@ class CouponPage extends StatelessWidget {
        
         decoration: const BoxDecoration(
           color: Color.fromARGB(255, 206, 245, 201),
-          /*gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Colors.green, Color.fromARGB(255, 204, 121, 19)])*/
         image: DecorationImage(
             image: AssetImage("assets/images/trophy_background.png"),
             opacity: 150,
@@ -109,12 +100,10 @@ class CouponPage extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(15),
                                       ),
                                   horizontalTitleGap: 40,
-                                  tileColor: Color.fromARGB(211, 237, 179, 3),
-                                  //style: ,
-                                  leading: Icon(MdiIcons.trophyOutline, color: Colors.brown),
-                                  //leading: Image.asset(
-                                  // 'assets/images/pomodoro_felice.png',
-                                  //fit: BoxFit.cover, scale: 10),
+                                  tileColor: const Color.fromARGB(211, 237, 179, 3),
+                                 
+                                  leading: const Icon(MdiIcons.trophyOutline, color: Colors.brown),
+                                  
                                   title: Text(
                                       '${list[index].day}/${list[index].month}/2022  -  ${computeEndOfWeek(list[index].day, list[index].month).day}/${computeEndOfWeek(list[index].day, list[index].month).month}/2022'),
                                   trailing: ElevatedButton(
@@ -127,14 +116,14 @@ class CouponPage extends StatelessWidget {
                                       _showChoiceDialog(context, list[index].day,
                                           list[index].month);
                                     },
-                                    child: Text('Use'),
+                                    child: const Text('Use'),
                                   ),
                                 ),
                               );
                             },
                           );
                         } else {
-                          return Text('No available Coupons');
+                          return const Text('No available Coupons');
                         }
                       },
                     ),
@@ -160,8 +149,8 @@ class CouponPage extends StatelessWidget {
                                   shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(15),
                                       ),
-                                  tileColor: Color.fromARGB(255, 202, 194, 194),
-                                  leading: Icon(MdiIcons.trophyOutline),
+                                  tileColor: const Color.fromARGB(255, 202, 194, 194),
+                                  leading: const Icon(MdiIcons.trophyOutline),
                                   title: Text(
                                       '${usedlist[index].day}/${usedlist[index].month}/2022  -  ${computeEndOfWeek(usedlist[index].day, usedlist[index].month).day}/${computeEndOfWeek(usedlist[index].day, usedlist[index].month).month}/2022'),
                                   trailing: ElevatedButton(
@@ -171,14 +160,14 @@ class CouponPage extends StatelessWidget {
                                           .updateUsed(false, usedlist[index].day,
                                               usedlist[index].month);
                                     },
-                                    child: Text('prova'),
+                                    child: const Text('prova'),
                                   ),
                                 ),
                               );
                             },
                           );
                         } else {
-                          return Text('No available Coupons');
+                          return const Text('No available Coupons');
                         }
                       },
                     ),
@@ -188,6 +177,6 @@ class CouponPage extends StatelessWidget {
             )),
       ),
     );
-  } //build
+  } 
 
-} //Page
+} 

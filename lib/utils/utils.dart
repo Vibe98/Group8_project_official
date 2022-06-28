@@ -1,7 +1,6 @@
 import 'package:fitbitter/fitbitter.dart';
 import 'package:login_flow/repository/databaserepository.dart';
 import 'package:provider/provider.dart';
-
 import '../classes/credentialsFitbitter.dart';
 import '../database/entities/couponentity.dart';
 import '../database/entities/mydata.dart';
@@ -9,7 +8,6 @@ import '../database/entities/mydata.dart';
 Future<List<MyData>> computeMonthData(String userID, DateTime startdate, DateTime enddate) async {
    
    List<MyData> mydatalist = [];
-    //steps
     FitbitActivityTimeseriesDataManager
         fitbitStepsDataManager =
         FitbitActivityTimeseriesDataManager(
@@ -18,8 +16,6 @@ Future<List<MyData>> computeMonthData(String userID, DateTime startdate, DateTim
       type: "steps",
     );
 
-    // prendo i dati dal 1 Marzo
-    
     FitbitActivityTimeseriesAPIURL fitbitStepsApiUrl =
     FitbitActivityTimeseriesAPIURL.dateRangeWithResource(
     startDate: startdate,
@@ -107,24 +103,18 @@ Future<List<MyData>> computeMonthData(String userID, DateTime startdate, DateTim
       await fitbitMinutesVADataManager.fetch(fitbitMinutesVAApiUrl)
         as List<FitbitActivityTimeseriesData>;
 
-    print(steps.length);
+
     for(int i=0; i<steps.length; i++) {
-      print('hey');
-      print(steps[i].dateOfMonitoring);
       bool tomato = false;
       if (steps[i].value! >= 7000 && calories[i].value! >= 2800 && (minutesVA[i].value! + minutesFA[i].value!) >= 30){
         tomato = true;
       } 
       MyData mydata = MyData(null, steps[i].dateOfMonitoring!.day, steps[i].dateOfMonitoring!.month, steps[i].value, distances[i].value, calories[i].value, minutesFA[i].value, minutesVA[i].value, tomato);
       mydatalist.add(mydata);
-
-
     }
 
     return mydatalist;
-      
-   
-    
+
   }
 
 

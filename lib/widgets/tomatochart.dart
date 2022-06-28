@@ -6,11 +6,9 @@ class TomatoChart extends StatelessWidget {
   final String name;
   final double objective;
   final int number;
-  
 
 
   TomatoChart({required this.data, required this.name, required this.objective, required this.number});
-  
 
 
   @override
@@ -98,7 +96,7 @@ class TomatoChart extends StatelessWidget {
         show: false,
       );
 
-  final _barsGradient1 =  LinearGradient(
+  final _barsGradient1 =  const LinearGradient(
     colors: [
       Colors.lightBlueAccent,
       Colors.lightGreenAccent
@@ -106,7 +104,7 @@ class TomatoChart extends StatelessWidget {
     begin: Alignment.bottomCenter,
     end: Alignment.topCenter,
   );
-  final _barsGradient2 =  LinearGradient(
+  final _barsGradient2 =  const LinearGradient(
     colors: [
       Colors.deepOrange,
       Colors.amber
@@ -114,7 +112,7 @@ class TomatoChart extends StatelessWidget {
     begin: Alignment.bottomCenter,
     end: Alignment.topCenter,
   );
-  final _barsGradient3 =  LinearGradient(
+  final _barsGradient3 = const LinearGradient(
     colors: [
       Colors.purple,
       Colors.pink
@@ -133,7 +131,7 @@ class TomatoChart extends StatelessWidget {
               backDrawRodData: BackgroundBarChartRodData(
             show: true,
             toY: objective,
-            color: Color.fromARGB(255, 96, 119, 113),
+            color: const Color.fromARGB(255, 96, 119, 113),
           ),
             )
           ],

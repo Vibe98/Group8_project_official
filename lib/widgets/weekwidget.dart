@@ -18,7 +18,6 @@ class WeekWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<WeekData>(builder: (context, weekdate, child) {
       return Container(
-        //Color.fromHex(code: code),
         child: Center(
           child: Column(children: [
             Card(
@@ -86,7 +85,7 @@ class WeekWidget extends StatelessWidget {
       
                     _controller.selectedRange = PickerDateRange(dat1, dat2);
                     weekdate.changeWeek(dat1, dat2);
-                    print(dat1);
+                   
                   },
                  
                 ),
@@ -103,7 +102,7 @@ class WeekWidget extends StatelessWidget {
                           case ConnectionState.none:
                           case ConnectionState.waiting:
                           
-                            return CircularProgressIndicator();
+                            return const CircularProgressIndicator();
                           case ConnectionState.active:
                           case ConnectionState.done:
                           
@@ -117,7 +116,7 @@ class WeekWidget extends StatelessWidget {
                               List<WeekChart> listminutesfa = weeklist[3];
       
                               return Column(children: [
-                                //Text('${liststeps[1].y}')
+                                
                                 WeekStepChartGraph(
                                     data: liststeps, category: 'STEPS'),
                                 WeekCaloriesChartGraph(
@@ -130,7 +129,7 @@ class WeekWidget extends StatelessWidget {
                                 ),
                               ]);
                             } else {
-                              return CircularProgressIndicator();
+                              return const CircularProgressIndicator();
                             }
                         }
                       },

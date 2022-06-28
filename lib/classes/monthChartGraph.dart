@@ -1,15 +1,14 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
 import 'package:charts_flutter/flutter.dart';
 import 'package:charts_flutter/src/text_style.dart' as style;
 import 'package:charts_flutter/src/text_element.dart' as element;
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import 'myMonthData.dart';
-import '../database/entities/mydata.dart';
+
 
 class MonthStepsChartGraph extends StatelessWidget{
   final List<myMonthData> data;
@@ -17,9 +16,9 @@ class MonthStepsChartGraph extends StatelessWidget{
   final String category;
 
   MonthStepsChartGraph({required this.data, required this.month, required this.category});
-
-  @override 
   static List selectedDatum = [];
+  
+  @override 
   Widget build(BuildContext context){
     List<Series<myMonthData, String>> series = [
       Series(
@@ -33,7 +32,7 @@ class MonthStepsChartGraph extends StatelessWidget{
 
     return Container(
       height: 290,
-      padding: EdgeInsets.all(25),
+      padding: const EdgeInsets.all(25),
       child: Card(
         elevation: 5,
         shape: RoundedRectangleBorder(
@@ -52,7 +51,7 @@ class MonthStepsChartGraph extends StatelessWidget{
                         style: Theme.of(context).textTheme.bodyText2,
                         textAlign: TextAlign.center,
                       ),
-                      SizedBox(width: 20),
+                      const SizedBox(width: 20),
                       Container(
                           height: 40,
                           width: 40,
@@ -63,7 +62,7 @@ class MonthStepsChartGraph extends StatelessWidget{
                                 width: 2,
                               )),
                           child:
-                              Icon(MdiIcons.run, size: 30, color: Colors.black))
+                              const Icon(MdiIcons.run, size: 30, color: Colors.black))
                     ],
                   ),
                   ),
@@ -118,8 +117,8 @@ class MonthCaloriesChartGraph extends StatelessWidget{
 
   MonthCaloriesChartGraph({required this.data, required this.month, required this.category});
 
-  @override 
   static List selectedDatum = [];
+  @override 
   Widget build(BuildContext context){
     List<Series<myMonthData, String>> series = [
       Series(
@@ -134,7 +133,7 @@ class MonthCaloriesChartGraph extends StatelessWidget{
     return Container(
       height: 290,
       
-      padding: EdgeInsets.all(25),
+      padding: const EdgeInsets.all(25),
       child: Card(
         shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),),
@@ -152,7 +151,7 @@ class MonthCaloriesChartGraph extends StatelessWidget{
                         style: Theme.of(context).textTheme.bodyText2,
                         textAlign: TextAlign.center,
                       ),
-                      SizedBox(width: 20),
+                      const SizedBox(width: 20),
                       Container(
                           height: 40,
                           width: 40,
@@ -163,7 +162,7 @@ class MonthCaloriesChartGraph extends StatelessWidget{
                                 width: 2,
                               )),
                           child:
-                              Icon(MdiIcons.fire, size: 30, color: Colors.orange))
+                              const Icon(MdiIcons.fire, size: 30, color: Colors.orange))
                     ],
                   ),
                   ),
@@ -197,7 +196,7 @@ class MonthCaloriesChartGraph extends StatelessWidget{
                           'text': '${datumPair.datum.value}'
                         });
                       });
-                      print(selectedDatum);
+                      
                     } else {
                       selectedDatum = [];
                     }
@@ -223,8 +222,8 @@ class MonthMinChartGraph extends StatelessWidget {
       required this.data2,
       required this.category1,
       required this.category2});
-  @override
   static List selectedDatum = [];
+  @override
   Widget build(BuildContext context) {
     List<Series<myMonthData, String>> series = [
       Series(
@@ -246,7 +245,7 @@ class MonthMinChartGraph extends StatelessWidget {
     return Container(
       height: 290,
       width: 360,
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: Card(
         shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),),
@@ -265,7 +264,7 @@ class MonthMinChartGraph extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodyText2,
                         textAlign: TextAlign.center,
                       ),
-                      SizedBox(width:20),
+                      const SizedBox(width:20),
                       Container(
                                         height: 40,
                                         width: 40,
@@ -275,7 +274,7 @@ class MonthMinChartGraph extends StatelessWidget {
                                               color: Colors.purple,
                                               width: 2,
                                             )),
-                                        child: Icon(MdiIcons.armFlex,
+                                        child: const Icon(MdiIcons.armFlex,
                                             size: 30,
                                             color: Colors.deepPurple))
                     ],
@@ -338,7 +337,7 @@ class MonthMinChartGraph extends StatelessWidget {
                           'text': '${datumPair.datum.value}'
                         });
                       });
-                      print(selectedDatum);
+                     
                     } else {
                       selectedDatum = [];
                     }
@@ -379,8 +378,8 @@ class CustomCircleSymbolRenderer extends CircleSymbolRenderer {
     textStyle.fontSize = 15;
 
     List tooltips = MonthMinChartGraph.selectedDatum;
-    // String unit = _DashboardState.unit;
-    if (tooltips != null && tooltips.length > 0) {
+    
+    if (tooltips.isNotEmpty) {
       num tipTextLen = (tooltips[0]['text']).length;
       num rectWidth = bounds.width + tipTextLen * 12;
       num rectHeight = bounds.height + 20 + (tooltips.length - 1) * 18;
@@ -435,8 +434,8 @@ class CustomCircleSymbolRenderer2 extends CircleSymbolRenderer {
     textStyle.fontSize = 15;
 
     List tooltips = MonthStepsChartGraph.selectedDatum;
-    // String unit = _DashboardState.unit;
-    if (tooltips != null && tooltips.length > 0) {
+    
+    if (tooltips.isNotEmpty) {
       num tipTextLen = (tooltips[0]['text']).length;
       num rectWidth = bounds.width + tipTextLen * 12;
       num rectHeight = bounds.height + 20 + (tooltips.length - 1) * 18;

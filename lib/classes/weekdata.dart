@@ -1,10 +1,4 @@
-import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:login_flow/classes/myMonthData.dart';
-import 'package:login_flow/classes/weekchart.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-
 
 class WeekData extends ChangeNotifier{
 

@@ -33,7 +33,6 @@ Future<void> main() async{
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
 
@@ -67,19 +66,19 @@ class MyApp extends StatelessWidget {
                 return ForgotPassword();
               });
           }else if(settings.name == HomePage.route){
-            // in questo caso ho un argomento obbligatorio che è la password
+            
             final args = settings.arguments as Map;
             return MaterialPageRoute(builder: (context) {
               return HomePage(username: args['username']);
             });
           }else if(settings.name == ProfilePage.route){
-            // in questo caso ho un argomento obbligatorio che è la password
+
             final args = settings.arguments as Map;
             return MaterialPageRoute(builder: (context) {
-              return ProfilePage(username: args['username'], keypassed: args['keypassed']);
+              return ProfilePage(username: args['username']);
             });
           }else if(settings.name == GardenPage.route){
-            // in questo caso ho un argomento obbligatorio che è la password
+            
             final args = settings.arguments as Map;
             return MaterialPageRoute(builder: (context) {
               return GardenPage(username: args['username']);

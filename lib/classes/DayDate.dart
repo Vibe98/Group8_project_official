@@ -1,9 +1,6 @@
-//import 'dart:js_util';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:login_flow/classes/myMonthData.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+
 
 class DayData extends ChangeNotifier{
 
@@ -12,13 +9,6 @@ class DayData extends ChangeNotifier{
   String month = DateFormat('MMMM').format(DateTime.now());
   bool sleep = false;
   int difference = DateTime.now().difference(DateTime.now()).inDays;
-
-  
-
-  /*num steps = 0;
-  num calories = 0;
-  num minutesFA = 0;
-  num minutesVA = 0;*/
 
   void changeDay(DateTime newdate){
     date = newdate;
@@ -44,7 +34,6 @@ class DayData extends ChangeNotifier{
         
   }
 
-  
   
 }
 

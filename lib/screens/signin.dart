@@ -1,10 +1,7 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:login_flow/classes/verify_cred.dart';
 import 'package:login_flow/screens/homepage.dart';
-import 'package:login_flow/screens/loginpage.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -88,7 +85,7 @@ class _SignInState extends State<SignIn> {
                     ),
                   ),
                 ),
-                //const SizedBox(height: 20),
+                
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: TextFormField(
@@ -143,7 +140,7 @@ class _SignInState extends State<SignIn> {
                     },
                   ),
                 ),
-                //const SizedBox(height: 20),
+              
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                   child: TextFormField(
@@ -152,7 +149,7 @@ class _SignInState extends State<SignIn> {
                         return 'Mandatory field';
                       } else if(value.length<8) {
                         return 'Password must be at least 8 characters length';
-                      }else if (!value.contains(new RegExp(r'[0-9]'))) {
+                      }else if (!value.contains(RegExp(r'[0-9]'))) {
                         //it must contain a number
                         return 'Password must contain at least a number';
                       }else {
@@ -185,9 +182,9 @@ class _SignInState extends State<SignIn> {
                         labelText: 'Confirm Password *'),
                   ),
                 ),
-                Text('Control Question', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20)),
-                SizedBox(height: 10),
-                Text('When is your mom\'s birthday?', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18), textAlign: TextAlign.left),
+                const Text('Control Question', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20)),
+                const SizedBox(height: 10),
+                const Text('When is your mom\'s birthday?', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18), textAlign: TextAlign.left),
                 Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
@@ -206,7 +203,7 @@ class _SignInState extends State<SignIn> {
                     },
                   ),
                 ),
-                // add a button
+
                 Consumer<VerifyCredentials>(
                   builder: (context, verifyCred, child) => 
                   FloatingActionButton(
@@ -221,7 +218,7 @@ class _SignInState extends State<SignIn> {
                             backgroundColor: Colors.red,
                           ));
                         } else if(verifyCred.credentials.containsKey(emailController.text)){
-                          //l'account è già esistente
+                          
                           ScaffoldMessenger.of(context)
                               .showSnackBar(const SnackBar(
                             content: Text('An account with this e-mail already exist! Try recover your passowrd'),
@@ -235,15 +232,11 @@ class _SignInState extends State<SignIn> {
                             backgroundColor: Colors.red,
                           ));
                         } else {
-                          // aggiungiamo l'account alla lista degli account
-                          print(emailController.text);
-                          print(passwordController.text);
-                          
                           verifyCred.addAccount(usernameController.text, nameController.text, surnameController.text, passwordController.text, emailController.text, questionController.text);
                           final sp = await SharedPreferences.getInstance();
                           sp.setStringList('username', [usernameController.text, nameController.text, surnameController.text, passwordController.text, emailController.text, questionController.text]);
                           sp.setBool('Log', true);
-                          print(sp.getBool('Log'));
+                          
                           setState(() {
                             
                           });

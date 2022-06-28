@@ -1,19 +1,15 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../database/entities/mydata.dart';
+import '../utils/utils.dart';
 
 class VisualizeDayTomato extends StatelessWidget {
   final int dayId;
   final List<MyData?> data;
   
-
-
   VisualizeDayTomato({required this.dayId, required this.data});
   
-
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -21,7 +17,7 @@ class VisualizeDayTomato extends StatelessWidget {
       children: [
         
         Text('${DateFormat('EEEE').format(DateTime.parse('${DateTime.now().year}-${modifyDate(data[dayId]!.month)}-${modifyDate(data[dayId]!.day)}'))} ${data[dayId]!.day}/${data[dayId]!.month}', style:
-         TextStyle(fontSize: 17, fontWeight: FontWeight.w500, color: Colors.white)),
+         const TextStyle(fontSize: 17, fontWeight: FontWeight.w500, color: Colors.white)),
          DateTime(DateTime.now().year, data[dayId]!.month, data[dayId]!.day).difference(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)).inDays >= 0
           ? Padding(
             padding: const EdgeInsets.all(10.0),
@@ -41,14 +37,3 @@ class VisualizeDayTomato extends StatelessWidget {
   }
 }
 
-String modifyDate(int date){
-    //modifica mese o giorno aggiungendo 0 se inizia con un numero minore di 10
-    String newDate='';
-    if(date<10){
-      newDate = '0$date';
-    }else{
-      newDate = '$date';
-    }
-
-    return newDate;
-  }

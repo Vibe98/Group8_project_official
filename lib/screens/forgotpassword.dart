@@ -1,18 +1,9 @@
-import 'dart:convert';
-import 'dart:math';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:login_flow/classes/verify_cred.dart';
 import 'package:login_flow/screens/loginpage.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
-import 'package:mailer/mailer.dart';
-import 'package:mailer/smtp_server.dart';
-import 'package:random_string/random_string.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../classes/googleAuthApi.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({Key? key}) : super(key: key);
@@ -34,7 +25,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     if(sp.getStringList('username')!=null){
       final answer = sp.getStringList('username')![5];
       
-      // verify that the answer is correct
       if(answer==answerController.text){
         _showChoiceDialog(context);
       }else{
@@ -74,8 +64,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         return 'Mandatory field';
                       } else if(value.length<8) {
                         return 'Password must be at least 8 characters length';
-                      }else if (!value.contains(new RegExp(r'[0-9]'))) {
-                        //it must contain a number
+                      }else if (!value.contains(RegExp(r'[0-9]'))) {
                         return 'Password must contain at least a number';
                       }else {
                         return null;
@@ -137,7 +126,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                               setState(() {
                                 
                               });
-                              Navigator.pushNamed(context, LoginPage.route);
+                              Navigator.pushNamedAndRemoveUntil(context, LoginPage.route, ModalRoute.withName('/'));
                             }
                           }
                         }
@@ -153,7 +142,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Forgot your password?'),
+      appBar: AppBar(title: const Text('Forgot your password?'),
       backgroundColor: Colors.green,),
       body: Center(
         child: Column(
@@ -165,7 +154,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
               ),
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.all(10.0),
               child: Text('When is your mom\'s birthday?', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18), textAlign: TextAlign.left),
             ),
@@ -196,9 +185,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         checkAnswer();
                       }
                 ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.all(10),
-              child: const Text(
+              child: Text(
                 'Answer the question to recover your old password',
                 style: TextStyle(fontSize: 15),),),
             

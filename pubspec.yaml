@@ -38,16 +38,8 @@ dependencies:
   fl_chart: ^0.51.0
   random_string: ^2.3.1
   flutter_ticket_widget: ^0.0.1
-  mailer: ^5.1.1
-  google_sign_in: ^5.3.3
   url_launcher: ^6.0.9
-  
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  flutter_email_sender: ^5.1.0
-  image_picker: ^0.8.5
   syncfusion_flutter_datepicker: ^20.1.55
   material_design_icons_flutter: ^5.0.6595
   
@@ -85,8 +77,6 @@ flutter:
     - assets/images/barcode.png
     - assets/images/trophy.jpg
     - assets/images/germoglio1.png
-    - assets/images/germoglio2.png
-    - assets/images/germoglio3.png
     - assets/images/pomodoro_medaglia.jpg
     - assets/images/trophy_background.png
 

@@ -1,12 +1,8 @@
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:login_flow/repository/databaserepository.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
-
-
 import '../classes/changeMonth.dart';
 import '../classes/monthChartGraph.dart';
 import '../classes/myMonthData.dart';
@@ -18,14 +14,12 @@ class MonthWidget extends StatelessWidget {
     final String username;
 
     MonthWidget({required this.username});
-
     @override 
     Widget build(BuildContext context){
 
       return Consumer<PickMonth>(
         builder: (context, pickmonth, child) => Center(
           child: Container(
-          
             child: ListView(
               children: [
                 Column(
@@ -42,14 +36,13 @@ class MonthWidget extends StatelessWidget {
                             ),
                           child: IconButton(
                               onPressed: () {
-                                // one month back
                                 if(pickmonth.month>3){
                                   pickmonth.decreaseMonth();
                                 }else{
                                   null;
                                 }
                               },
-                              icon: Icon(Icons.arrow_back_ios, color: Colors.green)),
+                              icon: const Icon(Icons.arrow_back_ios, color: Colors.green)),
                         ),
                         Card(
                           elevation: 10,
@@ -60,7 +53,7 @@ class MonthWidget extends StatelessWidget {
                               child: Center(
                                 child: Text(
                                     '${DateFormat('MMMM').format(DateTime(0, pickmonth.getMonth()))} ${pickmonth.getYear()}',
-                                    style: TextStyle(fontSize: 18),
+                                    style: const TextStyle(fontSize: 18),
                                     textAlign: TextAlign.center),
                               ),
                               width: 200,
@@ -77,7 +70,7 @@ class MonthWidget extends StatelessWidget {
                                 pickmonth.increaseMonth();
                               },
                               icon:
-                                  Icon(Icons.arrow_forward_ios, color: Colors.green)),
+                                  const Icon(Icons.arrow_forward_ios, color: Colors.green)),
                         ),
                       ],
                     ),
@@ -89,7 +82,7 @@ class MonthWidget extends StatelessWidget {
                           switch(snapshot.connectionState){
                          case ConnectionState.none:
                          case ConnectionState.waiting:
-                          return CircularProgressIndicator();
+                          return const CircularProgressIndicator();
                          case ConnectionState.done:
                          case ConnectionState.active:
                           if(snapshot.hasData){
@@ -109,7 +102,7 @@ class MonthWidget extends StatelessWidget {
                               ],
                         );
                           }else{
-                            return CircularProgressIndicator();
+                            return const CircularProgressIndicator();
                           }}}
                         
                       ),

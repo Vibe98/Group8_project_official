@@ -333,13 +333,6 @@ class _$CouponDao extends CouponDao {
   }
 
   @override
-  Future<void> updatePresent(bool present, int day, int month) async {
-    await _queryAdapter.queryNoReturn(
-        'UPDATE CouponEntity SET present = ?1 WHERE day = ?2 AND month = ?3',
-        arguments: [present ? 1 : 0, day, month]);
-  }
-
-  @override
   Future<void> updateUsed(bool used, int day, int month) async {
     await _queryAdapter.queryNoReturn(
         'UPDATE CouponEntity SET used = ?1 WHERE day = ?2 AND month = ?3',

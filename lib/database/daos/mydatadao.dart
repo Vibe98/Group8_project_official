@@ -1,5 +1,4 @@
 import 'package:floor/floor.dart';
-import 'package:flutter/material.dart';
 import 'package:login_flow/database/entities/mydata.dart';
 
 @dao 
@@ -30,7 +29,4 @@ abstract class MyDataDao{
 
   @Query('DELETE FROM MyData WHERE id=(SELECT MAX(id) FROM MyData)')
   Future<void> deleteLastDay();
-
-  
-
 }

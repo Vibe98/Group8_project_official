@@ -1,5 +1,6 @@
 import 'package:fitbitter/fitbitter.dart';
 import 'package:flutter/material.dart';
+import 'package:login_flow/classes/credentialsFitbitter.dart';
 import 'package:login_flow/database/entities/mydata.dart';
 import 'package:login_flow/repository/databaserepository.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -29,7 +30,7 @@ class DayWidget extends StatelessWidget {
                   width: 270,
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.black),
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    borderRadius: const BorderRadius.all(Radius.circular(20)),
                     color: Colors.black,
                   ),
                   child: SfDateRangePicker(
@@ -46,21 +47,21 @@ class DayWidget extends StatelessWidget {
                       daydate.changeDay(value);
                       daydate.computeDifference();
                     },
-                    monthViewSettings: DateRangePickerMonthViewSettings(
+                    monthViewSettings: const DateRangePickerMonthViewSettings(
                         showTrailingAndLeadingDates: true,
                         viewHeaderStyle: DateRangePickerViewHeaderStyle(
                             textStyle: TextStyle(color: Colors.white)),
                         enableSwipeSelection: true),
-                    headerStyle: DateRangePickerHeaderStyle(
+                    headerStyle: const DateRangePickerHeaderStyle(
                         textStyle: TextStyle(color: Colors.white)),
-                    yearCellStyle: DateRangePickerYearCellStyle(
+                    yearCellStyle: const DateRangePickerYearCellStyle(
                       disabledDatesTextStyle: TextStyle(color: Colors.grey),
                       textStyle: TextStyle(color: Colors.white),
                       todayTextStyle: TextStyle(color: Colors.white),
                     ),
                     selectionColor: Colors.transparent,
-                    selectionTextStyle: TextStyle(color: Colors.amber),
-                    monthCellStyle: DateRangePickerMonthCellStyle(
+                    selectionTextStyle: const TextStyle(color: Colors.amber),
+                    monthCellStyle: const DateRangePickerMonthCellStyle(
                       trailingDatesTextStyle: TextStyle(color: Colors.grey),
                       leadingDatesTextStyle: TextStyle(color: Colors.grey),
                       disabledDatesTextStyle:
@@ -97,13 +98,12 @@ class DayWidget extends StatelessWidget {
                                                 scale: 10),
                                           );
                                   } else {
-                                    return CircularProgressIndicator();
+                                    return const CircularProgressIndicator();
                                   }
                                 },
                               ))))
             ],
           ),
-          // ROW
 
           Consumer<VerifyCredentials>(
             builder: ((context, value, child) => Consumer<DataBaseRepository>(
@@ -114,7 +114,6 @@ class DayWidget extends StatelessWidget {
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
                                 final data = snapshot.data as MyData;
-                                print(data);
                                 return Column(children: [
                                   Card(
                                     elevation: 10,
@@ -141,17 +140,17 @@ class DayWidget extends StatelessWidget {
                                                               BoxShape.circle,
                                                           border: Border.all(
                                                             color:
-                                                                Color.fromARGB(
+                                                                const Color.fromARGB(
                                                                     255,
                                                                     153,
                                                                     211,
                                                                     155),
                                                             width: 2,
                                                           )),
-                                                      child: Icon(MdiIcons.run,
+                                                      child: const Icon(MdiIcons.run,
                                                           size: 30,
                                                           color: Colors.green)),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     width: 30,
                                                   ),
                                                   RotatedBox(
@@ -170,7 +169,7 @@ class DayWidget extends StatelessWidget {
                                                       ),
                                                     ),
                                                   ),
-                                                  Icon(MdiIcons.flagCheckered)
+                                                  const Icon(MdiIcons.flagCheckered)
                                                 ]),
                                             Row(
                                                 mainAxisAlignment:
@@ -204,8 +203,8 @@ class DayWidget extends StatelessWidget {
                                                           data.steps!
                                                               .round()
                                                               .toString(),
-                                                          style: TextStyle(
-                                                              //color: Colors.blue,
+                                                          style: const TextStyle(
+                                                           
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w500,
@@ -215,8 +214,8 @@ class DayWidget extends StatelessWidget {
                                                               fontSize: 15)),
                                                       Text(
                                                           '${data.distance!.toStringAsFixed(1)} km',
-                                                          style: TextStyle(
-                                                              //color: Colors.blue,
+                                                          style: const TextStyle(
+                                                             
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w500,
@@ -250,21 +249,21 @@ class DayWidget extends StatelessWidget {
                                                     decoration: BoxDecoration(
                                                         shape: BoxShape.circle,
                                                         border: Border.all(
-                                                          color: Color.fromARGB(
+                                                          color: const Color.fromARGB(
                                                               255,
                                                               216,
                                                               159,
                                                               105),
                                                           width: 2,
                                                         )),
-                                                    child: Icon(MdiIcons.fire,
+                                                    child: const Icon(MdiIcons.fire,
                                                         size: 30,
                                                         color: Color.fromARGB(
                                                             255,
                                                             223,
                                                             124,
                                                             25))),
-                                                SizedBox(width: 30),
+                                                const SizedBox(width: 30),
                                                 RotatedBox(
                                                   quarterTurns: 1,
                                                   child: Container(
@@ -280,7 +279,7 @@ class DayWidget extends StatelessWidget {
                                                         )),
                                                   ),
                                                 ),
-                                                Icon(MdiIcons.flagCheckered),
+                                                const Icon(MdiIcons.flagCheckered),
                                               ]),
                                           Row(
                                               mainAxisAlignment:
@@ -296,8 +295,8 @@ class DayWidget extends StatelessWidget {
                                                         fontSize: 20)),
                                                 Text(
                                                     '${data.calories!.toStringAsFixed(0)} kcal',
-                                                    style: TextStyle(
-                                                        //color: Colors.blue,
+                                                    style: const TextStyle(
+                                                        
                                                         fontWeight:
                                                             FontWeight.w500,
                                                         fontStyle:
@@ -325,14 +324,14 @@ class DayWidget extends StatelessWidget {
                                                     decoration: BoxDecoration(
                                                         shape: BoxShape.circle,
                                                         border: Border.all(
-                                                          color: Color.fromARGB(
+                                                          color: const Color.fromARGB(
                                                               255,
                                                               216,
                                                               130,
                                                               178),
                                                           width: 2,
                                                         )),
-                                                    child: Icon(
+                                                    child: const Icon(
                                                         MdiIcons.armFlex,
                                                         size: 30,
                                                         color: Color.fromARGB(
@@ -340,7 +339,7 @@ class DayWidget extends StatelessWidget {
                                                             113,
                                                             13,
                                                             100))),
-                                                SizedBox(width: 30),
+                                                const SizedBox(width: 30),
                                                 RotatedBox(
                                                   quarterTurns: 1,
                                                   child: Container(
@@ -358,7 +357,7 @@ class DayWidget extends StatelessWidget {
                                                     ),
                                                   ),
                                                 ),
-                                                Icon(MdiIcons.flagCheckered)
+                                                const Icon(MdiIcons.flagCheckered)
                                               ]),
                                           Row(
                                               mainAxisAlignment:
@@ -435,7 +434,7 @@ class DayWidget extends StatelessWidget {
                                                   decoration: BoxDecoration(
                                                       shape: BoxShape.circle,
                                                       border: Border.all(
-                                                        color: Color.fromARGB(
+                                                        color: const Color.fromARGB(
                                                             255, 127, 157, 209),
                                                         width: 2,
                                                       )),
@@ -444,7 +443,7 @@ class DayWidget extends StatelessWidget {
                                                         alignment:
                                                             Alignment.center,
                                                         padding:
-                                                            EdgeInsets.all(1),
+                                                            const EdgeInsets.all(1),
                                                         onPressed: () {
                                                           daydate.changeSleep();
                                                         },
@@ -460,7 +459,7 @@ class DayWidget extends StatelessWidget {
                                                                     70))),
                                                   )),
                                               daydate.sleep == false
-                                                  ? Text('Click to visualize',
+                                                  ? const Text('Click the moon to visualize',
                                                       style: TextStyle(
                                                           color: Color.fromARGB(
                                                               255,
@@ -498,9 +497,7 @@ class DayWidget extends StatelessWidget {
                                                                         .none:
                                                                     case ConnectionState
                                                                         .waiting:
-                                                                      print(
-                                                                          'waiting');
-                                                                      return CircularProgressIndicator();
+                                                                      return const CircularProgressIndicator();
                                                                     case ConnectionState
                                                                         .done:
                                                                     case ConnectionState
@@ -522,7 +519,7 @@ class DayWidget extends StatelessWidget {
                                                                             dt2!.difference(dt1!);
 
                                                                         int result =
-                                                                            diff.inMinutes; // 2 mins
+                                                                            diff.inMinutes; 
 
                                                                         int hour =
                                                                             result ~/
@@ -530,21 +527,18 @@ class DayWidget extends StatelessWidget {
                                                                         int minutes =
                                                                             result %
                                                                                 60;
-                                                                        print(daydate
-                                                                            .day);
-                                                                        print(daydate
-                                                                            .month);
+                                                                      
                                                                         if (hour >
                                                                             0) {
                                                                           return Text(
                                                                               '$hour : $minutes',
-                                                                              style: TextStyle(
+                                                                              style: const TextStyle(
                                                                                   //color: Colors.blue,
                                                                                   fontWeight: FontWeight.w500,
                                                                                   fontStyle: FontStyle.normal,
                                                                                   fontSize: 20));
                                                                         } else {
-                                                                          return Text(
+                                                                          return const Text(
                                                                               '- - -',
                                                                               style: TextStyle(
                                                                                   //color: Colors.blue,
@@ -553,7 +547,7 @@ class DayWidget extends StatelessWidget {
                                                                                   fontSize: 20));
                                                                         }
                                                                       } else {
-                                                                        return Text(
+                                                                        return const Text(
                                                                             '- - -',
                                                                             style: TextStyle(
                                                                                 //color: Colors.blue,
@@ -571,11 +565,11 @@ class DayWidget extends StatelessWidget {
                                   // container
                                 ]);
                               } else {
-                                return CircularProgressIndicator();
+                                return const CircularProgressIndicator();
                               }
                             },
                           )
-                      // colonna generale
+                 
 
                       ),
                 )),
@@ -588,8 +582,8 @@ class DayWidget extends StatelessWidget {
 
 Future<List> _computeSleepData(int difference, String userID) async {
   FitbitSleepDataManager fitbitSleepDataManager = FitbitSleepDataManager(
-    clientID: '238BZL',
-    clientSecret: '34b956d540522d8e59ba18f63be21a91',
+    clientID: CredentialsFitbitter.clientID,
+    clientSecret: CredentialsFitbitter.clientSecret,
   );
   FitbitSleepAPIURL fitbitSleepAPIURL = FitbitSleepAPIURL.withUserIDAndDay(
     date: DateTime.now().subtract(Duration(days: difference)),

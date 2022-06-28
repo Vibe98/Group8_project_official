@@ -1,10 +1,9 @@
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:charts_flutter/flutter.dart';
 import 'package:charts_flutter/src/text_style.dart' as style;
 import 'package:charts_flutter/src/text_element.dart' as element;
-import 'package:flutter/cupertino.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class WeekChart {
@@ -19,9 +18,9 @@ class WeekStepChartGraph extends StatelessWidget {
   final String category;
 
   WeekStepChartGraph({required this.data, required this.category});
+  static List selectedDatum = [];
 
   @override
-  static List selectedDatum = [];
   Widget build(BuildContext context) {
     List<Series<WeekChart, String>> series = [
       Series(
@@ -35,7 +34,7 @@ class WeekStepChartGraph extends StatelessWidget {
 
     return Container(
       height: 200,
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: Card(
         shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),),
@@ -55,7 +54,7 @@ class WeekStepChartGraph extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyText2,
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(width: 20),
+                    const SizedBox(width: 20),
                     Container(
                         height: 40,
                         width: 40,
@@ -66,7 +65,7 @@ class WeekStepChartGraph extends StatelessWidget {
                               width: 2,
                             )),
                         child:
-                            Icon(MdiIcons.run, size: 30, color: Colors.black))
+                            const Icon(MdiIcons.run, size: 30, color: Colors.black))
                   ],
                 ),
               ),
@@ -112,14 +111,14 @@ class WeekCaloriesChartGraph extends StatelessWidget {
 
   WeekCaloriesChartGraph({required this.data, required this.category});
 
-  @override
   static List selectedDatum = [];
+  @override
   Widget build(BuildContext context) {
     List<Series<WeekChart, String>> series = [
       Series(
         id: category,
         data: data,
-        domainFn: (WeekChart series, _) => '${series.x!}',
+        domainFn: (WeekChart series, _) => series.x!,
         measureFn: (WeekChart series, _) => series.y,
         colorFn: (WeekChart series, _) => series.barColor,
       )
@@ -127,7 +126,7 @@ class WeekCaloriesChartGraph extends StatelessWidget {
 
     return Container(
       height: 200,
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: Card(
         shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),),
@@ -147,7 +146,7 @@ class WeekCaloriesChartGraph extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyText2,
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(width: 20),
+                    const SizedBox(width: 20),
                     Container(
                         height: 40,
                         width: 40,
@@ -158,7 +157,7 @@ class WeekCaloriesChartGraph extends StatelessWidget {
                               width: 2,
                             )),
                         child:
-                            Icon(MdiIcons.fire, size: 30, color: Colors.orange))
+                            const Icon(MdiIcons.fire, size: 30, color: Colors.orange))
                   ],
                 ),
               ),
@@ -209,21 +208,23 @@ class WeekMinChartGraph extends StatelessWidget {
       required this.data2,
       required this.category1,
       required this.category2});
-  @override
+  
   static List selectedDatum = [];
+
+  @override
   Widget build(BuildContext context) {
     List<Series<WeekChart, String>> series = [
       Series(
         id: category1,
         data: data1,
-        domainFn: (WeekChart series, _) => '${series.x!}',
+        domainFn: (WeekChart series, _) => series.x!,
         measureFn: (WeekChart series, _) => series.y,
         colorFn: (WeekChart series, _) => series.barColor,
       ),
       Series(
         id: category2,
         data: data2,
-        domainFn: (WeekChart series, _) => '${series.x!}',
+        domainFn: (WeekChart series, _) => series.x!,
         measureFn: (WeekChart series, _) => series.y,
         colorFn: (WeekChart series, _) => series.barColor,
       )
@@ -231,7 +232,7 @@ class WeekMinChartGraph extends StatelessWidget {
 
     return Container(
       height: 200,
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: Card(
         shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),),
@@ -251,7 +252,7 @@ class WeekMinChartGraph extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodyText2,
                         textAlign: TextAlign.center,
                       ),
-                      SizedBox(width: 20),
+                      const SizedBox(width: 20),
                       Container(
                           height: 40,
                           width: 40,
@@ -261,7 +262,7 @@ class WeekMinChartGraph extends StatelessWidget {
                                 color: Colors.purple,
                                 width: 2,
                               )),
-                          child: Icon(MdiIcons.armFlex,
+                          child: const Icon(MdiIcons.armFlex,
                               size: 30, color: Colors.deepPurple))
                     ],
                   )),
@@ -283,9 +284,9 @@ class WeekMinChartGraph extends StatelessWidget {
                     // rows before adding a new column.
                     desiredMaxRows: 2,
                     // This defines the padding around each legend entry.
-                    cellPadding: new EdgeInsets.only(right: 4.0, bottom: 4.0),
+                    cellPadding: const EdgeInsets.only(right: 4.0, bottom: 4.0),
                     // Render the legend entry text with custom styles.
-                    entryTextStyle: TextStyleSpec(
+                    entryTextStyle: const TextStyleSpec(
                         color: Color(r: 127, g: 63, b: 191),
                         fontFamily: 'Georgia',
                         fontSize: 11),
@@ -345,8 +346,8 @@ class CustomCircleSymbolRenderer extends CircleSymbolRenderer {
     textStyle.fontSize = 15;
 
     List tooltips = WeekMinChartGraph.selectedDatum;
-    // String unit = _DashboardState.unit;
-    if (tooltips != null && tooltips.length > 0) {
+ 
+    if (tooltips.isNotEmpty) {
       num tipTextLen = (tooltips[0]['text']).length;
       num rectWidth = bounds.width + tipTextLen * 12;
       num rectHeight = bounds.height + 20 + (tooltips.length - 1) * 18;
@@ -402,7 +403,7 @@ class CustomCircleSymbolRenderer2 extends CircleSymbolRenderer {
 
     List tooltips = WeekStepChartGraph.selectedDatum;
     // String unit = _DashboardState.unit;
-    if (tooltips != null && tooltips.length > 0) {
+    if (tooltips.isNotEmpty) {
       num tipTextLen = (tooltips[0]['text']).length;
       num rectWidth = bounds.width + tipTextLen * 12;
       num rectHeight = bounds.height + 20 + (tooltips.length - 1) * 18;
@@ -458,7 +459,7 @@ class CustomCircleSymbolRenderer3 extends CircleSymbolRenderer {
 
     List tooltips = WeekCaloriesChartGraph.selectedDatum;
     // String unit = _DashboardState.unit;
-    if (tooltips != null && tooltips.length > 0) {
+    if (tooltips.isNotEmpty) {
       num tipTextLen = (tooltips[0]['text']).length;
       num rectWidth = bounds.width + tipTextLen * 12;
       num rectHeight = bounds.height + 20 + (tooltips.length - 1) * 18;

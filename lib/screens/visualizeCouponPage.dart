@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ticket_widget/flutter_ticket_widget.dart';
 import 'package:login_flow/utils/utils.dart';
@@ -31,7 +30,7 @@ class _VisualizeCouponScreenState extends State<VisualizeCouponScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Text(
+                 const Text(
                     'Your Ticket',
                     style: TextStyle(
                         color: Colors.black,
@@ -61,8 +60,7 @@ class _VisualizeCouponScreenState extends State<VisualizeCouponScreen> {
                             fit: BoxFit.cover, scale: 10),
                       ),
                 
-                  Text('Code: ${randomAlphaNumeric(8)}', style: TextStyle(
-                              //color: Colors.green,
+                  Text('Code: ${randomAlphaNumeric(8)}', style: const TextStyle(
                               fontWeight: FontWeight.w500,
                               fontStyle: FontStyle.italic,
                               fontSize: 20
@@ -79,7 +77,7 @@ class _VisualizeCouponScreenState extends State<VisualizeCouponScreen> {
                                           MaterialStateProperty.all<Color>(
                                               Colors.green),
                                     ),
-                     child: Icon(Icons.done))
+                     child: const Icon(Icons.done))
               ],
             ),
           ),
@@ -100,7 +98,7 @@ class _VisualizeCouponScreenState extends State<VisualizeCouponScreen> {
             children: <Widget>[
               Text(
                 firstTitle,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.grey,
                 ),
               ),
@@ -108,7 +106,7 @@ class _VisualizeCouponScreenState extends State<VisualizeCouponScreen> {
                 padding: const EdgeInsets.only(top: 4.0),
                 child: Text(
                   firstDesc,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black,
                   ),
                 ),
@@ -123,7 +121,7 @@ class _VisualizeCouponScreenState extends State<VisualizeCouponScreen> {
             children: <Widget>[
               Text(
                 secondTitle,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.grey,
                 ),
               ),
@@ -131,7 +129,7 @@ class _VisualizeCouponScreenState extends State<VisualizeCouponScreen> {
                 padding: const EdgeInsets.only(top: 4.0),
                 child: Text(
                   secondDesc,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black,
                   ),
                 ),

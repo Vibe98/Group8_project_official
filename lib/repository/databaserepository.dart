@@ -1,9 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:login_flow/database/database.dart';
-
 import '../database/entities/couponentity.dart';
 import '../database/entities/mydata.dart';
-import '../database/daos/coupondao.dart';
 
 class DataBaseRepository extends ChangeNotifier{
   final AppDatabase database;
@@ -22,13 +20,13 @@ class DataBaseRepository extends ChangeNotifier{
     }else if(month == 4 || month == 5 || month == 9 || month == 11){
       maxday=30;
     }else{
-      // febbraio
+     
       maxday=28;
     }
     final monthdatas = await database.mydatadao.findMonthDatas(month);
     final curr_day = monthdatas.length;
     if(curr_day<maxday){
-      // aggiungiamo a monthdatas i dati mancanti a 0
+      
       for(int i = curr_day; i<maxday; i++){
         monthdatas.add(MyData(null,i, month, 0, 0, 0, 0, 0, false));
    
@@ -106,7 +104,6 @@ class DataBaseRepository extends ChangeNotifier{
 
   Future<MyData?> findLastDay() async{
   final result = await database.mydatadao.findLastDay();
-  print(result);
   return result;
   }
 
@@ -115,9 +112,6 @@ class DataBaseRepository extends ChangeNotifier{
     notifyListeners();
   }
 
-
-  // Coupon Entity
-  
    Future<void> insertCoupon(CouponEntity coupon) async{
   await database.coupondao.insertCoupon(coupon);
     notifyListeners();
@@ -136,7 +130,7 @@ class DataBaseRepository extends ChangeNotifier{
 
    Future<CouponEntity?> findLastCoupon() async{
   final result = await database.coupondao.findLastCoupon();
-  //print(result);
+
   return result;
   }
 
@@ -144,11 +138,6 @@ class DataBaseRepository extends ChangeNotifier{
     final result = await database.coupondao.findPresendAndUsedCoupons(present, used);
     return result;
   }
-
-  Future<void> updatePresent(bool present, int day, int month) async{
-    await database.coupondao.updatePresent(present, day, month);
-    notifyListeners();
-  } // forse da eliminare
 
    Future<void> updateUsed(bool used, int? day, int? month) async{
     await database.coupondao.updateUsed(used, day!, month!);
@@ -164,10 +153,4 @@ class DataBaseRepository extends ChangeNotifier{
     await database.coupondao.deleteLastCoupon();
     notifyListeners();
   }
-
-
- 
-
-
-
 }

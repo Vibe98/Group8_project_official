@@ -9,7 +9,6 @@ class CouponEntity{
   final bool? present;
   final bool? used;
   
-
   CouponEntity(this.id, this.day, this.month, this.present, this.used);
 
 }

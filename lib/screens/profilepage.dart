@@ -1,46 +1,32 @@
-import 'dart:io';
-
 import 'package:fitbitter/fitbitter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:login_flow/classes/DayDate.dart';
 import 'package:login_flow/repository/databaserepository.dart';
-import 'package:login_flow/screens/homepage.dart';
 import 'package:login_flow/screens/loginpage.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../classes/credentialsFitbitter.dart';
-import '../classes/myMonthData.dart';
 import '../classes/verify_cred.dart';
-import '../classes/credentialsFitbitter.dart';
-import '../classes/myMonthData.dart';
-
-import 'package:charts_flutter/flutter.dart' as charts;
-
 import '../database/entities/couponentity.dart';
 import '../database/entities/mydata.dart';
 import '../utils/utils.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key, required this.username, required this.keypassed})
-      : super(key: key);
+  const ProfilePage({Key? key, required this.username}) : super(key: key);
 
   static const route = '/profile';
   final String username;
-  final int keypassed;
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  // This widget is the root of your application.
 
   int actual = -1;
   TextEditingController nameController = TextEditingController();
@@ -48,7 +34,6 @@ class _ProfilePageState extends State<ProfilePage> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
   bool ena = false;
 
   @override
@@ -78,7 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
         builder: (BuildContext context) {
           BuildContext dialogContext = context;
           return AlertDialog(
-              shape: RoundedRectangleBorder(
+              shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(32.0))),
               title: const Text('Connecting to your fitbit account...'),
               content:
@@ -101,13 +86,12 @@ class _ProfilePageState extends State<ProfilePage> {
             actions: <Widget>[
               CupertinoDialogAction(
                   isDefaultAction: true,
-                  child: Text('Yes'),
+                  child: const Text('Yes'),
                   onPressed: () async {
                     final sp = await SharedPreferences.getInstance();
                     final keys = sp.getKeys().toList();
                     int L = keys.length;
                     for (int i = 0; i < L; i++) {
-                      print(keys[i]);
                       sp.remove(keys[i]);
                     }
                     Provider.of<DataBaseRepository>(context, listen: false)
@@ -119,8 +103,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   }),
               CupertinoDialogAction(
                   isDefaultAction: true,
-                  child: Text('Cancel'),
-                  textStyle: TextStyle(color: Colors.red),
+                  child: const Text('Cancel'),
+                  textStyle: const TextStyle(color: Colors.red),
                   onPressed: () {
                     Navigator.of(context).pop();
                   })
@@ -131,11 +115,11 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    print(nameController.toString());
+   
     ena = actual == -1 ? false : true;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile Page'),
+        title: const Text('Profile Page'),
         backgroundColor: Colors.green,
       ),
       body: Form(
@@ -144,26 +128,26 @@ class _ProfilePageState extends State<ProfilePage> {
             TextField(
               readOnly: true,
               textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
-              decoration: InputDecoration(border: InputBorder.none),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+              decoration: const InputDecoration(border: InputBorder.none),
               controller: usernameController,
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Container(
               alignment: Alignment.center,
               width: 200.0,
               height: 200.0,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 color: Color.fromARGB(255, 28, 70, 47),
               ),
               child: Center(
                   child: Text(
                 nameController.text[0],
-                style: TextStyle(fontSize: 130, color: Colors.white),
+                style: const TextStyle(fontSize: 130, color: Colors.white),
               )),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Container(
               width: 400,
               child: TextFormField(
@@ -172,14 +156,14 @@ class _ProfilePageState extends State<ProfilePage> {
                   decoration: InputDecoration(
                       border: actual == -1
                           ? InputBorder.none
-                          : OutlineInputBorder(),
-                      icon: Icon(
+                          : const OutlineInputBorder(),
+                      icon: const Icon(
                         Icons.person,
                         color: Colors.green,
                       ),
                       labelText: 'Name')),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Container(
               width: 400,
               child: TextFormField(
@@ -187,15 +171,15 @@ class _ProfilePageState extends State<ProfilePage> {
                 enabled: ena,
                 decoration: InputDecoration(
                     border:
-                        actual == -1 ? InputBorder.none : OutlineInputBorder(),
-                    icon: Icon(
+                        actual == -1 ? InputBorder.none : const OutlineInputBorder(),
+                    icon: const Icon(
                       Icons.person,
                       color: Colors.green,
                     ),
                     labelText: 'Surname'),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Container(
               width: 400,
               child: TextFormField(
@@ -203,12 +187,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 enabled: ena,
                 decoration: InputDecoration(
                     border:
-                        actual == -1 ? InputBorder.none : OutlineInputBorder(),
-                    icon: Icon(Icons.email, color: Colors.green),
+                        actual == -1 ? InputBorder.none : const OutlineInputBorder(),
+                    icon: const Icon(Icons.email, color: Colors.green),
                     labelText: 'E-mail'),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Container(
               width: 400,
               child: TextFormField(
@@ -216,8 +200,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 enabled: ena,
                 decoration: InputDecoration(
                     border:
-                        actual == -1 ? InputBorder.none : OutlineInputBorder(),
-                    icon: Icon(
+                        actual == -1 ? InputBorder.none : const OutlineInputBorder(),
+                    icon: const Icon(
                       Icons.key,
                       color: Colors.green,
                     ),
@@ -262,9 +246,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       }
                       ;
                     },
-                    child: actual == -1 ? Icon(Icons.edit) : Icon(Icons.check),
+                    child: actual == -1 ? const Icon(Icons.edit) : const Icon(Icons.check),
                     style: ElevatedButton.styleFrom(
-                        primary: Colors.green, shape: CircleBorder())),
+                        primary: Colors.green, shape: const CircleBorder())),
               ],
             ),
             Consumer<VerifyCredentials>(
@@ -272,13 +256,13 @@ class _ProfilePageState extends State<ProfilePage> {
                       padding: const EdgeInsets.fromLTRB(8, 1, 8, 1),
                       child: Column(
                         children: [
-                          Text('FitBit connection status',
+                          const Text('FitBit connection status',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold)),
                           Row(
                             children: [
-                              Text('You\'re actually: '),
+                              const Text('You\'re actually: '),
                               credentials.isAuthenticated(widget.username) &&
                                       credentials
                                               .iscompleted(widget.username) ==
@@ -293,7 +277,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           fontWeight: FontWeight.bold,
                                           color: Color.fromARGB(
                                               255, 143, 36, 36))),
-                              SizedBox(
+                              const SizedBox(
                                 width: 100,
                               ),
                               credentials.isAuthenticated(widget.username) &&
@@ -329,7 +313,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 listen: false)
                                             .hascompleted(widget.username);
                                       },
-                                      child: Icon(MdiIcons.lanDisconnect))
+                                      child: const Icon(MdiIcons.lanDisconnect))
                                   : ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                           primary: Colors.green),
@@ -354,9 +338,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                             .AssociateAuthorization(
                                                 widget.username, userId);
 
-                                        // DATABASE
-
-                                        // mydata
+                   
                                         List<MyData?> dataavailablelist =
                                             await Provider.of<
                                                         DataBaseRepository>(
@@ -365,7 +347,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 .findAllData();
 
                                         if (dataavailablelist.isEmpty) {
-                                          // non ci sono dati, devo creare database
+                          
                                           List<MyData> datalist =
                                               await computeMonthData(
                                             credentials.Restituteuser(
@@ -384,7 +366,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 .insertMyData(mydata);
                                           }
                                         } else {
-                                          // ci sono gia i dati quindi devo solo fare check per update dell'ultimo giorno + altri eventuali giorni
                                           final listlastday = await Provider
                                                   .of<DataBaseRepository>(
                                                       context,
@@ -444,7 +425,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     listen: false)
                                                 .findAllCoupons();
                                         if (list.isEmpty) {
-                                          print('creo database');
+                                         
                                           List<CouponEntity> couponlist =
                                               await computeCoupons(
                                                   context,
@@ -465,7 +446,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 .insertCoupon(coupon);
                                           }
                                         } else {
-                                          print('controllo se aggiornare');
+                                          
                                           CouponEntity? lastcoupon =
                                               await Provider.of<
                                                           DataBaseRepository>(
@@ -478,7 +459,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                               .difference(startdate);
                                           int difference = diff.inDays;
                                           if (difference > 6) {
-                                            print('devo aggiornare');
+                                            
                                             Provider.of<DataBaseRepository>(
                                                     context,
                                                     listen: false)
@@ -501,10 +482,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       listen: false)
                                                   .insertCoupon(coupon);
                                             }
-                                          } else {
-                                            print(
-                                                'non devo aggiornare perche sono passati solo $difference giorni');
-                                          }
+                                          } 
                                         }
 
                                         Provider.of<VerifyCredentials>(
@@ -521,7 +499,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 rootNavigator: true)
                                             .pop();
                                       },
-                                      child: Icon(MdiIcons.lanConnect))
+                                      child: const Icon(MdiIcons.lanConnect))
                             ],
                           ),
                           RichText(
@@ -531,7 +509,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   style: TextStyle(color: Colors.grey)),
                               TextSpan(
                                 text: "terms and conditions.",
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: Colors.blue,
                                   
                                     decoration: TextDecoration.underline),
@@ -539,9 +517,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   final Uri _url = Uri.parse('https://www.fitbit.com/global/us/legal/terms-of-service.com');
                                   if (await canLaunchUrl(_url) == true) {
                         launchUrl(_url);
-                       } else {
-                        print("Can't launch URL");
-                       }
+                       } 
                    }
                                 
                               )
@@ -550,22 +526,22 @@ class _ProfilePageState extends State<ProfilePage> {
                         ],
                       ),
                     )),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             ElevatedButton(
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(
-                      Color.fromARGB(255, 234, 231, 231))),
+                      const Color.fromARGB(255, 234, 231, 231))),
               onPressed: () async {
                 _showDeleteDialogue(context);
               },
-              child: Row(
+              child:  Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text('Delete Account', style: TextStyle(color: Colors.red))
                   ]),
             ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
+            const Padding(
+              padding: EdgeInsets.all(10.0),
               child: Text(
                 'By clicking this button you will remove definetely your account along with all the data associated (fitbit and coupons).',
                 style: TextStyle(
@@ -578,18 +554,18 @@ class _ProfilePageState extends State<ProfilePage> {
             ElevatedButton(
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(
-                      Color.fromARGB(255, 234, 231, 231))),
+                      const Color.fromARGB(255, 234, 231, 231))),
               onPressed: () {
                 Provider.of<DataBaseRepository>(context, listen: false)
                     .deleteAllCoupons();
               },
               child:
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Text('Remove coupons data', style: TextStyle(color: Colors.red))
               ]),
             ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
+            const Padding(
+              padding: EdgeInsets.all(10.0),
               child: Text(
                 'By clicking this button you will remove the coupons data. You can recover them by re-authorizing your account.',
                 style: TextStyle(
@@ -602,7 +578,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ElevatedButton(
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(
-                      Color.fromARGB(255, 234, 231, 231))),
+                      const Color.fromARGB(255, 234, 231, 231))),
               onPressed: () {
                 Provider.of<DataBaseRepository>(context, listen: false)
                     .deleteAllDatas();
@@ -612,7 +588,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Text('Remove fitbit data', style: TextStyle(color: Colors.red))
               ]),
             ),
-            Padding(
+            const Padding(
               padding: const EdgeInsets.all(10.0),
               child: Text(
                 'By clicking this button you will remove the fitbit data. You can recover them by re-authorizing your account.',
