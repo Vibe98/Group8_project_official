@@ -1,7 +1,7 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:login_flow/repository/databaserepository.dart';
+import 'package:tomagolds/repository/databaserepository.dart';
 import 'package:provider/provider.dart';
 import '../classes/changeMonth.dart';
 import '../classes/monthChartGraph.dart';

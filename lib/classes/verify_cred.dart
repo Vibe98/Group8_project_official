@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:login_flow/classes/profile.dart';
+import 'package:tomagolds/classes/profile.dart';
 
 
 class VerifyCredentials extends ChangeNotifier{

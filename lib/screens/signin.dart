@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:login_flow/classes/verify_cred.dart';
-import 'package:login_flow/screens/homepage.dart';
+import 'package:tomagolds/classes/verify_cred.dart';
+import 'package:tomagolds/screens/homepage.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

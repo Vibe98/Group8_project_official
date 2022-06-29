@@ -1,5 +1,5 @@
 import 'package:fitbitter/fitbitter.dart';
-import 'package:login_flow/repository/databaserepository.dart';
+import 'package:tomagolds/repository/databaserepository.dart';
 import 'package:provider/provider.dart';
 import '../classes/credentialsFitbitter.dart';
 import '../database/entities/couponentity.dart';

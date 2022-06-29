@@ -1,5 +1,5 @@
 import 'package:floor/floor.dart';
-import 'package:login_flow/database/entities/couponentity.dart';
+import 'package:tomagolds/database/entities/couponentity.dart';
 
 @dao 
 abstract class CouponDao{

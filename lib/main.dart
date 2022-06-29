@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:login_flow/classes/changeMonth.dart';
-import 'package:login_flow/classes/verify_cred.dart';
-import 'package:login_flow/classes/weekdata.dart';
-import 'package:login_flow/database/database.dart';
-import 'package:login_flow/repository/databaserepository.dart';
-import 'package:login_flow/screens/couponpage.dart';
-import 'package:login_flow/screens/forgotpassword.dart';
-import 'package:login_flow/screens/gardenpage.dart';
-import 'package:login_flow/screens/homepage.dart';
-import 'package:login_flow/screens/loginpage.dart';
-import 'package:login_flow/screens/profilepage.dart';
-import 'package:login_flow/screens/signin.dart';
-import 'package:login_flow/screens/visualizeCouponPage.dart';
+import 'package:tomagolds/classes/changeMonth.dart';
+import 'package:tomagolds/classes/verify_cred.dart';
+import 'package:tomagolds/classes/weekdata.dart';
+import 'package:tomagolds/database/database.dart';
+import 'package:tomagolds/repository/databaserepository.dart';
+import 'package:tomagolds/screens/couponpage.dart';
+import 'package:tomagolds/screens/forgotpassword.dart';
+import 'package:tomagolds/screens/gardenpage.dart';
+import 'package:tomagolds/screens/homepage.dart';
+import 'package:tomagolds/screens/loginpage.dart';
+import 'package:tomagolds/screens/profilepage.dart';
+import 'package:tomagolds/screens/signin.dart';
+import 'package:tomagolds/screens/visualizeCouponPage.dart';
 import 'package:provider/provider.dart';
-import 'package:login_flow/classes/DayDate.dart';
+import 'package:tomagolds/classes/DayDate.dart';
 
 
 

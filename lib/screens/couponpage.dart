@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:login_flow/repository/databaserepository.dart';
-import 'package:login_flow/screens/visualizeCouponPage.dart';
+import 'package:tomagolds/repository/databaserepository.dart';
+import 'package:tomagolds/screens/visualizeCouponPage.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import '../database/entities/couponentity.dart';

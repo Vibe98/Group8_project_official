@@ -1,7 +1,7 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
-import 'package:login_flow/database/entities/mydata.dart';
-import 'package:login_flow/repository/databaserepository.dart';
+import 'package:tomagolds/database/entities/mydata.dart';
+import 'package:tomagolds/repository/databaserepository.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../classes/weekchart.dart';

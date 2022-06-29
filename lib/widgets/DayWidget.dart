@@ -1,12 +1,12 @@
 import 'package:fitbitter/fitbitter.dart';
 import 'package:flutter/material.dart';
-import 'package:login_flow/classes/credentialsFitbitter.dart';
-import 'package:login_flow/database/entities/mydata.dart';
-import 'package:login_flow/repository/databaserepository.dart';
+import 'package:tomagolds/classes/credentialsFitbitter.dart';
+import 'package:tomagolds/database/entities/mydata.dart';
+import 'package:tomagolds/repository/databaserepository.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'package:login_flow/widgets/tomatochart.dart';
+import 'package:tomagolds/widgets/tomatochart.dart';
 import '../classes/verify_cred.dart';
 import '../classes/DayDate.dart';
 

@@ -1,5 +1,5 @@
 import 'package:floor/floor.dart';
-import 'package:login_flow/database/entities/mydata.dart';
+import 'package:tomagolds/database/entities/mydata.dart';
 
 @dao 
 abstract class MyDataDao{

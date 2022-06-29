@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ticket_widget/flutter_ticket_widget.dart';
-import 'package:login_flow/utils/utils.dart';
+import 'package:tomagolds/utils/utils.dart';
 import 'package:random_string/random_string.dart';
 
 class VisualizeCouponScreen extends StatefulWidget {

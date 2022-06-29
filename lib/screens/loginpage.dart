@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:login_flow/classes/verify_cred.dart';
-import 'package:login_flow/database/entities/mydata.dart';
-import 'package:login_flow/repository/databaserepository.dart';
-import 'package:login_flow/screens/forgotpassword.dart';
-import 'package:login_flow/screens/homepage.dart';
-import 'package:login_flow/screens/signin.dart';
-import 'package:login_flow/utils/utils.dart';
+import 'package:tomagolds/classes/verify_cred.dart';
+import 'package:tomagolds/database/entities/mydata.dart';
+import 'package:tomagolds/repository/databaserepository.dart';
+import 'package:tomagolds/screens/forgotpassword.dart';
+import 'package:tomagolds/screens/homepage.dart';
+import 'package:tomagolds/screens/signin.dart';
+import 'package:tomagolds/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../database/entities/couponentity.dart';
@@ -141,9 +141,9 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 100),
                   Container(
                     height: 50,
-                    child: const Text('Pomidori Application',
+                    child: const Text('Tomagolds',
                         style: TextStyle(
-                            color: Colors.green,
+                            color: Colors.red,
                             fontWeight: FontWeight.w500,
                             fontStyle: FontStyle.italic,
                             fontSize: 30)),

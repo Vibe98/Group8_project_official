@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:login_flow/database/entities/couponentity.dart';
-import 'package:login_flow/widgets/viusalizeDayTomato.dart';
+import 'package:tomagolds/database/entities/couponentity.dart';
+import 'package:tomagolds/widgets/viusalizeDayTomato.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
