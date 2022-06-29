@@ -17,7 +17,7 @@ class DataBaseRepository extends ChangeNotifier{
     final maxday;
     if(month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12){
       maxday=31;
-    }else if(month == 4 || month == 5 || month == 9 || month == 11){
+    }else if(month == 4 || month == 6 || month == 9 || month == 11){
       maxday=30;
     }else{
      
@@ -71,7 +71,7 @@ class DataBaseRepository extends ChangeNotifier{
           day = day+1;
         }
       }else{
-        if(month == 4 || month == 5 || month == 9 || month == 11){
+        if(month == 4 || month == 6 || month == 9 || month == 11){
           if(day == 30){
             day = 1;
             month = month+1;
