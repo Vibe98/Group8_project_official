@@ -38,6 +38,7 @@ class GardenPage extends StatelessWidget {
                   children: [
                     IconButton(
                         onPressed: () {
+                          Provider.of<WeekData>(context, listen:false).currentWeek();
                           Navigator.pop(context);
                         },
                         icon: const Icon(Icons.arrow_back_rounded,

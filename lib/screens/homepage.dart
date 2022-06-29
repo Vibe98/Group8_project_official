@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tomagolds/widgets/DayWidget.dart';
 import 'package:flutter/cupertino.dart';
 import '../classes/verify_cred.dart';
+import '../classes/weekdata.dart';
 import '../widgets/monthWidget.dart';
 
 class HomePage extends StatefulWidget {
@@ -77,6 +78,7 @@ class _HomePageState extends State<HomePage> {
                 actions: [
                   IconButton(
                     onPressed: () {
+                      Provider.of<WeekData>(context, listen:false).currentWeek();
                       Navigator.pushNamed(context, GardenPage.route,
                           arguments: {'username': widget.username});
                     },

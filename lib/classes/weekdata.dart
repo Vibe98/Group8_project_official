@@ -16,7 +16,12 @@ class WeekData extends ChangeNotifier{
         date2.add(Duration(days: (endDayOfWeek - day2)));
   bool calendar = false;
 
-
+  void currentWeek(){
+   this.datestart =
+        date1.add(Duration(days: (firstDayOfWeek - day1)));
+   this.dateend =
+        date2.add(Duration(days: (endDayOfWeek - day2)));
+  }
 
   void changeWeek(DateTime date1, DateTime date2){
     this.datestart = date1;
