@@ -19,6 +19,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final _formKey2 = GlobalKey<FormState>();
   
   void checkAnswer() async {
     final sp = await SharedPreferences.getInstance();
@@ -49,91 +50,98 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         barrierDismissible: true,
         builder: (BuildContext context) {
           return AlertDialog(
-            content: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text('Update your password',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                  child: TextFormField(
-                   
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Mandatory field';
-                      } else if(value.length<8) {
-                        return 'Password must be at least 8 characters length';
-                      }else if (!value.contains(RegExp(r'[0-9]'))) {
-                        return 'Password must contain at least a number';
-                      }else {
-                        return null;
-                      }
-                    },
-                    textInputAction: TextInputAction.next,
-                    controller: passwordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'New Password *'),
+            content: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text('Update your password',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                    child: TextFormField(
+                      
+                     
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Mandatory field';
+                        } else if(value.length<8) {
+                          return 'Password must be at least 8 characters length';
+                        }else if (!value.contains(RegExp(r'[0-9]'))) {
+                          return 'Password must contain at least a number';
+                        }else {
+                          return null;
+                        }
+                      },
+                      textInputAction: TextInputAction.next,
+                      controller: passwordController,
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(), labelText: 'New Password *'),
+                    ),
                   ),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.fromLTRB(15, 0, 15, 15),
-                  child: TextFormField(
-                    
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Mandatory field';
-                      } else {
-                        return null;
-                      }
-                    },
-                    textInputAction: TextInputAction.next,
-                    controller: confirmPasswordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Confirm Password *'),
+                  Container(
+                    padding:
+                        const EdgeInsets.fromLTRB(15, 0, 15, 15),
+                    child: TextFormField(
+                      
+                      
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Mandatory field';
+                        } else {
+                          return null;
+                        }
+                      },
+                      textInputAction: TextInputAction.next,
+                      controller: confirmPasswordController,
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Confirm Password *'),
+                    ),
                   ),
-                ),
-                Consumer<VerifyCredentials>(
-                  builder: (context, verifyCred, child) => 
-                  FloatingActionButton(
-                      backgroundColor: Colors.green,
-                        child: const Icon(Icons.done),
-                        onPressed: () async {
-                        
-                            if (passwordController.text !=
-                              confirmPasswordController.text) {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                              content: Text('Your password is not correct'),
-                              backgroundColor: Colors.red,
-                            ));
-                          }else{
-                            final sp = await SharedPreferences.getInstance();
-                            if(sp.getStringList('username')!=null){
-                              final username = sp.getStringList('username')![0];
-                              final name = sp.getStringList('username')![1];
-                              final surname = sp.getStringList('username')![2];
-                              final email = sp.getStringList('username')![4];
-                              sp.remove('username');
-                              sp.setStringList('username', [username, name, surname, passwordController.text, email, answerController.text]);
-                              
-                              verifyCred.modifyAccount(username, email, name, surname, passwordController.text);
-                              
-                              setState(() {
+                  Consumer<VerifyCredentials>(
+                    builder: (context, verifyCred, child) => 
+                    FloatingActionButton(
+                        backgroundColor: Colors.green,
+                          child: const Icon(Icons.done),
+                          onPressed: () async {
+                            if(_formKey.currentState!.validate()){
+                          
+                              if (passwordController.text !=
+                                confirmPasswordController.text) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text('Your password is not correct'),
+                                backgroundColor: Colors.red,
+                              ));
+                            }else{
+                              final sp = await SharedPreferences.getInstance();
+                              if(sp.getStringList('username')!=null){
+                                final username = sp.getStringList('username')![0];
+                                final name = sp.getStringList('username')![1];
+                                final surname = sp.getStringList('username')![2];
+                                final email = sp.getStringList('username')![4];
+                                sp.remove('username');
+                                sp.setStringList('username', [username, name, surname, passwordController.text, email, answerController.text]);
                                 
-                              });
-                              Navigator.pushNamedAndRemoveUntil(context, LoginPage.route, ModalRoute.withName('/'));
+                                verifyCred.modifyAccount(username, email, name, surname, passwordController.text);
+                                
+                                setState(() {
+                                  
+                                });
+                                Navigator.pushNamedAndRemoveUntil(context, LoginPage.route, ModalRoute.withName('/'));
+                              }
+                            }
                             }
                           }
-                        }
-                        
-                  ),
-                )
-              ],
+                          
+                    ),
+                  )
+                ],
+              ),
             )
           );
         });
@@ -144,54 +152,60 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     return Scaffold(
       appBar: AppBar(title: const Text('Forgot your password?'),
       backgroundColor: Colors.green,),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              child: const Text(
-                'Recover your password',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+      body: Form(
+        key: _formKey2,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                child: const Text(
+                  'Recover your password',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                ),
               ),
-            ),
-            const Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Text('When is your mom\'s birthday?', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18), textAlign: TextAlign.left),
-            ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                  child: TextFormField(
-                    controller: answerController,
-                    textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Answer *',
+              const Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Text('When is your mom\'s birthday?', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18), textAlign: TextAlign.left),
+              ),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                    child: TextFormField(
+                     
+                       controller: answerController,
+                      textInputAction: TextInputAction.next,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Answer *',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Mandatory field';
+                        } 
+                        return null;
+                      },
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Mandatory field';
-                      } 
-                      return null;
-                    },
                   ),
-                ),
-                ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.green),
-                    ),
-                      child: const Text('Submit'),
-                      onPressed: () async {
-                        checkAnswer();
-                      }
-                ),
-            const Padding(
-              padding: EdgeInsets.all(10),
-              child: Text(
-                'Answer the question to recover your old password',
-                style: TextStyle(fontSize: 15),),),
-            
-          ],
+                  ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.green),
+                      ),
+                        child: const Text('Submit'),
+                        onPressed: () async {
+                          if(_formKey2.currentState!.validate()){
+                          checkAnswer();
+                        }
+                        }
+                  ),
+              const Padding(
+                padding: EdgeInsets.all(10),
+                child: Text(
+                  'Answer the question to recover your old password',
+                  style: TextStyle(fontSize: 15),),),
+              
+            ],
+          ),
         ),
       ),
     );
