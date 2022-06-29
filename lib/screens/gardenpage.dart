@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tomagolds/classes/verify_cred.dart';
 import 'package:tomagolds/database/entities/couponentity.dart';
 import 'package:tomagolds/widgets/viusalizeDayTomato.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -20,13 +21,17 @@ class GardenPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
+        body: Consumer<VerifyCredentials>(
+                  builder: (context, credentials, child) {
+                return  Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
                   image: AssetImage("assets/images/prato2.jpg"),
                   fit: BoxFit.cover),
             ),
-            child: ListView(children: [
+            child: credentials.isAuthenticated(username) &&
+                              credentials.iscompleted(username)
+                          ? ListView(children: [
               Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -290,7 +295,42 @@ class GardenPage extends StatelessWidget {
                           }
                         }))),
               ]),
-            ])));
+            ]): Column(
+              
+              children: [
+                SizedBox(height:70),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(Icons.arrow_back_rounded,
+                              size: 30, color: Colors.white)),
+                      Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        color: Colors.white.withOpacity(0.3),
+                        child: Container(
+                          height: 50,
+                          width: 200,
+                          child: const Center(
+                            child: Text('Your Garden',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 30)),
+                          ),
+                        ),
+                      ),
+                      const Text('             '),
+                    ],
+                  ),
+                  SizedBox(height: 250),
+                  Text('You\'re not authorized. Please go to the profile page and authorize.', textAlign: TextAlign.center,)],
+            ),);}));
   }
 }
 
