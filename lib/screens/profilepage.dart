@@ -28,6 +28,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
 
+  final _formKey = GlobalKey<FormState>();
   int actual = -1;
   TextEditingController nameController = TextEditingController();
   TextEditingController surnameController = TextEditingController();
@@ -123,6 +124,7 @@ class _ProfilePageState extends State<ProfilePage> {
         backgroundColor: Colors.green,
       ),
       body: Form(
+        key:  _formKey,
         child: SingleChildScrollView(
           child: Column(children: [
             TextField(
@@ -151,6 +153,9 @@ class _ProfilePageState extends State<ProfilePage> {
             Container(
               width: 400,
               child: TextFormField(
+                validator:  (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your Name';}},
                   controller: nameController,
                   enabled: ena,
                   decoration: InputDecoration(
@@ -167,6 +172,9 @@ class _ProfilePageState extends State<ProfilePage> {
             Container(
               width: 400,
               child: TextFormField(
+                validator:  (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your Surname';}},
                 controller: surnameController,
                 enabled: ena,
                 decoration: InputDecoration(
@@ -183,6 +191,9 @@ class _ProfilePageState extends State<ProfilePage> {
             Container(
               width: 400,
               child: TextFormField(
+                validator:  (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your E-mail';}},
                 controller: emailController,
                 enabled: ena,
                 decoration: InputDecoration(
@@ -196,6 +207,18 @@ class _ProfilePageState extends State<ProfilePage> {
             Container(
               width: 400,
               child: TextFormField(
+              validator:  (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a new password';
+                      } else if(value.length<8) {
+                        return 'Password must be at least 8 characters length';
+                      }else if (!value.contains(RegExp(r'[0-9]'))) {
+                        //it must contain a number
+                        return 'Password must contain at least a number';
+                      }else {
+                        return null;
+                      }
+                    },
                 controller: passwordController,
                 enabled: ena,
                 decoration: InputDecoration(
@@ -219,6 +242,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           actual = 0;
                         });
                       } else {
+                        if(_formKey.currentState!.validate()){
                         Provider.of<VerifyCredentials>(context, listen: false)
                             .modifyAccount(
                                 widget.username,
@@ -242,7 +266,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         }
                         setState(() {
                           actual = -1;
-                        });
+                        });}
                       }
                       ;
                     },
