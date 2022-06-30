@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class WeekData extends ChangeNotifier{
+class WeekDate{
 
   static DateTime date1 = DateTime.now();
   static DateTime date2 = DateTime.now();
@@ -14,30 +14,30 @@ class WeekData extends ChangeNotifier{
         date1.add(Duration(days: (firstDayOfWeek - day1)));
   DateTime dateend =
         date2.add(Duration(days: (endDayOfWeek - day2)));
-  bool calendar = false;
+  DateTime? datestartold;
+  DateTime? dateendold;
+  
 
-  void currentWeek(){
-   this.datestart =
-        date1.add(Duration(days: (firstDayOfWeek - day1)));
-   this.dateend =
-        date2.add(Duration(days: (endDayOfWeek - day2)));
-  }
 
   void changeWeek(DateTime date1, DateTime date2){
     this.datestart = date1;
     this.dateend = date2;
     
-    
-    notifyListeners();
   }
 
-  void changeCalendar(){
-    if(calendar){
-      this.calendar = false;
-    }else{
-      this.calendar = true;
-    }
+}
+
+class WeekData extends ChangeNotifier{
+  static WeekDate weekdate = WeekDate();
+  static WeekDate gardendate = WeekDate();
+
+  Map<String, WeekDate> pageWeek = {
+    'WeekWidget': weekdate,
+    'Garden': gardendate 
+  };
+
+  void changeWeek(String key, DateTime date1, DateTime date2){
+    pageWeek[key]!.changeWeek(date1, date2);
     notifyListeners();
   }
 }
-

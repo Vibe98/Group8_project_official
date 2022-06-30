@@ -38,8 +38,9 @@ class GardenPage extends StatelessWidget {
                   children: [
                     IconButton(
                         onPressed: () {
-                          Provider.of<WeekData>(context, listen:false).currentWeek();
+                          
                           Navigator.pop(context);
+                          
                         },
                         icon: const Icon(Icons.arrow_back_rounded,
                             size: 30, color: Colors.white)),
@@ -69,8 +70,8 @@ class GardenPage extends StatelessWidget {
                         future: Provider.of<DataBaseRepository>(context,
                                 listen: false)
                             .findWeekData(
-                                value.datestart.day,
-                                value.datestart
+                                value.pageWeek['Garden']!.datestart.day,
+                                value.pageWeek['Garden']!.datestart
                                     .month), 
                         builder: (context, snapshot) {
                           switch (snapshot.connectionState) {
@@ -210,7 +211,7 @@ class GardenPage extends StatelessWidget {
                                                                   .selectedRange =
                                                               PickerDateRange(
                                                                   dat1, dat2);
-                                                          weekdate.changeWeek(
+                                                          weekdate.changeWeek('Garden',
                                                               dat1, dat2);
                                                         },
                                                       ),
@@ -221,8 +222,8 @@ class GardenPage extends StatelessWidget {
                                         future: Provider.of<DataBaseRepository>(
                                                 context,
                                                 listen: false)
-                                            .findCoupons(value.datestart.day,
-                                                value.datestart.month),
+                                            .findCoupons(value.pageWeek['Garden']!.datestart.day,
+                                                value.pageWeek['Garden']!.datestart.month),
                                         builder: (context, snapshot) {
                                           switch (snapshot.connectionState) {
                                             case ConnectionState.none:
@@ -238,8 +239,8 @@ class GardenPage extends StatelessWidget {
                                                       () async {
                                                     await _showChoiceDialog(
                                                         context,
-                                                        value.datestart.day,
-                                                        value.datestart.month);
+                                                        value.pageWeek['Garden']!.datestart.day,
+                                                        value.pageWeek['Garden']!.datestart.month);
                                                   });
                                                   return const Icon(MdiIcons.ticket,
                                                       color: Color.fromARGB(255, 255, 209, 59),

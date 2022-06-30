@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                 actions: [
                   IconButton(
                     onPressed: () {
-                      Provider.of<WeekData>(context, listen:false).currentWeek();
+                      
                       Navigator.pushNamed(context, GardenPage.route,
                           arguments: {'username': widget.username});
                     },

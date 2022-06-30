@@ -84,7 +84,7 @@ class WeekWidget extends StatelessWidget {
                         date2.add(Duration(days: (endDayOfWeek - day2)));
       
                     _controller.selectedRange = PickerDateRange(dat1, dat2);
-                    weekdate.changeWeek(dat1, dat2);
+                    weekdate.changeWeek('WeekWidget',dat1, dat2);
                    
                   },
                  
@@ -95,8 +95,7 @@ class WeekWidget extends StatelessWidget {
                 builder: ((context, value, child) => FutureBuilder(
                       future: fetchweekdata(
                           context,
-                          value
-                              .datestart), //Provider.of<DataBaseRepository>(context, listen: false).findWeekData(value.datestart.day, value.datestart.month),
+                          value.pageWeek['WeekWidget']!.datestart), //Provider.of<DataBaseRepository>(context, listen: false).findWeekData(value.datestart.day, value.datestart.month),
                       builder: (context, snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.none:
