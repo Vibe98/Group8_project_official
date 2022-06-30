@@ -123,307 +123,293 @@ class _ProfilePageState extends State<ProfilePage> {
         title: const Text('Profile Page'),
         backgroundColor: Colors.green,
       ),
-      body: Form(
-        key:  _formKey,
-        child: SingleChildScrollView(
-          child: Column(children: [
-            TextField(
-              readOnly: true,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
-              decoration: const InputDecoration(border: InputBorder.none),
-              controller: usernameController,
-            ),
-            const SizedBox(height: 10),
-            Container(
-              alignment: Alignment.center,
-              width: 200.0,
-              height: 200.0,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color.fromARGB(255, 28, 70, 47),
+      body: Container(
+        color: Color.fromARGB(255, 221, 248, 245),
+        child: Form(
+          key:  _formKey,
+          child: SingleChildScrollView(
+            child: Column(children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 8, 1, 1),
+                    child: Container(
+                alignment: Alignment.center,
+                width: 70.0,
+                height: 70.0,
+                decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Color.fromARGB(255, 28, 70, 47),
+                ),
+                child: Center(
+                      child: Text(
+                    nameController.text[0],
+                    style: const TextStyle(fontSize: 40, color: Colors.white),
+                )),
               ),
-              child: Center(
-                  child: Text(
-                nameController.text[0],
-                style: const TextStyle(fontSize: 130, color: Colors.white),
-              )),
-            ),
-            const SizedBox(height: 10),
-            Container(
-              width: 400,
-              child: TextFormField(
-                validator:  (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your Name';}},
-                  controller: nameController,
-                  enabled: ena,
-                  decoration: InputDecoration(
-                      border: actual == -1
-                          ? InputBorder.none
-                          : const OutlineInputBorder(),
-                      icon: const Icon(
-                        Icons.person,
-                        color: Colors.green,
+                  ),
+              SizedBox(
+                width: 100,
+                height: 120.0,
+                    child: Center(
+                      child: TextField(
+                        readOnly: true,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                        decoration: const InputDecoration(border: InputBorder.none),
+                        controller: usernameController,
                       ),
-                      labelText: 'Name')),
-            ),
-            const SizedBox(height: 20),
-            Container(
-              width: 400,
-              child: TextFormField(
-                validator:  (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your Surname';}},
-                controller: surnameController,
-                enabled: ena,
-                decoration: InputDecoration(
-                    border:
-                        actual == -1 ? InputBorder.none : const OutlineInputBorder(),
-                    icon: const Icon(
-                      Icons.person,
-                      color: Colors.green,
                     ),
-                    labelText: 'Surname'),
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(height: 20),
-            Container(
-              width: 400,
-              child: TextFormField(
-                validator:  (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your E-mail';}},
-                controller: emailController,
-                enabled: ena,
-                decoration: InputDecoration(
-                    border:
-                        actual == -1 ? InputBorder.none : const OutlineInputBorder(),
-                    icon: const Icon(Icons.email, color: Colors.green),
-                    labelText: 'E-mail'),
+              
+              
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 1, 1, 1),
+                child: Container(
+                  width: 400,
+                  child: TextFormField(
+                    validator:  (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your Name';}},
+                      controller: nameController,
+                      enabled: ena,
+                      decoration: InputDecoration(
+                          border: actual == -1
+                              ? InputBorder.none
+                              : const OutlineInputBorder(),
+                          icon: const Icon(
+                            Icons.person,
+                            color: Colors.green,
+                          ),
+                          labelText: 'Name')),
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-            Container(
-              width: 400,
-              child: TextFormField(
-              validator:  (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a new password';
-                      } else if(value.length<8) {
-                        return 'Password must be at least 8 characters length';
-                      }else if (!value.contains(RegExp(r'[0-9]'))) {
-                        //it must contain a number
-                        return 'Password must contain at least a number';
-                      }else {
-                        return null;
-                      }
-                    },
-                controller: passwordController,
-                enabled: ena,
-                decoration: InputDecoration(
-                    border:
-                        actual == -1 ? InputBorder.none : const OutlineInputBorder(),
-                    icon: const Icon(
-                      Icons.key,
-                      color: Colors.green,
-                    ),
-                    labelText: 'Password'),
-                obscureText: true,
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 1, 1, 1),
+                child: Container(
+                  width: 400,
+                  child: TextFormField(
+                    validator:  (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your Surname';}},
+                    controller: surnameController,
+                    enabled: ena,
+                    decoration: InputDecoration(
+                        border:
+                            actual == -1 ? InputBorder.none : const OutlineInputBorder(),
+                        icon: const Icon(
+                          Icons.person,
+                          color: Colors.green,
+                        ),
+                        labelText: 'Surname'),
+                  ),
+                ),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ElevatedButton(
-                    onPressed: () async {
-                      if (actual == -1) {
-                        setState(() {
-                          actual = 0;
-                        });
-                      } else {
-                        if(_formKey.currentState!.validate()){
-                        Provider.of<VerifyCredentials>(context, listen: false)
-                            .modifyAccount(
-                                widget.username,
-                                emailController.text,
-                                nameController.text,
-                                surnameController.text,
-                                passwordController.text);
-                        final sp = await SharedPreferences.getInstance();
-                        if (sp.getStringList('username') != null) {
-                          final answer = sp.getStringList('username')![5];
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 1, 1, 1),
+                child: Container(
+                  width: 400,
+                  child: TextFormField(
+                    validator:  (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your E-mail';}},
+                    controller: emailController,
+                    enabled: ena,
+                    decoration: InputDecoration(
+                        border:
+                            actual == -1 ? InputBorder.none : const OutlineInputBorder(),
+                        icon: const Icon(Icons.email, color: Colors.green),
+                        labelText: 'E-mail'),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 1, 1, 1),
+                child: Container(
+                  width: 400,
+                  child: TextFormField(
+                  validator:  (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a new password';
+                          } else if(value.length<8) {
+                            return 'Password must be at least 8 characters length';
+                          }else if (!value.contains(RegExp(r'[0-9]'))) {
+                            //it must contain a number
+                            return 'Password must contain at least a number';
+                          }else {
+                            return null;
+                          }
+                        },
+                    controller: passwordController,
+                    enabled: ena,
+                    decoration: InputDecoration(
+                        border:
+                            actual == -1 ? InputBorder.none : const OutlineInputBorder(),
+                        icon: const Icon(
+                          Icons.key,
+                          color: Colors.green,
+                        ),
+                        labelText: 'Password'),
+                    obscureText: true,
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                      onPressed: () async {
+                        if (actual == -1) {
+                          setState(() {
+                            actual = 0;
+                          });
+                        } else {
+                          if(_formKey.currentState!.validate()){
+                          Provider.of<VerifyCredentials>(context, listen: false)
+                              .modifyAccount(
+                                  widget.username,
+                                  emailController.text,
+                                  nameController.text,
+                                  surnameController.text,
+                                  passwordController.text);
+                          final sp = await SharedPreferences.getInstance();
+                          if (sp.getStringList('username') != null) {
+                            final answer = sp.getStringList('username')![5];
 
-                          sp.remove('username');
-                          sp.setStringList('username', [
-                            widget.username,
-                            nameController.text,
-                            surnameController.text,
-                            passwordController.text,
-                            emailController.text,
-                            answer
-                          ]);
+                            sp.remove('username');
+                            sp.setStringList('username', [
+                              widget.username,
+                              nameController.text,
+                              surnameController.text,
+                              passwordController.text,
+                              emailController.text,
+                              answer
+                            ]);
+                          }
+                          setState(() {
+                            actual = -1;
+                          });}
                         }
-                        setState(() {
-                          actual = -1;
-                        });}
-                      }
-                      ;
-                    },
-                    child: actual == -1 ? const Icon(Icons.edit) : const Icon(Icons.check),
-                    style: ElevatedButton.styleFrom(
-                        primary: Colors.green, shape: const CircleBorder())),
-              ],
-            ),
-            Consumer<VerifyCredentials>(
-                builder: (context, credentials, child) => Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 1, 8, 1),
-                      child: Column(
-                        children: [
-                          const Text('FitBit connection status',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold)),
-                          Row(
-                            children: [
-                              const Text('You\'re actually: '),
-                              credentials.isAuthenticated(widget.username) &&
-                                      credentials
-                                              .iscompleted(widget.username) ==
-                                          true
-                                  ? const Text('Authorized',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Color.fromARGB(
-                                              255, 12, 91, 53)))
-                                  : const Text('Unauthorized',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Color.fromARGB(
-                                              255, 143, 36, 36))),
-                              const SizedBox(
-                                width: 100,
-                              ),
-                              credentials.isAuthenticated(widget.username) &&
-                                      credentials
-                                              .iscompleted(widget.username) ==
-                                          true
-                                  ? ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          primary: Colors.red),
-                                      onPressed: () async {
-                                        await FitbitConnector.unauthorize(
-                                            clientID:
-                                                CredentialsFitbitter.clientID,
-                                            clientSecret: CredentialsFitbitter
-                                                .clientSecret);
-                                        String userId = '';
-                                        Provider.of<DataBaseRepository>(
-                                                context,
-                                                listen: false)
-                                            .deleteAllDatas();
-
-                                        final sp = await SharedPreferences
-                                            .getInstance();
-                                        sp.remove('userid');
-                                        setState(() {});
-                                        Provider.of<VerifyCredentials>(
-                                                context,
-                                                listen: false)
-                                            .AssociateAuthorization(
-                                                widget.username, userId);
-                                        Provider.of<VerifyCredentials>(
-                                                context,
-                                                listen: false)
-                                            .hascompleted(widget.username);
-                                      },
-                                      child: const Icon(MdiIcons.lanDisconnect))
-                                  : ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          primary: Colors.green),
-                                      onPressed: () async {
-                                        String? userId =
-                                            await FitbitConnector.authorize(
-                                                context: context,
-                                                clientID: CredentialsFitbitter
-                                                    .clientID,
-                                                clientSecret:
-                                                    CredentialsFitbitter
-                                                        .clientSecret,
-                                                redirectUri:
-                                                    CredentialsFitbitter
-                                                        .redirectUri,
-                                                callbackUrlScheme: 'example');
-
-                                        _showChoiceDialog(context);
-                                        Provider.of<VerifyCredentials>(
-                                                context,
-                                                listen: false)
-                                            .AssociateAuthorization(
-                                                widget.username, userId);
-
-                   
-                                        List<MyData?> dataavailablelist =
-                                            await Provider.of<
-                                                        DataBaseRepository>(
-                                                    context,
-                                                    listen: false)
-                                                .findAllData();
-
-                                        if (dataavailablelist.isEmpty) {
-                          
-                                          List<MyData> datalist =
-                                              await computeMonthData(
-                                            credentials.Restituteuser(
-                                                widget.username)['userID'],
-                                            DateTime.parse(
-                                                '2022-03-01 00:00:00'),
-                                            DateTime.now(),
-                                          );
-                                          for (int i = 0;
-                                              i < datalist.length;
-                                              i++) {
-                                            MyData mydata = datalist[i];
-                                            Provider.of<DataBaseRepository>(
-                                                    context,
-                                                    listen: false)
-                                                .insertMyData(mydata);
-                                          }
-                                        } else {
-                                          final listlastday = await Provider
-                                                  .of<DataBaseRepository>(
-                                                      context,
-                                                      listen: false)
-                                              .findLastDay();
-
+                        ;
+                      },
+                      child: actual == -1 ? const Icon(Icons.edit) : const Icon(Icons.check),
+                      style: ElevatedButton.styleFrom(
+                          primary: Colors.green, shape: const CircleBorder())),
+                ],
+              ),
+              Consumer<VerifyCredentials>(
+                  builder: (context, credentials, child) => Padding(
+                        padding: const EdgeInsets.fromLTRB(8, 30, 8, 30),
+                        child: Column(
+                          children: [
+                            const Text('FitBit connection status',
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold)),
+                            Row(
+                              children: [
+                                const Text('You\'re actually: '),
+                                credentials.isAuthenticated(widget.username) &&
+                                        credentials
+                                                .iscompleted(widget.username) ==
+                                            true
+                                    ? const Text('Authorized',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Color.fromARGB(
+                                                255, 12, 91, 53)))
+                                    : const Text('Unauthorized',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Color.fromARGB(
+                                                255, 143, 36, 36))),
+                                const SizedBox(
+                                  width: 100,
+                                ),
+                                credentials.isAuthenticated(widget.username) &&
+                                        credentials
+                                                .iscompleted(widget.username) ==
+                                            true
+                                    ? ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            primary: Colors.red),
+                                        onPressed: () async {
+                                          await FitbitConnector.unauthorize(
+                                              clientID:
+                                                  CredentialsFitbitter.clientID,
+                                              clientSecret: CredentialsFitbitter
+                                                  .clientSecret);
+                                          String userId = '';
                                           Provider.of<DataBaseRepository>(
                                                   context,
                                                   listen: false)
-                                              .deleteLastDay();
+                                              .deleteAllDatas();
 
-                                          if (DateTime.now().day ==
-                                                  listlastday!.day &&
-                                              DateTime.now().month ==
-                                                  listlastday.month) {
-                                            List<MyData> data =
-                                                await computeMonthData(
-                                                    userId!,
-                                                    DateTime.now(),
-                                                    DateTime.now());
+                                          final sp = await SharedPreferences
+                                              .getInstance();
+                                          sp.remove('userid');
+                                          setState(() {});
+                                          Provider.of<VerifyCredentials>(
+                                                  context,
+                                                  listen: false)
+                                              .AssociateAuthorization(
+                                                  widget.username, userId);
+                                          Provider.of<VerifyCredentials>(
+                                                  context,
+                                                  listen: false)
+                                              .hascompleted(widget.username);
+                                        },
+                                        child: const Icon(MdiIcons.lanDisconnect))
+                                    : ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            primary: Colors.green),
+                                        onPressed: () async {
+                                          String? userId =
+                                              await FitbitConnector.authorize(
+                                                  context: context,
+                                                  clientID: CredentialsFitbitter
+                                                      .clientID,
+                                                  clientSecret:
+                                                      CredentialsFitbitter
+                                                          .clientSecret,
+                                                  redirectUri:
+                                                      CredentialsFitbitter
+                                                          .redirectUri,
+                                                  callbackUrlScheme: 'example');
 
-                                            Provider.of<DataBaseRepository>(
-                                                    context,
-                                                    listen: false)
-                                                .insertMyData(data[0]);
-                                          } else {
-                                            DateTime startdate = DateTime.parse(
-                                                '2022-${modifyDate(listlastday.month)}-${modifyDate(listlastday.day)}');
-                                            DateTime enddate = DateTime.now();
+                                          _showChoiceDialog(context);
+                                          Provider.of<VerifyCredentials>(
+                                                  context,
+                                                  listen: false)
+                                              .AssociateAuthorization(
+                                                  widget.username, userId);
+
+                     
+                                          List<MyData?> dataavailablelist =
+                                              await Provider.of<
+                                                          DataBaseRepository>(
+                                                      context,
+                                                      listen: false)
+                                                  .findAllData();
+
+                                          if (dataavailablelist.isEmpty) {
+                            
                                             List<MyData> datalist =
                                                 await computeMonthData(
-                                                    userId!,
-                                                    startdate,
-                                                    enddate);
+                                              credentials.Restituteuser(
+                                                  widget.username)['userID'],
+                                              DateTime.parse(
+                                                  '2022-03-01 00:00:00'),
+                                              DateTime.now(),
+                                            );
                                             for (int i = 0;
                                                 i < datalist.length;
                                                 i++) {
@@ -433,68 +419,75 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       listen: false)
                                                   .insertMyData(mydata);
                                             }
-                                          }
-                                        }
-                                        final sp = await SharedPreferences
-                                            .getInstance();
-                                        sp.setString(
-                                            'userid',
-                                            credentials.Restituteuser(
-                                                widget.username)['userID']);
+                                          } else {
+                                            final listlastday = await Provider
+                                                    .of<DataBaseRepository>(
+                                                        context,
+                                                        listen: false)
+                                                .findLastDay();
 
-                                        List<CouponEntity?> list =
-                                            await Provider.of<
-                                                        DataBaseRepository>(
-                                                    context,
-                                                    listen: false)
-                                                .findAllCoupons();
-                                        if (list.isEmpty) {
-                                         
-                                          List<CouponEntity> couponlist =
-                                              await computeCoupons(
-                                                  context,
-                                                  credentials.Restituteuser(
-                                                          widget.username)[
-                                                      'userID'],
-                                                  DateTime.parse(
-                                                      '2022-03-06 00:00:00'),
-                                                  DateTime.now());
-                                          for (int i = 0;
-                                              i < couponlist.length;
-                                              i++) {
-                                            CouponEntity coupon =
-                                                couponlist[i];
                                             Provider.of<DataBaseRepository>(
                                                     context,
                                                     listen: false)
-                                                .insertCoupon(coupon);
+                                                .deleteLastDay();
+
+                                            if (DateTime.now().day ==
+                                                    listlastday!.day &&
+                                                DateTime.now().month ==
+                                                    listlastday.month) {
+                                              List<MyData> data =
+                                                  await computeMonthData(
+                                                      userId!,
+                                                      DateTime.now(),
+                                                      DateTime.now());
+
+                                              Provider.of<DataBaseRepository>(
+                                                      context,
+                                                      listen: false)
+                                                  .insertMyData(data[0]);
+                                            } else {
+                                              DateTime startdate = DateTime.parse(
+                                                  '2022-${modifyDate(listlastday.month)}-${modifyDate(listlastday.day)}');
+                                              DateTime enddate = DateTime.now();
+                                              List<MyData> datalist =
+                                                  await computeMonthData(
+                                                      userId!,
+                                                      startdate,
+                                                      enddate);
+                                              for (int i = 0;
+                                                  i < datalist.length;
+                                                  i++) {
+                                                MyData mydata = datalist[i];
+                                                Provider.of<DataBaseRepository>(
+                                                        context,
+                                                        listen: false)
+                                                    .insertMyData(mydata);
+                                              }
+                                            }
                                           }
-                                        } else {
-                                          
-                                          CouponEntity? lastcoupon =
+                                          final sp = await SharedPreferences
+                                              .getInstance();
+                                          sp.setString(
+                                              'userid',
+                                              credentials.Restituteuser(
+                                                  widget.username)['userID']);
+
+                                          List<CouponEntity?> list =
                                               await Provider.of<
                                                           DataBaseRepository>(
                                                       context,
                                                       listen: false)
-                                                  .findLastCoupon();
-                                          DateTime startdate = DateTime.parse(
-                                              '2022-${modifyDate(lastcoupon!.month)}-${modifyDate(lastcoupon.day)}');
-                                          Duration? diff = DateTime.now()
-                                              .difference(startdate);
-                                          int difference = diff.inDays;
-                                          if (difference > 6) {
-                                            
-                                            Provider.of<DataBaseRepository>(
-                                                    context,
-                                                    listen: false)
-                                                .deleteLastCoupon();
+                                                  .findAllCoupons();
+                                          if (list.isEmpty) {
+                                           
                                             List<CouponEntity> couponlist =
                                                 await computeCoupons(
                                                     context,
                                                     credentials.Restituteuser(
                                                             widget.username)[
                                                         'userID'],
-                                                    startdate,
+                                                    DateTime.parse(
+                                                        '2022-03-06 00:00:00'),
                                                     DateTime.now());
                                             for (int i = 0;
                                                 i < couponlist.length;
@@ -506,124 +499,162 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       listen: false)
                                                   .insertCoupon(coupon);
                                             }
-                                          } 
-                                        }
+                                          } else {
+                                            
+                                            CouponEntity? lastcoupon =
+                                                await Provider.of<
+                                                            DataBaseRepository>(
+                                                        context,
+                                                        listen: false)
+                                                    .findLastCoupon();
+                                            DateTime startdate = DateTime.parse(
+                                                '2022-${modifyDate(lastcoupon!.month)}-${modifyDate(lastcoupon.day)}');
+                                            Duration? diff = DateTime.now()
+                                                .difference(startdate);
+                                            int difference = diff.inDays;
+                                            if (difference > 6) {
+                                              
+                                              Provider.of<DataBaseRepository>(
+                                                      context,
+                                                      listen: false)
+                                                  .deleteLastCoupon();
+                                              List<CouponEntity> couponlist =
+                                                  await computeCoupons(
+                                                      context,
+                                                      credentials.Restituteuser(
+                                                              widget.username)[
+                                                          'userID'],
+                                                      startdate,
+                                                      DateTime.now());
+                                              for (int i = 0;
+                                                  i < couponlist.length;
+                                                  i++) {
+                                                CouponEntity coupon =
+                                                    couponlist[i];
+                                                Provider.of<DataBaseRepository>(
+                                                        context,
+                                                        listen: false)
+                                                    .insertCoupon(coupon);
+                                              }
+                                            } 
+                                          }
 
-                                        Provider.of<VerifyCredentials>(
-                                                context,
-                                                listen: false)
-                                            .hascompleted(widget.username);
-                                        Provider.of<DayData>(context,
-                                                listen: false)
-                                            .changeDay(DateTime.now());
-                                        Provider.of<DayData>(context,
-                                                listen: false)
-                                            .computeDifference();
-                                        Navigator.of(context,
-                                                rootNavigator: true)
-                                            .pop();
-                                      },
-                                      child: const Icon(MdiIcons.lanConnect))
-                            ],
-                          ),
-                          RichText(
-                            text: TextSpan(children: [
-                              const TextSpan(
-                                  text: "By authorizing fitbit you accept the fitibit ",
-                                  style: TextStyle(color: Colors.grey)),
-                              TextSpan(
-                                text: "terms and conditions.",
-                                style: const TextStyle(
-                                    color: Colors.blue,
+                                          Provider.of<VerifyCredentials>(
+                                                  context,
+                                                  listen: false)
+                                              .hascompleted(widget.username);
+                                          Provider.of<DayData>(context,
+                                                  listen: false)
+                                              .changeDay(DateTime.now());
+                                          Provider.of<DayData>(context,
+                                                  listen: false)
+                                              .computeDifference();
+                                          Navigator.of(context,
+                                                  rootNavigator: true)
+                                              .pop();
+                                        },
+                                        child: const Icon(MdiIcons.lanConnect))
+                              ],
+                            ),
+                            RichText(
+                              text: TextSpan(children: [
+                                const TextSpan(
+                                    text: "By authorizing FitBit you accept the FitBit ",
+                                    style: TextStyle(color: Colors.grey)),
+                                TextSpan(
+                                  text: "terms and conditions.",
+                                  style: const TextStyle(
+                                      color: Colors.blue,
+                                    
+                                      decoration: TextDecoration.underline),
+                                  recognizer: TapGestureRecognizer()..onTap = () async {
+                                    final Uri _url = Uri.parse('https://www.fitbit.com/global/us/legal/terms-of-service.com');
+                                    if (await canLaunchUrl(_url) == true) {
+                          launchUrl(_url);
+                         } 
+                     }
                                   
-                                    decoration: TextDecoration.underline),
-                                recognizer: TapGestureRecognizer()..onTap = () async {
-                                  final Uri _url = Uri.parse('https://www.fitbit.com/global/us/legal/terms-of-service.com');
-                                  if (await canLaunchUrl(_url) == true) {
-                        launchUrl(_url);
-                       } 
-                   }
-                                
-                              )
-                            ]),
-                          )
-                        ],
-                      ),
-                    )),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      const Color.fromARGB(255, 234, 231, 231))),
-              onPressed: () async {
-                _showDeleteDialogue(context);
-              },
-              child:  Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Delete Account', style: TextStyle(color: Colors.red))
-                  ]),
-            ),
-            const Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Text(
-                'By clicking this button you will remove definetely your account along with all the data associated (fitbit and coupons).',
-                style: TextStyle(
-                    color: Colors.grey,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 10),
-                textAlign: TextAlign.justify,
+                                )
+                              ]),
+                            )
+                          ],
+                        ),
+                      )),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        const Color.fromARGB(255, 234, 231, 231))),
+                onPressed: () async {
+                  _showDeleteDialogue(context);
+                },
+                child:  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Delete Account', style: TextStyle(color: Colors.red))
+                    ]),
               ),
-            ),
-            ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      const Color.fromARGB(255, 234, 231, 231))),
-              onPressed: () {
-                Provider.of<DataBaseRepository>(context, listen: false)
-                    .deleteAllCoupons();
-              },
-              child:
-                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Text('Remove coupons data', style: TextStyle(color: Colors.red))
-              ]),
-            ),
-            const Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Text(
-                'By clicking this button you will remove the coupons data. You can recover them by re-authorizing your account.',
-                style: TextStyle(
-                    color: Colors.grey,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 10),
-                textAlign: TextAlign.justify,
+              const Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Text(
+                  'By clicking this button you will remove definetely your account along with all the data associated (fitbit and coupons).',
+                  style: TextStyle(
+                      color: Colors.grey,
+                      fontStyle: FontStyle.italic,
+                      fontSize: 10),
+                  textAlign: TextAlign.justify,
+                ),
               ),
-            ),
-            ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      const Color.fromARGB(255, 234, 231, 231))),
-              onPressed: () {
-                Provider.of<DataBaseRepository>(context, listen: false)
-                    .deleteAllDatas();
-              },
-              child:
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Text('Remove fitbit data', style: TextStyle(color: Colors.red))
-              ]),
-            ),
-            const Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Text(
-                'By clicking this button you will remove the fitbit data. You can recover them by re-authorizing your account.',
-                style: TextStyle(
-                    color: Colors.grey,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 10),
-                textAlign: TextAlign.justify,
+              ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        const Color.fromARGB(255, 234, 231, 231))),
+                onPressed: () {
+                  Provider.of<DataBaseRepository>(context, listen: false)
+                      .deleteAllCoupons();
+                },
+                child:
+                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Text('Remove coupons data', style: TextStyle(color: Colors.red))
+                ]),
               ),
-            )
-          ]),
+              const Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Text(
+                  'By clicking this button you will remove the coupons data. You can recover them by re-authorizing your account.',
+                  style: TextStyle(
+                      color: Colors.grey,
+                      fontStyle: FontStyle.italic,
+                      fontSize: 10),
+                  textAlign: TextAlign.justify,
+                ),
+              ),
+              ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        const Color.fromARGB(255, 234, 231, 231))),
+                onPressed: () {
+                  Provider.of<DataBaseRepository>(context, listen: false)
+                      .deleteAllDatas();
+                },
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Text('Remove fitbit data', style: TextStyle(color: Colors.red))
+                ]),
+              ),
+              const Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Text(
+                  'By clicking this button you will remove the fitbit data. You can recover them by re-authorizing your account.',
+                  style: TextStyle(
+                      color: Colors.grey,
+                      fontStyle: FontStyle.italic,
+                      fontSize: 10),
+                  textAlign: TextAlign.justify,
+                ),
+              )
+            ]),
+          ),
         ),
       ),
     );

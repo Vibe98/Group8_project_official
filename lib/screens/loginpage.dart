@@ -25,7 +25,10 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
+  final Shader linearGradient = LinearGradient(
+  colors: <Color>[Color.fromARGB(255, 247, 52, 3), Color.fromARGB(255, 229, 205, 21)],
+).createShader(Rect.fromLTWH(0.0, 0.0, 270.0, 70.0));
+  
   @override 
   void initState() {
   _checkLogin();
@@ -131,151 +134,172 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
         appBar: AppBar(title: const Text('Login Page'),
         backgroundColor: Colors.green,),
-        body: ListView(
-          children: [
-            Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 100),
-                  Container(
-                    height: 50,
-                    child: const Text('Tomagolds',
-                        style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.w500,
-                            fontStyle: FontStyle.italic,
-                            fontSize: 30)),
-                   
-                  ),
-                  Container(
-                    child:
-                        const Text('Sign in', style: TextStyle(fontSize: 20)),
-                    
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                    child: TextFormField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
-                      
-                        }
-                        return null;
-                      },
-                      textInputAction: TextInputAction.next,
-                      controller: usernameController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        icon: Icon(Icons.person),
-                        labelText: 'Username *',
-                      ),
-                    ),
-                  ),
-                  
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: TextFormField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        return null;
-                      },
-                      controller: passwordController,
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        icon: Icon(Icons.security),
-                        labelText: 'Password *',
-                      ),
-                    ),
-                  ),
-                  Container(
-                    child: TextButton(
-                      child: const Text('Forgot Password',
-                          style: TextStyle(
-                            color: Colors.green,
-                              fontSize: 15, fontWeight: FontWeight.bold)),
-                      onPressed: () {
-                        Navigator.pushNamed(context, ForgotPassword.route);
-                      },
-                    ),
-                  ),
-                  Consumer<VerifyCredentials>(
-                    builder: (context, verifyCred, child) => 
+        body: Container(
+          color: Colors.white,
+          child: ListView(
+            children: [
+              Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 100),
                     Container(
-                      width: 350,
                       height: 50,
-                    
-                      child: Consumer<VerifyCredentials>(
-                        builder: ((context, cred, child) => ElevatedButton(
-                          style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.green),
+                      child: Text('TomaGolds',
+                          style: TextStyle(
+                              
+                              fontWeight: FontWeight.w500,
+                              fontStyle: FontStyle.italic,
+                              foreground: Paint()..shader = linearGradient,
+                              fontSize: 50)),
+                     
                     ),
-                              child: const Text('Login'),
-                              onPressed: () async {
-                                if (_formKey.currentState!.validate()){  
-                                  print(usernameController.text);
-                          
-                                  if (!verifyCred.credentials.containsKey(usernameController.text)){
-                                  
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(const SnackBar(
-                                    content: Text('Wrong username! Sign in if you do not have an account',
-                                        style: TextStyle(fontSize: 15)),
-                                    backgroundColor: Colors.red,
-                                  ));
-                                }else if (verifyCred.credentials[usernameController.text].password != passwordController.text) {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(const SnackBar(
-                                    content: Text('Wrong Password: try recover it',
-                                        style: TextStyle(fontSize: 15)),
-                                    backgroundColor: Colors.red,
-                                  ));
-                                } else {
-                                  // esiste un profilo quindi mi ricavo le sue info e lo salvo in memoria
-                                  final name = cred.Restituteuser(usernameController.text)['name'];
-                                  final surname = cred.Restituteuser(usernameController.text)['surname'];
-                                  final email = cred.Restituteuser(usernameController.text)['email'];
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        SizedBox(
+                          height: 120,
+                           width: 80,
+                          child:  Image.asset('assets/images/pomodoro_triste.jpg'),
+                           ),
+                           SizedBox(
+                          height: 80,
+                           width: 80,
+                          child:  Image.asset('assets/images/pomodoro_felice.jpg'),
+                           ),
+                        SizedBox(
+                          height: 80,
+                           width: 60,
+                          child:  Image.asset('assets/images/tomagolds_logo.jpg'),
+                           ),
+                      ],
+                    ),
+                      
+                    
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter some text';
                         
-                                  final sp = await SharedPreferences.getInstance();
-                                  if(sp.getStringList('username')== null){
-                                    sp.setStringList('username', [usernameController.text, name, surname, passwordController.text, email]);
-                                    
-                                  }
-                                sp.setBool('Log', true);
-                                  Navigator.pushNamed(context, HomePage.route, arguments: {
-                                    'username': usernameController.text
-                                  });
-                                              
-                                }
-                              }})
-                        )),
+                          }
+                          return null;
+                        },
+                        textInputAction: TextInputAction.next,
+                        controller: usernameController,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          icon: Icon(Icons.person),
+                          labelText: 'Username *',
+                        ),
                       ),
                     ),
-  
-                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text('Does not have an account?'),
-                      TextButton(
-                        child: const Text('Sign in',
+                    
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter some text';
+                          }
+                          return null;
+                        },
+                        controller: passwordController,
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          icon: Icon(Icons.security),
+                          labelText: 'Password *',
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: TextButton(
+                        child: const Text('Forgot Password',
                             style: TextStyle(
                               color: Colors.green,
-                                fontSize: 20, fontWeight: FontWeight.w500)),
+                                fontSize: 15, fontWeight: FontWeight.bold)),
                         onPressed: () {
-                          Navigator.pushNamed(context, SignIn.route);
+                          Navigator.pushNamed(context, ForgotPassword.route);
                         },
                       ),
-                    ],
-                  ),
-                  
-                ],
+                    ),
+                    Consumer<VerifyCredentials>(
+                      builder: (context, verifyCred, child) => 
+                      Container(
+                        width: 350,
+                        height: 50,
+                      
+                        child: Consumer<VerifyCredentials>(
+                          builder: ((context, cred, child) => ElevatedButton(
+                            style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.green),
+                      ),
+                                child: const Text('Login'),
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()){  
+                                    print(usernameController.text);
+                            
+                                    if (!verifyCred.credentials.containsKey(usernameController.text)){
+                                    
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                      content: Text('Wrong username! Sign in if you do not have an account',
+                                          style: TextStyle(fontSize: 15)),
+                                      backgroundColor: Colors.red,
+                                    ));
+                                  }else if (verifyCred.credentials[usernameController.text].password != passwordController.text) {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                      content: Text('Wrong Password: try recover it',
+                                          style: TextStyle(fontSize: 15)),
+                                      backgroundColor: Colors.red,
+                                    ));
+                                  } else {
+                                    // esiste un profilo quindi mi ricavo le sue info e lo salvo in memoria
+                                    final name = cred.Restituteuser(usernameController.text)['name'];
+                                    final surname = cred.Restituteuser(usernameController.text)['surname'];
+                                    final email = cred.Restituteuser(usernameController.text)['email'];
+                          
+                                    final sp = await SharedPreferences.getInstance();
+                                    if(sp.getStringList('username')== null){
+                                      sp.setStringList('username', [usernameController.text, name, surname, passwordController.text, email]);
+                                      
+                                    }
+                                  sp.setBool('Log', true);
+                                    Navigator.pushNamed(context, HomePage.route, arguments: {
+                                      'username': usernameController.text
+                                    });
+                                                
+                                  }
+                                }})
+                          )),
+                        ),
+                      ),
+  
+                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('Does not have an account?'),
+                        TextButton(
+                          child: const Text('Sign in',
+                              style: TextStyle(
+                                color: Colors.green,
+                                  fontSize: 20, fontWeight: FontWeight.w500)),
+                          onPressed: () {
+                            Navigator.pushNamed(context, SignIn.route);
+                          },
+                        ),
+                      ],
+                    ),
+                    
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ));
   }
 }

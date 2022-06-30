@@ -18,7 +18,7 @@ class VisualizeDayTomato extends StatelessWidget {
         
         Text('${DateFormat('EEEE').format(DateTime.parse('${DateTime.now().year}-${modifyDate(data[dayId]!.month)}-${modifyDate(data[dayId]!.day)}'))} ${data[dayId]!.day}/${data[dayId]!.month}', style:
          const TextStyle(fontSize: 17, fontWeight: FontWeight.w500, color: Colors.white)),
-         DateTime(DateTime.now().year, data[dayId]!.month, data[dayId]!.day).difference(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)).inDays >= 0
+         DateTime(DateTime.now().year, data[dayId]!.month, data[dayId]!.day).difference(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)).inDays > 0
           ? Padding(
             padding: const EdgeInsets.all(10.0),
             child: Image.asset(
