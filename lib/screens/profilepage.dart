@@ -130,7 +130,7 @@ class _ProfilePageState extends State<ProfilePage> {
           child: SingleChildScrollView(
             child: Column(children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+              
                 children: [
                   
                   Padding(
@@ -151,13 +151,13 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
                   ),
               SizedBox(
-                width: 100,
+                width: 300,
                 height: 120.0,
                     child: Center(
                       child: TextField(
                         readOnly: true,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                        textAlign: TextAlign.start,
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                         decoration: const InputDecoration(border: InputBorder.none),
                         controller: usernameController,
                       ),

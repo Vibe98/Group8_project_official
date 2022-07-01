@@ -28,11 +28,12 @@ class DataBaseRepository extends ChangeNotifier{
     final curr_day = monthdatas.length;
     if(curr_day<maxday){
       
-      for(int i = curr_day; i<maxday; i++){
+      for(int i = curr_day+1; i<maxday; i++){
         monthdatas.add(MyData(null,i, month, 0, 0, 0, 0, 0, false));
    
       }
     }
+    
     return monthdatas;
   }
 

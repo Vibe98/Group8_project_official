@@ -183,7 +183,7 @@ class MonthCaloriesChartGraph extends StatelessWidget{
               behaviors: [
                   SelectNearest(eventTrigger: SelectionTrigger.tapAndDrag),
                   LinePointHighlighter(
-                    symbolRenderer: CustomCircleSymbolRenderer2(),
+                    symbolRenderer: CustomCircleSymbolRenderer3(),
                   )
                 ],
                 selectionModels: [
@@ -434,6 +434,62 @@ class CustomCircleSymbolRenderer2 extends CircleSymbolRenderer {
     textStyle.fontSize = 15;
 
     List tooltips = MonthStepsChartGraph.selectedDatum;
+    
+    if (tooltips.isNotEmpty) {
+      num tipTextLen = (tooltips[0]['text']).length;
+      num rectWidth = bounds.width + tipTextLen * 12;
+      num rectHeight = bounds.height + 20 + (tooltips.length - 1) * 18;
+      num left = bounds.left - rectWidth;
+
+      canvas.drawRect(
+        Rectangle(left, 0, rectWidth, rectHeight),
+        fill: Color.fromHex(code: '#666666'),
+      );
+
+      for (int i = 0; i < tooltips.length; i++) {
+        canvas.drawPoint(
+          point: Point(left.round() + 8, (i + 1) * 15),
+          radius: 3,
+          fill: tooltips[i]['color'],
+          stroke: Color.white,
+          strokeWidthPx: 1,
+        );
+        style.TextStyle textStyle = style.TextStyle();
+        textStyle.color = Color.white;
+        textStyle.fontSize = 13;
+        canvas.drawText(element.TextElement(tooltips[i]['text']),
+            left.round() + 15, i * 15 + 8);
+      }
+    }
+  }
+}
+
+class CustomCircleSymbolRenderer3 extends CircleSymbolRenderer {
+  CustomCircleSymbolRenderer3(
+      {this.marginBottom = 8, this.padding = const EdgeInsets.all(8)});
+
+  final double marginBottom;
+  final EdgeInsets padding;
+
+  @override
+  void paint(ChartCanvas canvas, Rectangle<num> bounds,
+      {List<int>? dashPattern,
+      Color? fillColor,
+      FillPatternType? fillPattern,
+      Color? strokeColor,
+      double? strokeWidthPx}) {
+    super.paint(canvas, bounds,
+        dashPattern: dashPattern,
+        fillColor: fillColor,
+        fillPattern: fillPattern,
+        strokeColor: strokeColor,
+        strokeWidthPx: strokeWidthPx);
+
+    style.TextStyle textStyle = style.TextStyle();
+    textStyle.color = Color.black;
+    textStyle.fontSize = 15;
+
+    List tooltips = MonthCaloriesChartGraph.selectedDatum;
     
     if (tooltips.isNotEmpty) {
       num tipTextLen = (tooltips[0]['text']).length;

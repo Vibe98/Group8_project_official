@@ -153,15 +153,7 @@ class CouponPage extends StatelessWidget {
                                   leading: const Icon(MdiIcons.trophyOutline),
                                   title: Text(
                                       '${usedlist[index].day}/${usedlist[index].month}/2022  -  ${computeEndOfWeek(usedlist[index].day, usedlist[index].month).day}/${computeEndOfWeek(usedlist[index].day, usedlist[index].month).month}/2022'),
-                                  trailing: ElevatedButton(
-                                    onPressed: () {
-                                      Provider.of<DataBaseRepository>(context,
-                                              listen: false)
-                                          .updateUsed(false, usedlist[index].day,
-                                              usedlist[index].month);
-                                    },
-                                    child: const Text('prova'),
-                                  ),
+                                  
                                 ),
                               );
                             },
